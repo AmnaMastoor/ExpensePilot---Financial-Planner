@@ -1,7 +1,9 @@
 ﻿using ExpensePilot.API.DTOs;
 using ExpensePilot.API.Models;
+using ExpensePilot.API.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ExpensePilot.API.Controllers
 {
@@ -10,10 +12,12 @@ namespace ExpensePilot.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly TokenService _tokenService;
 
-        public AuthController(UserManager<ApplicationUser> userManager)
+        public AuthController(UserManager<ApplicationUser> userManager, TokenService tokenService)
         {
             _userManager = userManager;
+            _tokenService = tokenService;
         }
 
 
@@ -54,6 +58,54 @@ namespace ExpensePilot.API.Controllers
             return Ok(new
             {
                 message = "User registered successfully"
+            });
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user == null)
+            {
+                return Unauthorized(new
+                {
+                    message = "Invalid credentials"
+                });
+            }
+
+
+            var passwordValid = await _userManager.CheckPasswordAsync(
+                user,
+                request.Password
+            );
+
+
+            if (!passwordValid)
+            {
+                return Unauthorized(new
+                {
+                    message = "Invalid credentials"
+                });
+            }
+
+
+            var token = _tokenService.CreateToken(user);
+
+
+            return Ok(new
+            {
+                token
+            });
+        }
+
+        [Authorize]
+        [HttpGet("profile")]
+        public IActionResult Profile()
+        {
+            return Ok(new
+            {
+                message = "You are authenticated"
             });
         }
     }
