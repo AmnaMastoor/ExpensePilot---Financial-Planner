@@ -10,6 +10,8 @@ namespace ExpensePilot.API.Data
     : base(options)
         {
         }
-      
+      public DbSet<Transaction> transactions { get; set; }
+        public DbSet<Category> catagories { get; set; }
+
     }
 }
