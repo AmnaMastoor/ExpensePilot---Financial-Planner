@@ -31,7 +31,7 @@ namespace ExpensePilot.API.Controllers
         {
             var userId = GetUserId();
 
-            var transactions = db.transactions
+            var transactions = db.Transactions
                 .Where(t => t.UserId == userId)
                 .ToList();
 
@@ -42,7 +42,7 @@ namespace ExpensePilot.API.Controllers
 
         {
             var userId = GetUserId();
-            var transaction = db.transactions
+            var transaction = db.Transactions
        .FirstOrDefault(t => t.TransactionId == id && t.UserId == userId);
             if (transaction == null)
             {
@@ -70,7 +70,7 @@ namespace ExpensePilot.API.Controllers
                 Description = dto.Description
 
             };
-            db.transactions.Add(transaction);
+            db.Transactions.Add(transaction);
             db.SaveChanges();
             return Ok(transaction);
         }
@@ -79,13 +79,13 @@ namespace ExpensePilot.API.Controllers
         {
             var userId = GetUserId();
 
-            var transaction = db.transactions
+            var transaction = db.Transactions
                 .FirstOrDefault(t => t.TransactionId == id && t.UserId == userId);
             if (transaction == null)
             {
                 return NotFound();
             }
-            db.transactions.Remove(transaction);
+            db.Transactions.Remove(transaction);
             db.SaveChanges();
             return CreatedAtAction(
     nameof(GetTransaction),
@@ -102,7 +102,7 @@ namespace ExpensePilot.API.Controllers
             }
             var userId = GetUserId();
 
-            var t = db.transactions
+            var t = db.Transactions
                 .FirstOrDefault(t => t.TransactionId == id && t.UserId == userId);
             if (t == null)
             {
@@ -124,7 +124,7 @@ namespace ExpensePilot.API.Controllers
         {
             var userId = GetUserId();
 
-            var income = db.transactions
+            var income = db.Transactions
                 .Where(t =>
                     t.UserId == userId &&
                     t.Type == TransactionType.Income)
@@ -137,7 +137,7 @@ namespace ExpensePilot.API.Controllers
         {
             var userId = GetUserId();
 
-            var expense = db.transactions
+            var expense = db.Transactions
                 .Where(t =>
                     t.UserId == userId &&
                     t.Type == TransactionType.Expense)
@@ -154,7 +154,7 @@ namespace ExpensePilot.API.Controllers
             }
             var userId = GetUserId();
 
-            var transaction = db.transactions.Where(t => t.UserId == userId && t.TransactionDate.Month == month).ToList();
+            var transaction = db.Transactions.Where(t => t.UserId == userId && t.TransactionDate.Month == month).ToList();
             return Ok(transaction);
 
         }
@@ -162,7 +162,7 @@ namespace ExpensePilot.API.Controllers
         public IActionResult GetByCategory(int categoryId)
         {
             var userId = GetUserId();
-            var transactions = db.transactions
+            var transactions = db.Transactions
                 .Where(t => t.UserId == userId && t.CategoryId == categoryId)
                 .ToList();
 
@@ -174,7 +174,7 @@ namespace ExpensePilot.API.Controllers
         {
             var userId = GetUserId();
 
-            var transactions = db.transactions
+            var transactions = db.Transactions
                 .Where(t => t.UserId == userId)
                 .OrderByDescending(t => t.TransactionDate)
                 .Take(5)
