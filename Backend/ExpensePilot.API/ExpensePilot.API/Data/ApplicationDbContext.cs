@@ -14,5 +14,7 @@ namespace ExpensePilot.API.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<FinancialGoal> FinancialGoals { get; set; }
 
+        public DbSet<Budget> Budgets { get; set; }
+
     }
 }
