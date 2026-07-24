@@ -12,11 +12,14 @@ namespace ExpensePilot.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly TokenService _tokenService;
 
-        public AuthController(UserManager<ApplicationUser> userManager, TokenService tokenService)
+        public AuthController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, 
+        TokenService tokenService)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             _tokenService = tokenService;
         }
 
@@ -54,6 +57,12 @@ namespace ExpensePilot.API.Controllers
                 return BadRequest(result.Errors);
             }
 
+            if (!await _roleManager.RoleExistsAsync("User"))
+            {
+                await _roleManager.CreateAsync(new IdentityRole("User"));
+            }
+
+            await _userManager.AddToRoleAsync(user, "User");
 
             return Ok(new
             {
@@ -89,9 +98,7 @@ namespace ExpensePilot.API.Controllers
                 });
             }
 
-
-            var token = _tokenService.CreateToken(user);
-
+            var token = await _tokenService.CreateToken(user);
 
             return Ok(new
             {

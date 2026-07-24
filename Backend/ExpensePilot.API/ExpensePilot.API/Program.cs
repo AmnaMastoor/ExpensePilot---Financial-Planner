@@ -48,8 +48,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     builder.Configuration.GetConnectionString("DefaultConnection")
 ));
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+})
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -80,6 +88,11 @@ builder.Services.AddScoped<TokenService>();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await RoleSeeder.SeedRolesAndAdminAsync(services);
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
