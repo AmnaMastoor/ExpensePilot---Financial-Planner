@@ -1,4 +1,4 @@
-﻿namespace ExpensePilot.API.DTO
+﻿namespace ExpensePilot.API.DTO.Transaction
 {
     public class RecentTransactionDto
     {

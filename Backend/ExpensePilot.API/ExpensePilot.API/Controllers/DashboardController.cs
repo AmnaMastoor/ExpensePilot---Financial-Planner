@@ -10,6 +10,8 @@ using ExpensePilot.API.Models;
 using ExpensePilot.API.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
+using ExpensePilot.API.DTO.Category;
+using ExpensePilot.API.DTO.Transaction;
 
 
 namespace ExpensePilot.API.Controllers

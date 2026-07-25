@@ -1,12 +1,12 @@
 ﻿using ExpensePilot.API.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace ExpensePilot.API.DTO
+namespace ExpensePilot.API.DTO.Transaction
 {
-    public class CreateTransactionDto
+    public class UpdateTransactionDto
     {
-        
-        public int? CategoryId { get; set; }
+        [Required]
+        public int CategoryId { get; set; }
 
         [Required]
         public TransactionType Type { get; set; }

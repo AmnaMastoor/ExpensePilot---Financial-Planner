@@ -3,27 +3,37 @@ using System.Security.Claims;
 using System.Text;
 using ExpensePilot.API.Models;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Identity;
 
 namespace ExpensePilot.API.Services
 {
     public class TokenService
     {
         private readonly IConfiguration _configuration;
-
-        public TokenService(IConfiguration configuration)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public TokenService(IConfiguration configuration,
+            UserManager<ApplicationUser> userManager)
         {
             _configuration = configuration;
+            _userManager = userManager;
         }
 
 
-        public string CreateToken(ApplicationUser user)
+        public async Task<string> CreateToken(ApplicationUser user)
         {
+
+            var roles = await _userManager.GetRolesAsync(user);
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Email, user.Email)
             };
 
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(

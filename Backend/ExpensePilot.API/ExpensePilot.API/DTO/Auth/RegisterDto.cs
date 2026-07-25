@@ -1,4 +1,4 @@
-﻿namespace ExpensePilot.API.DTOs
+﻿namespace ExpensePilot.API.DTO.Auth
 {
     public class RegisterDto
     {
