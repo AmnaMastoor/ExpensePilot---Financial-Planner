@@ -1,5 +1,5 @@
 ﻿using ExpensePilot.API.Data;
-using ExpensePilot.API.DTO;
+using ExpensePilot.API.DTO.FinancialGoal;
 using ExpensePilot.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,7 +42,17 @@ namespace ExpensePilot.API.Controllers
                 .ToListAsync();
 
 
-            return Ok(goals);
+            var response = goals.Select(g => new FinancialGoalDto
+            {
+                FinancialGoalId = g.FinancialGoalId,
+                Title = g.Title,
+                Description = g.Description,
+                TargetAmount = g.TargetAmount,
+                CurrentAmount = g.CurrentAmount,
+                TargetDate = g.TargetDate
+            }).ToList();
+
+            return Ok(response);
         }
 
 
@@ -65,15 +75,24 @@ namespace ExpensePilot.API.Controllers
                 return NotFound();
 
 
-            return Ok(goal);
+            var response = new FinancialGoalDto
+            {
+                FinancialGoalId = goal.FinancialGoalId,
+                Title = goal.Title,
+                Description = goal.Description,
+                TargetAmount = goal.TargetAmount,
+                CurrentAmount = goal.CurrentAmount,
+                TargetDate = goal.TargetDate
+            };
+
+            return Ok(response);
         }
 
 
 
         // POST: api/FinancialGoal
         [HttpPost]
-        public async Task<IActionResult> CreateGoal(
-            CreateGoalDto request)
+        public async Task<IActionResult> CreateGoal(CreateGoalDto request)
         {
             var userId = GetUserId();
 
@@ -96,13 +115,23 @@ namespace ExpensePilot.API.Controllers
             await _context.SaveChangesAsync();
 
 
+            var response = new FinancialGoalDto
+            {
+                FinancialGoalId = goal.FinancialGoalId,
+                Title = goal.Title,
+                Description = goal.Description,
+                TargetAmount = goal.TargetAmount,
+                CurrentAmount = goal.CurrentAmount,
+                TargetDate = goal.TargetDate
+            };
+
             return CreatedAtAction(
                 nameof(GetGoal),
                 new
                 {
-                    id = goal.FinancialGoalId
+                    id = response.FinancialGoalId
                 },
-                goal
+                response
             );
         }
 
@@ -112,7 +141,7 @@ namespace ExpensePilot.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateGoal(
             int id,
-            CreateGoalDto request)
+            UpdateGoalDto request)
         {
             var userId = GetUserId();
 
@@ -139,7 +168,17 @@ namespace ExpensePilot.API.Controllers
             await _context.SaveChangesAsync();
 
 
-            return NoContent();
+            var response = new FinancialGoalDto
+            {
+                FinancialGoalId = goal.FinancialGoalId,
+                Title = goal.Title,
+                Description = goal.Description,
+                TargetAmount = goal.TargetAmount,
+                CurrentAmount = goal.CurrentAmount,
+                TargetDate = goal.TargetDate
+            };
+
+            return Ok(response);
         }
 
 

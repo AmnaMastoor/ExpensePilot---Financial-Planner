@@ -1,6 +1,7 @@
-﻿using ExpensePilot.API.DTO;
+﻿using ExpensePilot.API.DTO.Category;
+using ExpensePilot.API.DTO.Transaction;
 
-namespace ExpensePilot.API.DTOs
+namespace ExpensePilot.API.DTO.Report
 {
     public class ReportDto
     {

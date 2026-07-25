@@ -1,4 +1,5 @@
 ﻿using ExpensePilot.API.Data;
+using ExpensePilot.API.DTO;
 using ExpensePilot.API.DTOs;
 using ExpensePilot.API.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -119,7 +120,7 @@ namespace ExpensePilot.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(
             int id,
-            CreateCategoryDto request)
+            UpdateCategoryDto request)
         {
             var userId = GetUserId();
 
