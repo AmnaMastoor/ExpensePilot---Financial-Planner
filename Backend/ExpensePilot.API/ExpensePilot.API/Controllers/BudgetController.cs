@@ -1,5 +1,5 @@
 ﻿using ExpensePilot.API.Data;
-using ExpensePilot.API.DTO;
+using ExpensePilot.API.DTO.Budget;
 using ExpensePilot.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -125,17 +125,17 @@ namespace ExpensePilot.API.Controllers
 
         [HttpDelete("{id}")]
 
-        public async Task<IActionResult> DeleteBudget(int id) 
+        public async Task<IActionResult> DeleteBudget(int id)
         {
-            var userid= GetUserId();
+            var userid = GetUserId();
 
             var budget = await db.Budgets
                 .FirstOrDefaultAsync(b => b.UserId == userid && b.BudgetId == id);
-            if(budget == null)
+            if (budget == null)
             {
                 return NotFound();
             }
-            db.Budgets .Remove(budget);
+            db.Budgets.Remove(budget);
             db.SaveChangesAsync();
 
             return NoContent();
@@ -143,7 +143,7 @@ namespace ExpensePilot.API.Controllers
         [HttpGet("category/{categoryId}")]
         public async Task<IActionResult> GetbyCategory(int categoryId)
         {
-            var userid= GetUserId();
+            var userid = GetUserId();
             var budget = await db.Budgets.Where(b => b.UserId == userid && b.CategoryId == categoryId).ToListAsync();
 
             return Ok(budget);
@@ -152,7 +152,7 @@ namespace ExpensePilot.API.Controllers
         [HttpGet("month/{month}")]
         public async Task<IActionResult> GetMonthlyBudget(int month)
         {
-           
+
             if (month < 1 || month > 12)
             {
                 return BadRequest("Month must be between 1 and 12.");

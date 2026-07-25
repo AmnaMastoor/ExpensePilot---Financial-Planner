@@ -1,9 +1,9 @@
-﻿using ExpensePilot.API.DTOs;
-using ExpensePilot.API.Models;
+﻿using ExpensePilot.API.Models;
 using ExpensePilot.API.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using ExpensePilot.API.DTO.Auth;
 
 namespace ExpensePilot.API.Controllers
 {

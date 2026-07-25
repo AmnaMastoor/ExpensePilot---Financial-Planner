@@ -1,6 +1,7 @@
-﻿using ExpensePilot.API.Data;
+﻿using ExpensePilot.API.DTO.Report;
+using ExpensePilot.API.DTO.FinancialGoal;
+using ExpensePilot.API.DTO.Category;
 using ExpensePilot.API.DTO;
-using ExpensePilot.API.DTOs;
 using ExpensePilot.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,9 @@ using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using System.Security.Claims;
+using ExpensePilot.API.Data;
+using ExpensePilot.API.DTOs;
+using ExpensePilot.API.DTO.Transaction;
 
 namespace ExpensePilot.API.Controllers
 {
