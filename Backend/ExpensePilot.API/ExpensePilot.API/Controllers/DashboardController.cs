@@ -95,5 +95,54 @@ namespace ExpensePilot.API.Controllers
 
             return Ok(response);
         }
+        [HttpGet("status")]
+        public async Task<IActionResult> GetBudgetStatus()
+        {
+            var userId = GetUserId();
+
+            var budgets = await db.Budgets
+                .Where(b => b.UserId == userId)
+                .Include(b => b.Category)
+                .ToListAsync();
+
+            var result = new List<object>();
+
+            foreach (var budget in budgets)
+            {
+                var spent = await db.Transactions
+                    .Where(t => t.UserId == userId &&
+                                t.CategoryId == budget.CategoryId &&
+                                t.Type == TransactionType.Expense)
+                    .SumAsync(t => t.Amount);
+
+                var remaining = budget.BudgetAmount - spent;
+
+                string status;
+
+                if (spent < budget.BudgetAmount)
+                    status = "On Track";
+                else if (spent == budget.BudgetAmount)
+                    status = "Budget Reached";
+                else
+                    status = "Exceeded";
+
+                var percentage = budget.BudgetAmount == 0
+                    ? 0
+                    : (spent / budget.BudgetAmount) * 100;
+
+                result.Add(new
+                {
+                    BudgetId = budget.BudgetId,
+                    Category = budget.Category.Name,
+                    Budget = budget.BudgetAmount,
+                    Spent = spent,
+                    Remaining = remaining,
+                    Percentage = Math.Round(percentage, 0),
+                    Status = status
+                });
+            }
+
+            return Ok(result);
+        }
     }
 }
