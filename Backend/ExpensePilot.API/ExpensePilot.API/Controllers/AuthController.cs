@@ -1,9 +1,10 @@
-﻿using ExpensePilot.API.Models;
+﻿using ExpensePilot.API.DTO.Auth;
+using ExpensePilot.API.Models;
 using ExpensePilot.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using ExpensePilot.API.DTO.Auth;
+using System.Security.Claims;
 
 namespace ExpensePilot.API.Controllers
 {
@@ -108,11 +109,20 @@ namespace ExpensePilot.API.Controllers
 
         [Authorize]
         [HttpGet("profile")]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+                return NotFound();
+
+
             return Ok(new
             {
-                message = "You are authenticated"
+                name = user.FullName,
+                email = user.Email
             });
         }
     }
