@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using ExpensePilot.API.DTOs;
 using ExpensePilot.API.DTO.Transaction;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace ExpensePilot.API.Controllers
@@ -65,13 +66,19 @@ namespace ExpensePilot.API.Controllers
                 CategoryId = dto.CategoryId,
                 Type = dto.Type,
                 Amount = dto.Amount,
-                TransactionDate = dto.TransactionDate,
+
+                TransactionDate = DateTime.SpecifyKind(
+                    dto.TransactionDate,
+                    DateTimeKind.Utc
+                ),
+
                 Title = dto.Title,
                 Description = dto.Description
-
             };
+
             db.Transactions.Add(transaction);
             db.SaveChanges();
+
             return Ok(transaction);
         }
         [HttpDelete("{id}")]
@@ -92,32 +99,45 @@ namespace ExpensePilot.API.Controllers
     new { id = transaction.TransactionId },
     transaction);
         }
-
         [HttpPut("{id}")]
-        public IActionResult UpdateTransaction(UpdateTransactionDto dto,int id)
+        public IActionResult UpdateTransaction(
+            UpdateTransactionDto dto,
+            int id
+        )
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
             var userId = GetUserId();
 
             var t = db.Transactions
-                .FirstOrDefault(t => t.TransactionId == id && t.UserId == userId);
+                .FirstOrDefault(t =>
+                    t.TransactionId == id &&
+                    t.UserId == userId
+                );
+
             if (t == null)
             {
                 return NotFound();
             }
+
             t.CategoryId = dto.CategoryId;
             t.Type = dto.Type;
             t.Amount = dto.Amount;
-            t.TransactionDate = dto.TransactionDate;
+
+            t.TransactionDate = DateTime.SpecifyKind(
+                dto.TransactionDate,
+                DateTimeKind.Utc
+            );
+
             t.Title = dto.Title;
             t.Description = dto.Description;
 
             db.SaveChanges();
-            return Ok(t);
 
+            return Ok(t);
         }
         [HttpGet("income")]
         public IActionResult GetIncome()

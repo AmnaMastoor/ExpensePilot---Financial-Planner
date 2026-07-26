@@ -32,28 +32,71 @@ namespace ExpensePilot.API.Controllers
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
         [HttpGet("summary")]
-        public async Task<IActionResult> Summary()
+        public async Task<IActionResult> GetSummary()
         {
             var userId = GetUserId();
 
-            var totalIncome = await db.Transactions
-                .Where(t => t.UserId == userId && t.Type == TransactionType.Income)
-                .SumAsync(t => t.Amount);
+            var now = DateTime.UtcNow;
 
-            var totalExpenses = await db.Transactions
-                .Where(t => t.UserId == userId && t.Type == TransactionType.Expense)
-                .SumAsync(t => t.Amount);
+            var currentMonthStart = new DateTime(
+                now.Year,
+                now.Month,
+                1
+            );
 
-            var totalSavings = totalIncome - totalExpenses;
+            var previousMonthStart = currentMonthStart.AddMonths(-1);
 
-            var response = new DashboardDto
+            var transactions = await db.Transactions
+                .Where(t => t.UserId == userId)
+                .ToListAsync();
+
+
+            var currentTransactions = transactions
+                .Where(t =>
+                    t.TransactionDate >= currentMonthStart &&
+                    t.TransactionDate < currentMonthStart.AddMonths(1)
+                );
+
+
+            var previousTransactions = transactions
+                .Where(t =>
+                    t.TransactionDate >= previousMonthStart &&
+                    t.TransactionDate < currentMonthStart
+                );
+
+
+            var totalIncome = currentTransactions
+     .Where(t => t.Type == TransactionType.Income)
+     .Sum(t => t.Amount);
+
+            var totalExpense = currentTransactions
+                .Where(t => t.Type == TransactionType.Expense)
+                .Sum(t => t.Amount);
+
+            var previousIncome = previousTransactions
+                .Where(t => t.Type == TransactionType.Income)
+                .Sum(t => t.Amount);
+
+            var previousExpense = previousTransactions
+                .Where(t => t.Type == TransactionType.Expense)
+                .Sum(t => t.Amount);
+
+            var balance = totalIncome - totalExpense;
+
+            var previousBalance =
+                previousIncome - previousExpense;
+
+
+            return Ok(new
             {
-                TotalIncome = totalIncome,
-                TotalExpenses = totalExpenses,
-                TotalSavings = totalSavings
-            };
+                totalIncome,
+                totalExpense,
+                balance,
 
-            return Ok(response);
+                previousIncome,
+                previousExpense,
+                previousBalance
+            });
         }
         [HttpGet("recent")]
         public async Task<IActionResult> RecentTransaction()
@@ -61,22 +104,26 @@ namespace ExpensePilot.API.Controllers
             var userId = GetUserId();
 
             var transactions = await db.Transactions
+                .Include(t => t.Category)
                 .Where(t => t.UserId == userId)
                 .OrderByDescending(t => t.TransactionDate)
                 .Take(5)
+                .Select(t => new RecentTransactionDto
+                {
+                    Title = t.Title,
+                    Category = t.Category != null
+                                ? t.Category.Name
+                                : "Uncategorized",
+                    Amount = t.Amount,
+                    Type = t.Type.ToString(),
+                    TransactionDate = t.TransactionDate
+                })
                 .ToListAsync();
 
-            var response = transactions.Select(t => new RecentTransactionDto
-            {
-                Title = t.Title,
-                Category = t.Category?.Name ?? "Uncategorized",
-                Amount = t.Amount,
-                Type = t.Type.ToString(),
-                TransactionDate = t.TransactionDate
-            }).ToList();
 
-            return Ok(response);
+            return Ok(transactions);
         }
+        
         [HttpGet("expense-chart")]
         public async Task<IActionResult> ExpenseChart()
         {
