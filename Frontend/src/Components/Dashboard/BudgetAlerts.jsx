@@ -1,51 +1,69 @@
-import { useEffect, useState } from "react";
-import api from "../../services/api";
 import styles from "../../styles/dashboardStyles";
 import BudgetAlert from "./BudgetAlert";
 
-export default function BudgetAlerts() {
 
-  const [alerts, setAlerts] = useState([]);
+export default function BudgetAlerts({ data }) {
 
-  useEffect(() => {
 
-    const getBudgetStatus = async () => {
+  const alerts = data || [];
 
-      try {
 
-        const res = await api.get("/Budget/status");
 
-        setAlerts(res.data);
+  return (
 
-      } catch (err) {
+    <div style={styles.panel}>
 
-        console.error(err);
+
+      <h3 style={styles.panelTitle}>
+        Budget Alerts
+      </h3>
+
+
+
+      {
+        alerts.length === 0 ?
+
+        (
+          <p>
+            No budget alerts available
+          </p>
+        )
+
+        :
+
+        (
+
+          alerts.map((item) => (
+
+            <BudgetAlert
+
+              key={item.budgetId}
+
+              label={item.category}
+
+              spent={item.spent}
+
+              total={item.budget}
+
+              percent={item.percentage}
+
+            />
+
+          ))
+
+        )
 
       }
 
-    };
 
-    getBudgetStatus();
-
-  }, []);
-
-  return (
-    <div style={styles.panel}>
-      <h3 style={styles.panelTitle}>Budget Alerts</h3>
-
-      {alerts.map((item) => (
-        <BudgetAlert
-          key={item.budgetId}
-          label={item.category}
-          spent={item.spent}
-          total={item.budget}
-          percent={item.percentage}
-        />
-      ))}
 
       <p style={styles.budgetNote}>
         You're doing great! Keep an eye on your spending to stay within budget.
       </p>
+
+
     </div>
+
   );
+
 }

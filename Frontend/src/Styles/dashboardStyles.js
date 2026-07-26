@@ -72,49 +72,27 @@ const styles = {
   },
 
   main: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    minWidth: 0,
-  },
+  flex: 1,
+  width: 0,
+  minWidth: 0,
+  display: "flex",
+  flexDirection: "column",
+},
 
-  topBar: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "14px 32px",
-    backgroundColor: "#fff",
-    borderBottom: "1px solid #e2e8f0",
-    gap: 16,
-    flexWrap: "wrap",
-  },
-
-  searchBox: {
-    display: "flex",
-    alignItems: "center",
-    gap: 8,
-    backgroundColor: "#f8fafc",
-    border: "1px solid #e2e8f0",
-    borderRadius: 8,
-    padding: "8px 12px",
-    width: 320,
-    maxWidth: "100%",
-  },
-
-  searchInput: {
-    border: "none",
-    outline: "none",
-    backgroundColor: "transparent",
-    fontSize: 14,
-    color: "#0f172a",
-    width: "100%",
-  },
-
-  topBarRight: {
-    display: "flex",
-    alignItems: "center",
-    gap: 20,
-  },
+ topBar: {
+  width: "100%",
+  height: "80px",
+  display: "flex",
+  justifyContent: "flex-end",
+  alignItems: "center",
+  padding: "0 32px",
+  backgroundColor: "#fff",
+  boxSizing: "border-box",
+},topBarRight: {
+  display: "flex",
+  alignItems: "center",
+  gap: 20,
+},
 
   bellWrap: {
     position: "relative",
