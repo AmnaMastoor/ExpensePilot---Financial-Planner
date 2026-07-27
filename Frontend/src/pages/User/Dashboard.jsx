@@ -32,13 +32,9 @@ export default function Dashboard() {
 
   };
 
-
-
   useEffect(() => {
 
-
     const loadDashboard = async () => {
-
 
       // First check token/profile
 
@@ -46,12 +42,10 @@ export default function Dashboard() {
 
         await api.get("/auth/profile");
 
-
-      } catch(error) {
+      } catch (error) {
 
 
         console.log("Authentication failed", error);
-
 
         localStorage.removeItem("token");
 
@@ -75,7 +69,7 @@ export default function Dashboard() {
         setSummary(response.data);
 
 
-      } catch(error) {
+      } catch (error) {
 
         console.log(
           "Summary error:",
@@ -83,9 +77,6 @@ export default function Dashboard() {
         );
 
       }
-
-
-
 
       try {
 
@@ -96,7 +87,7 @@ export default function Dashboard() {
         setExpenseData(response.data);
 
 
-      } catch(error) {
+      } catch (error) {
 
         console.log(
           "Expense chart error:",
@@ -117,7 +108,7 @@ export default function Dashboard() {
         setTransactions(response.data);
 
 
-      } catch(error) {
+      } catch (error) {
 
         console.log(
           "Recent transaction error:",
@@ -138,7 +129,7 @@ export default function Dashboard() {
         setBudgetAlerts(response.data);
 
 
-      } catch(error) {
+      } catch (error) {
 
         console.log(
           "Budget alert error:",
@@ -229,7 +220,6 @@ export default function Dashboard() {
 
 
     </div>
-
 
   );
 

@@ -1,5 +1,6 @@
 ﻿using ExpensePilot.API.Data;
 using ExpensePilot.API.DTO;
+using ExpensePilot.API.DTO.Category;
 using ExpensePilot.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

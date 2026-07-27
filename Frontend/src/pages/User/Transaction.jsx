@@ -13,6 +13,7 @@ import styles from "../../styles/transactionStyles";
 import TransactionToolbar from "../../Components/Transaction/TransactionToolbar";
 import TransactionTable from "../../Components/Transaction/TransactionTable";
 import TransactionModal from "../../Components/Transaction/TransactionModal";
+import AddCategoryModal from "../../Components/Transaction/AddCategoryModal";
 
 
 const EMPTY_FORM = () => ({
@@ -52,6 +53,12 @@ export default function Transaction() {
 
   const [form, setForm] =
     useState(EMPTY_FORM());
+
+  const [addCategoryOpen, setAddCategoryOpen] =
+    useState(false);
+
+  const [categorySaving, setCategorySaving] =
+    useState(false);
 
 
   // ===========================
@@ -304,6 +311,77 @@ export default function Transaction() {
     setForm(
       EMPTY_FORM()
     );
+
+  };
+
+
+  // ===========================
+  // ADD CATEGORY (private to this user)
+  // ===========================
+
+  const openAddCategoryModal = () => {
+
+    setAddCategoryOpen(true);
+
+  };
+
+
+  const closeAddCategoryModal = () => {
+
+    setAddCategoryOpen(false);
+
+  };
+
+
+  const handleCreateCategory = async (categoryForm) => {
+
+    try {
+
+      setCategorySaving(true);
+
+      const response = await api.post("/Category", {
+
+        name: categoryForm.name.trim(),
+
+        description:
+          categoryForm.description?.trim()
+            ? categoryForm.description.trim()
+            : null,
+
+        icon:
+          categoryForm.icon?.trim()
+            ? categoryForm.icon.trim()
+            : null,
+
+      });
+
+      const newCategory = response.data;
+
+      // Add it to the list so it shows up in the dropdown
+      setCategories((prev) => [...prev, newCategory]);
+
+      // Auto-select the newly created category
+      setForm((prev) => ({
+        ...prev,
+        categoryId: String(newCategory.categoryId),
+      }));
+
+      setAddCategoryOpen(false);
+
+    } catch (error) {
+
+      console.log(
+        "Category Create Error:",
+        error.response?.data || error.message
+      );
+
+      alert("Failed to add category. Please try again.");
+
+    } finally {
+
+      setCategorySaving(false);
+
+    }
 
   };
 
@@ -615,6 +693,21 @@ export default function Transaction() {
               onSubmit={handleSubmit}
 
               categories={categories}
+
+              onAddCategory={openAddCategoryModal}
+
+            />
+
+
+            <AddCategoryModal
+
+              open={addCategoryOpen}
+
+              onClose={closeAddCategoryModal}
+
+              onCreate={handleCreateCategory}
+
+              saving={categorySaving}
 
             />
 

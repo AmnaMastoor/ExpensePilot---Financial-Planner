@@ -205,5 +205,38 @@ namespace ExpensePilot.API.Controllers
                 Status = status
             });
         }
+
+        [HttpGet("monthly-limit")]
+        public async Task<IActionResult> GetMonthlyLimit()
+        {
+            var userId = GetUserId();
+
+            var user = await db.Users.FindAsync(userId);
+
+            if (user == null)
+                return NotFound();
+
+            return Ok(user.MonthlyBudgetLimit);
+        }
+
+        [HttpPut("monthly-limit")]
+        public async Task<IActionResult> UpdateMonthlyLimit(MonthlyLimitDto dto)
+        {
+            if (dto.Limit <= 0)
+                return BadRequest("Monthly limit must be greater than zero.");
+
+            var userId = GetUserId();
+
+            var user = await db.Users.FindAsync(userId);
+
+            if (user == null)
+                return NotFound();
+
+            user.MonthlyBudgetLimit = dto.Limit;
+
+            await db.SaveChangesAsync();
+
+            return Ok(user.MonthlyBudgetLimit);
+        }
     }
 }

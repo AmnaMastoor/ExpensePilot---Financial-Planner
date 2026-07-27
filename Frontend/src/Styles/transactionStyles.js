@@ -296,6 +296,92 @@ modalActions: {
   paddingTop: "8px",
   paddingBottom: "8px",
 },
+
+cancelButton: {
+  border: "1px solid #e2e8f0",
+  background: "#fff",
+  color: "#334155",
+  padding: "12px 20px",
+  borderRadius: "10px",
+  fontWeight: 600,
+  fontSize: "14px",
+  cursor: "pointer",
+},
+
+submitButton: {
+  border: "none",
+  background: "#4f46e5",
+  color: "#fff",
+  padding: "12px 20px",
+  borderRadius: "10px",
+  fontWeight: 600,
+  fontSize: "14px",
+  cursor: "pointer",
+},
+
+  /* ===========================
+     CATEGORY FIELD (label + add button)
+  =========================== */
+
+  labelRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "8px",
+  },
+
+  addCategoryBtn: {
+    display: "flex",
+    alignItems: "center",
+    gap: "4px",
+    border: "none",
+    background: "transparent",
+    color: "#4f46e5",
+    fontWeight: 600,
+    fontSize: "13px",
+    cursor: "pointer",
+    padding: 0,
+  },
+
+  /* ===========================
+     ADD CATEGORY (mini modal)
+  =========================== */
+
+  miniOverlay: {
+    position: "fixed",
+    inset: 0,
+    width: "100vw",
+    height: "100vh",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "20px",
+    boxSizing: "border-box",
+    zIndex: 10000,
+  },
+
+  miniModal: {
+    width: "440px",
+    maxWidth: "100%",
+    backgroundColor: "#ffffff",
+    borderRadius: "20px",
+    padding: "28px",
+    boxSizing: "border-box",
+  },
+
+  privateNote: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    backgroundColor: "#eef2ff",
+    color: "#4f46e5",
+    fontSize: "13px",
+    fontWeight: 500,
+    padding: "10px 14px",
+    borderRadius: "10px",
+    marginBottom: "20px",
+  },
   /* ===========================
      EMPTY STATE
   =========================== */
