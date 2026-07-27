@@ -50,14 +50,14 @@ export function ChevronIcon() {
   );
 }
 
-export function PlusIcon() {
+export function PlusIcon({ color = "#fff" }) {
   return (
     <svg
       width="15"
       height="15"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="#fff"
+      stroke={color}
       strokeWidth="2.5"
       strokeLinecap="round"
       strokeLinejoin="round"

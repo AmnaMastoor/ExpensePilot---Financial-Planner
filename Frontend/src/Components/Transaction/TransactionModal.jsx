@@ -1,4 +1,4 @@
-import { CloseIcon, ChevronIcon } from "./icons";
+import { CloseIcon, ChevronIcon, PlusIcon } from "./icons";
 import styles from "../../styles/transactionStyles";
 
 export default function TransactionModal({
@@ -9,6 +9,7 @@ export default function TransactionModal({
   setForm,
   onSubmit,
   categories,
+  onAddCategory,
 }) {
   if (!open) return null;
 
@@ -126,9 +127,20 @@ export default function TransactionModal({
 
           {/* CATEGORY */}
           <div style={styles.field}>
-            <label style={styles.label}>
-              Category
-            </label>
+            <div style={styles.labelRow}>
+              <label style={{ ...styles.label, marginBottom: 0 }}>
+                Category
+              </label>
+
+              <button
+                type="button"
+                style={styles.addCategoryBtn}
+                onClick={onAddCategory}
+              >
+                <PlusIcon color="#4f46e5" />
+                Add New
+              </button>
+            </div>
 
             <div style={styles.selectWrapFull}>
               <select

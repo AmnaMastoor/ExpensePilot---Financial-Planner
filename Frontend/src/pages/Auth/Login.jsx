@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TrendingUp, Eye, EyeOff } from "lucide-react";
 import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function LoginPage() {
 
@@ -189,6 +190,46 @@ export default function LoginPage() {
                         >
                             Sign In
                         </button>
+
+                        <div className="relative my-5">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-gray-300"></div>
+                            </div>
+
+                            <div className="relative flex justify-center text-sm">
+                                <span className="bg-white px-2 text-gray-500">
+                                    OR
+                                </span>
+                            </div>
+                        </div>
+
+                        <GoogleLogin
+                            onSuccess={async (credentialResponse) => {
+                                try {
+                                    console.log("Google Success:", credentialResponse);
+
+                                    const response = await api.post("/auth/google-login", {
+                                        idToken: credentialResponse.credential,
+                                    });
+
+                                    console.log("Backend Response:", response.data);
+
+                                    localStorage.setItem("token", response.data.token);
+
+                                    navigate("/dashboard");
+                                } catch (error) {
+                                    console.error("Google Login Error:", error);
+
+                                    if (error.response) {
+                                        console.log("Status:", error.response.status);
+                                        console.log("Data:", error.response.data);
+                                    }
+                                }
+                            }}
+                            onError={() => {
+                                console.log("Google Login Failed");
+                            }}
+                        />
 
                         <p className="text-center text-sm text-slate-500 pt-2">
                             Don&apos;t have an account?{" "}
