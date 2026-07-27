@@ -4,6 +4,7 @@ import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import Dashboard from "../pages/User/Dashboard";
 import Transaction from "../pages/User/Transaction";
+import Budget from "../pages/User/Budget";
 
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -39,6 +40,15 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <Transaction />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/budget"
+        element={
+          <ProtectedRoute>
+            <Budget />
           </ProtectedRoute>
         }
       />
