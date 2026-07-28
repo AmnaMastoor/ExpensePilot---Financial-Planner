@@ -102,7 +102,7 @@ namespace ExpensePilot.API.Controllers
                 Title = request.Title,
                 Description = request.Description,
                 TargetAmount = request.TargetAmount,
-                CurrentAmount = 0,
+                CurrentAmount = request.CurrentAmount,
                 TargetDate = DateTime.SpecifyKind(
                                     request.TargetDate,
                                     DateTimeKind.Utc),
@@ -160,6 +160,7 @@ namespace ExpensePilot.API.Controllers
             goal.Title = request.Title;
             goal.Description = request.Description;
             goal.TargetAmount = request.TargetAmount;
+            goal.CurrentAmount = request.CurrentAmount;
             goal.TargetDate = DateTime.SpecifyKind(
                                     request.TargetDate,
                                     DateTimeKind.Utc
