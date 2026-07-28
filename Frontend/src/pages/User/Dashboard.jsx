@@ -123,7 +123,7 @@ export default function Dashboard() {
       try {
 
         const response =
-          await api.get("/Budget/status");
+          await api.get("/Dashboard/status");
 
 
         setBudgetAlerts(response.data);
