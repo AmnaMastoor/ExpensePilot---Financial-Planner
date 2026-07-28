@@ -62,7 +62,7 @@ export default function LoginPage() {
                             <TrendingUp className="w-6 h-6 text-indigo-600" strokeWidth={2.5} />
                         </div>
                         <span className="text-white text-2xl font-bold tracking-tight">
-                            Expense Tracker
+                            ExpensePilot
                         </span>
                     </div>
 
