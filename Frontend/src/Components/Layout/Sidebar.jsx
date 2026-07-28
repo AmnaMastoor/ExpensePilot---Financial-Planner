@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../../styles/dashboardStyles";
-
+import { FiTarget } from "react-icons/fi";
 import {
   GridIcon,
   FileIcon,
@@ -24,20 +24,21 @@ const location = useLocation();
     path: "/transactions",
     icon: FileIcon,
   },
-  {
-    label: "Categories",
-    path: "/categories",
-    icon: TagIcon,
-  },
+ 
   {
     label: "Analytics",
-    path: "/analytics",
+    path: "/reports",
     icon: BarChartIcon,
   },
   {
     label: "Budget",
     path: "/budget",
     icon: WalletIcon,
+  },
+  {
+    label: "Financial Goals",
+    path: "/goals",
+    icon: FiTarget,
   },
 ];
   return (
@@ -60,8 +61,10 @@ const location = useLocation();
           ...(active ? styles.navItemActive : {}),
         }}
       >
-        <Icon color={active ? "#4f46e5" : "#64748b"} />
-
+<Icon
+  color={active ? "#4f46e5" : "#64748b"}
+  size={20}
+/>
         <span
           style={{
             color: active ? "#4f46e5" : "#475569",

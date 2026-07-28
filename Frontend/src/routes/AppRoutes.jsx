@@ -5,6 +5,9 @@ import Register from "../pages/Auth/Register";
 import Dashboard from "../pages/User/Dashboard";
 import Transaction from "../pages/User/Transaction";
 import Budget from "../pages/User/Budget";
+import FinancialGoals from "../pages/User/FinancialGoals";
+import Reports from "../pages/User/Reports";
+
 
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -52,6 +55,18 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      <Route
+    path="/goals"
+    element={<FinancialGoals />}
+/>
+<Route
+  path="/reports"
+  element={
+    <ProtectedRoute>
+      <Reports />
+    </ProtectedRoute>
+  }
+/>
     </Routes>
   );
 }
