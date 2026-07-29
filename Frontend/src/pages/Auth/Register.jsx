@@ -1,8 +1,15 @@
 import { useState } from "react";
 import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import {
+    showSuccess,
+    showError,
+    showLoading,
+    hideLoading
+} from "../../utils/toast";
 
 export default function RegisterPage() {
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -18,9 +25,39 @@ export default function RegisterPage() {
     };
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
 
+        if (form.password !== form.confirmPassword) {
+
+            showError("Passwords do not match.");
+            return;
+
+        }
+
+        const passwordRegex =
+            /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
+
+
+        if (!passwordRegex.test(form.password)) {
+
+            showError(
+                "Password must contain minimum 8 characters, one uppercase letter and one number."
+            );
+
+            return;
+        }
+
+
+        let loadingToast;
+
+
         try {
+
+            setLoading(true);
+
+            loadingToast = showLoading("Creating account...");
+
 
             await api.post("/auth/register", {
                 fullName: form.fullName,
@@ -28,17 +65,52 @@ export default function RegisterPage() {
                 password: form.password
             });
 
-            // alert("Registration Successful!");
 
-            navigate("/login");
+            hideLoading(loadingToast);
 
-        } catch (error) {
+            showSuccess(
+                "Account created! Please verify your email before login."
+            );
+
+
+            setTimeout(() => {
+
+                navigate("/login");
+
+            }, 1500);
+
+
+        }
+        catch (error) {
+
+
+            if (loadingToast) {
+                hideLoading(loadingToast);
+            }
+
 
             console.log(error);
 
-            // alert(JSON.stringify(error.response.data));
+
+            if (error.response) {
+
+                showError(error.response.data.message);
+
+            }
+            else {
+
+                showError("Something went wrong!");
+
+            }
+
 
         }
+        finally {
+
+            setLoading(false);
+
+        }
+
     };
 
     return (
@@ -135,8 +207,16 @@ export default function RegisterPage() {
                             </div>
                         </div>
 
-                        <button type="submit" style={styles.submitButton}>
-                            Create Account
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            style={{
+                                ...styles.submitButton,
+                                opacity: loading ? 0.7 : 1,
+                                cursor: loading ? "not-allowed" : "pointer"
+                            }}
+                        >
+                            {loading ? "Creating..." : "Create Account"}
                         </button>
 
                         <p style={styles.footerText}>

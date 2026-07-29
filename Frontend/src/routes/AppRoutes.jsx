@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import Dashboard from "../pages/User/Dashboard";
@@ -7,8 +6,9 @@ import Transaction from "../pages/User/Transaction";
 import Budget from "../pages/User/Budget";
 import FinancialGoals from "../pages/User/FinancialGoals";
 import Reports from "../pages/User/Reports";
-
-
+import VerifyEmail from "../pages/Auth/VerifyEmail";
+import ForgotPasswordPage from "../pages/Auth/ForgotPassword";
+import ResetPasswordPage from "../pages/Auth/ResetPassword";
 import ProtectedRoute from "./ProtectedRoute";
 
 export default function AppRoutes() {
@@ -56,17 +56,30 @@ export default function AppRoutes() {
         }
       />
       <Route
-    path="/goals"
-    element={<FinancialGoals />}
-/>
-<Route
-  path="/reports"
-  element={
-    <ProtectedRoute>
-      <Reports />
-    </ProtectedRoute>
-  }
-/>
+        path="/goals"
+        element={<FinancialGoals />}
+      />
+      <Route
+        path="/reports"
+        element={
+          <ProtectedRoute>
+            <Reports />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/verify-email"
+        element={<VerifyEmail />}
+      />
+
+      <Route
+        path="/forgot-password" element={<ForgotPasswordPage />}
+      />
+
+      <Route
+        path="/reset-password" element={<ResetPasswordPage />}
+      />
     </Routes>
   );
 }
