@@ -9,6 +9,8 @@ import Reports from "../pages/User/Reports";
 import VerifyEmail from "../pages/Auth/VerifyEmail";
 import ForgotPasswordPage from "../pages/Auth/ForgotPassword";
 import ResetPasswordPage from "../pages/Auth/ResetPassword";
+import AdminOverview from "../pages/Admin/AdminOverview";
+
 import ProtectedRoute from "./ProtectedRoute";
 
 export default function AppRoutes() {
@@ -57,7 +59,11 @@ export default function AppRoutes() {
       />
       <Route
         path="/goals"
-        element={<FinancialGoals />}
+        element={
+          <ProtectedRoute>
+            <FinancialGoals />
+          </ProtectedRoute>
+        }
       />
       <Route
         path="/reports"
@@ -79,6 +85,15 @@ export default function AppRoutes() {
 
       <Route
         path="/reset-password" element={<ResetPasswordPage />}
+      />
+
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute>
+            <AdminOverview />
+          </ProtectedRoute>
+        }
       />
     </Routes>
   );
