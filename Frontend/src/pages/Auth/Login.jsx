@@ -3,6 +3,13 @@ import { TrendingUp, Eye, EyeOff } from "lucide-react";
 import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
+import { Link } from "react-router-dom";
+import {
+    showSuccess,
+    showError,
+    showLoading,
+    hideLoading
+} from "../../utils/toast";
 
 export default function LoginPage() {
 
@@ -12,10 +19,14 @@ export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
+    const [showResend, setShowResend] = useState(false);
+    const [resendEmail, setResendEmail] = useState("");
 
     const handleSubmit = async (e) => {
 
         e.preventDefault();
+
+        const loading = showLoading("Signing in...");
 
         try {
 
@@ -24,22 +35,101 @@ export default function LoginPage() {
                 password
             });
 
+            hideLoading(loading);
+
             localStorage.setItem("token", response.data.token);
 
-            // alert("Login Successful!");
+            showSuccess("Signed in successfully!");
 
-            navigate("/dashboard");
+            setTimeout(() => {
+                navigate("/dashboard");
+            }, 500);
 
         }
         catch (error) {
 
+            hideLoading(loading);
+
             console.log(error);
 
+
             if (error.response) {
-                alert(error.response.data.message);
+
+
+                if (error.response.data.code === "EMAIL_NOT_VERIFIED") {
+
+                    setResendEmail(email);
+                    setShowResend(true);
+
+                    showError(
+                        "Please verify your email first."
+                    );
+
+                }
+                else {
+
+                    showError(
+                        error.response.data.message
+                    );
+
+                }
+
+
             }
             else {
-                alert("Something went wrong!");
+
+                showError("Something went wrong!");
+
+            }
+
+        }
+
+    };
+
+    const handleResendVerification = async () => {
+
+        const loading = showLoading(
+            "Sending verification email..."
+        );
+
+
+        try {
+
+            const response = await api.post(
+                "/auth/resend-verification-email",
+                {
+                    email: resendEmail
+                }
+            );
+
+
+            hideLoading(loading);
+
+
+            showSuccess(
+                response.data.message
+            );
+
+
+        }
+        catch (error) {
+
+            hideLoading(loading);
+
+
+            if (error.response) {
+
+                showError(
+                    error.response.data.message
+                );
+
+            }
+            else {
+
+                showError(
+                    "Something went wrong!"
+                );
+
             }
 
         }
@@ -173,12 +263,12 @@ export default function LoginPage() {
                                 />
                                 Remember me
                             </label>
-                            <a
-                                href="#"
+                            <Link
+                                to="/forgot-password"
                                 className="text-sm font-medium text-indigo-600 hover:text-indigo-700"
                             >
                                 Forgot Password?
-                            </a>
+                            </Link>
                         </div>
 
                         <button
@@ -190,6 +280,29 @@ export default function LoginPage() {
                         >
                             Sign In
                         </button>
+                        {
+                            showResend && (
+
+                                <div className="mt-4 text-center">
+
+                                    <p className="text-sm text-slate-500 mb-2">
+                                        Didn't receive verification email?
+                                    </p>
+
+
+                                    <button
+                                        type="button"
+                                        onClick={handleResendVerification}
+                                        className="text-indigo-600 font-semibold hover:text-indigo-700"
+                                    >
+                                        Resend Verification Email
+                                    </button>
+
+
+                                </div>
+
+                            )
+                        }
 
                         <div className="relative my-5">
                             <div className="absolute inset-0 flex items-center">
