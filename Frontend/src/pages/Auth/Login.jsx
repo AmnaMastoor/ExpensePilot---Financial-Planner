@@ -22,6 +22,24 @@ export default function LoginPage() {
     const [showResend, setShowResend] = useState(false);
     const [resendEmail, setResendEmail] = useState("");
 
+    function getRoleFromToken(token) {
+        try {
+            const payload = token.split(".")[1];
+            const decoded = JSON.parse(
+                atob(payload.replace(/-/g, "+").replace(/_/g, "/"))
+            );
+
+            return (
+                decoded.role ||
+                decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ||
+                null
+            );
+        } catch (error) {
+            console.log("Token decode error:", error);
+            return null;
+        }
+    }
+
     const handleSubmit = async (e) => {
 
         e.preventDefault();
@@ -41,8 +59,14 @@ export default function LoginPage() {
 
             showSuccess("Signed in successfully!");
 
+            const role = getRoleFromToken(response.data.token);
+
             setTimeout(() => {
-                navigate("/dashboard");
+                if (role === "Admin") {
+                    navigate("/admin");
+                } else {
+                    navigate("/dashboard");
+                }
             }, 500);
 
         }
