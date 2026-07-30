@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import styles from "../../styles/dashboardStyles";
 
@@ -10,6 +10,7 @@ import {
 
 export default function Navbar() {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getProfile = async () => {
@@ -49,7 +50,13 @@ export default function Navbar() {
           <span style={styles.bellDot}></span>
         </div>
 
-        <div style={styles.userWrap}>
+        <div
+    style={{
+        ...styles.userWrap,
+        cursor: "pointer"
+    }}
+    onClick={() => navigate("/profile")}
+>
           <div style={styles.avatar}>
             <UserIcon />
           </div>

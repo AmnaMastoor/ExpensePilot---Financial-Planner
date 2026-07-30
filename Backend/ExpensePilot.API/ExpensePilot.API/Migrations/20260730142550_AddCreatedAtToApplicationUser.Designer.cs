@@ -3,6 +3,7 @@ using System;
 using ExpensePilot.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ExpensePilot.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260730142550_AddCreatedAtToApplicationUser")]
+    partial class AddCreatedAtToApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -379,7 +382,7 @@ namespace ExpensePilot.API.Migrations
                         .IsRequired();
 
                     b.HasOne("ExpensePilot.API.Models.ApplicationUser", "User")
-                        .WithMany("Budgets")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -392,9 +395,8 @@ namespace ExpensePilot.API.Migrations
             modelBuilder.Entity("ExpensePilot.API.Models.Category", b =>
                 {
                     b.HasOne("ExpensePilot.API.Models.ApplicationUser", "User")
-                        .WithMany("Categories")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -402,7 +404,7 @@ namespace ExpensePilot.API.Migrations
             modelBuilder.Entity("ExpensePilot.API.Models.FinancialGoal", b =>
                 {
                     b.HasOne("ExpensePilot.API.Models.ApplicationUser", "User")
-                        .WithMany("FinancialGoals")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -417,7 +419,7 @@ namespace ExpensePilot.API.Migrations
                         .HasForeignKey("CategoryId");
 
                     b.HasOne("ExpensePilot.API.Models.ApplicationUser", "User")
-                        .WithMany("Transactions")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -476,17 +478,6 @@ namespace ExpensePilot.API.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ExpensePilot.API.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("Budgets");
-
-                    b.Navigation("Categories");
-
-                    b.Navigation("FinancialGoals");
-
-                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("ExpensePilot.API.Models.Category", b =>
