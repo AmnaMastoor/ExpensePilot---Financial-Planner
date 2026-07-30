@@ -10,7 +10,7 @@ import VerifyEmail from "../pages/Auth/VerifyEmail";
 import ForgotPasswordPage from "../pages/Auth/ForgotPassword";
 import ResetPasswordPage from "../pages/Auth/ResetPassword";
 import AdminOverview from "../pages/Admin/AdminOverview";
-
+import Profile from "../pages/User/Profile";
 import ProtectedRoute from "./ProtectedRoute";
 
 export default function AppRoutes() {
@@ -30,6 +30,14 @@ export default function AppRoutes() {
         path="/register"
         element={<Register />}
       />
+      <Route
+    path="/profile"
+    element={
+        <ProtectedRoute>
+            <Profile />
+        </ProtectedRoute>
+    }
+/>
 
       <Route
         path="/dashboard"
