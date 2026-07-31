@@ -15,6 +15,12 @@ import TransactionTable from "../../Components/Transaction/TransactionTable";
 import TransactionModal from "../../Components/Transaction/TransactionModal";
 import AddCategoryModal from "../../Components/Transaction/AddCategoryModal";
 
+import {
+  showSuccess,
+  showError,
+  showWarning
+} from "../../utils/toast";
+
 
 const EMPTY_FORM = () => ({
   title: "",
@@ -282,7 +288,7 @@ export default function Transaction() {
 
         transaction.transactionDate
           ? transaction.transactionDate
-              .split("T")[0]
+            .split("T")[0]
           : "",
 
 
@@ -394,17 +400,11 @@ export default function Transaction() {
 
     e.preventDefault();
 
-
     try {
-
-
-      // ---------------------------
-      // VALIDATION
-      // ---------------------------
 
       if (!form.title.trim()) {
 
-        alert("Title is required.");
+        showError("Title is required.");
 
         return;
 
@@ -413,7 +413,7 @@ export default function Transaction() {
 
       if (!form.amount) {
 
-        alert("Amount is required.");
+        showError("Amount is required.");
 
         return;
 
@@ -422,50 +422,40 @@ export default function Transaction() {
 
       if (!form.date) {
 
-        alert("Date is required.");
+        showError("Date is required.");
 
         return;
 
       }
 
 
-      // ---------------------------
-      // DTO
-      // ---------------------------
-
       const dto = {
 
         categoryId:
-
           form.categoryId
             ? Number(form.categoryId)
             : null,
 
 
         type:
-
           form.type === "Income"
             ? 0
             : 1,
 
 
         amount:
-
           Number(form.amount),
 
 
         transactionDate:
-
           `${form.date}T00:00:00`,
 
 
         title:
-
           form.title.trim(),
 
 
         description:
-
           form.description?.trim()
             ? form.description.trim()
             : null,
@@ -479,36 +469,43 @@ export default function Transaction() {
       );
 
 
-      // ---------------------------
-      // UPDATE
-      // ---------------------------
-
       if (editingId) {
 
         await api.put(
-
           `/Transaction/${editingId}`,
-
           dto
+        );
 
+
+        showSuccess(
+          "Transaction updated successfully."
         );
 
       }
 
 
-      // ---------------------------
-      // CREATE
-      // ---------------------------
-
       else {
 
-        await api.post(
-
+        const response = await api.post(
           "/Transaction",
-
           dto
-
         );
+
+
+        if (response.data.budgetExceeded) {
+
+          showWarning(
+            response.data.warning
+          );
+
+        }
+        else {
+
+          showSuccess(
+            "Transaction added successfully."
+          );
+
+        }
 
       }
 
@@ -518,7 +515,18 @@ export default function Transaction() {
       closeModal();
 
 
-    } catch (error) {
+    }
+    catch (error) {
+
+      if (error.response?.data?.budgetExceeded) {
+
+        showWarning(
+          error.response.data.warning
+        );
+
+        return;
+
+      }
 
       console.log(
         "STATUS:",
@@ -532,9 +540,9 @@ export default function Transaction() {
       );
 
 
-      console.log(
-        "SENT DATA:",
-        error.config?.data
+      showError(
+        error.response?.data?.message ||
+        "Something went wrong."
       );
 
     }

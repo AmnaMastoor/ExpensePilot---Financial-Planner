@@ -38,7 +38,8 @@ namespace ExpensePilot.API.Controllers
             {
                 FullName = user.FullName,
                 Email = user.Email,
-                CreatedAt = user.CreatedAt
+                CreatedAt = user.CreatedAt,
+                IsGoogleAccount = !await _userManager.HasPasswordAsync(user)
             });
         }
         [HttpPut]
@@ -66,6 +67,14 @@ namespace ExpensePilot.API.Controllers
             if (user == null)
                 return NotFound();
 
+            if (!await _userManager.HasPasswordAsync(user))
+            {
+                return BadRequest(new
+                {
+                    message = "Please set a password first."
+                });
+            }
+
             var result = await _userManager.ChangePasswordAsync(
                 user,
                 dto.CurrentPassword,
@@ -77,21 +86,63 @@ namespace ExpensePilot.API.Controllers
 
             return Ok("Password updated successfully.");
         }
+
+        [HttpPut("set-password")]
+        public async Task<IActionResult> SetPassword(SetPasswordDto dto)
+        {
+            var user = await GetCurrentUser();
+
+            if (user == null)
+                return NotFound();
+
+            if (await _userManager.HasPasswordAsync(user))
+            {
+                return BadRequest(new
+                {
+                    message = "Password already exists."
+                });
+            }
+
+            var result = await _userManager.AddPasswordAsync(
+                user,
+                dto.NewPassword
+            );
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(new
+                {
+                    message = string.Join(" ", result.Errors.Select(e => e.Description))
+                });
+            }
+
+            return Ok(new
+            {
+                message = "Password set successfully."
+            });
+        }
+
+
         [HttpDelete]
         public async Task<IActionResult> DeleteAccount(DeleteAccountDto dto)
         {
             var user = await GetCurrentUser();
 
             if (user == null)
-                return NotFound("User not found.");
+                return NotFound();
 
-            var passwordCorrect = await _userManager.CheckPasswordAsync(user, dto.Password);
+            if (await _userManager.HasPasswordAsync(user))
+            {
+                var passwordCorrect = await _userManager.CheckPasswordAsync(user, dto.Password);
 
-            if (!passwordCorrect)
-                return BadRequest(new
+                if (!passwordCorrect)
                 {
-                    message = "Incorrect password."
-                });
+                    return BadRequest(new
+                    {
+                        message = "Incorrect password."
+                    });
+                }
+            }
 
             var result = await _userManager.DeleteAsync(user);
 

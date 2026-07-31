@@ -8,6 +8,7 @@ import Navbar from "../../Components/Layout/Navbar";
 
 import ProfileInfoCard from "../../Components/Profile/ProfileInfoCard";
 import ChangePasswordCard from "../../Components/Profile/ChangePasswordCard";
+import SetPasswordCard from "../../Components/Profile/SetPasswordCard";
 import DangerZoneCard from "../../Components/Profile/DangerZoneCard";
 import DeleteAccountModal from "../../Components/Profile/DeleteAccountModal";
 
@@ -123,6 +124,39 @@ export default function Profile() {
 
     };
 
+    const handleSetPassword = async (data) => {
+
+        if (data.newPassword !== data.confirmPassword) {
+
+            toast.error("Passwords do not match.");
+
+            return;
+
+        }
+
+        try {
+
+            await api.put("/profile/set-password", {
+                newPassword: data.newPassword,
+                confirmPassword: data.confirmPassword
+            });
+
+            toast.success("Password set successfully.");
+
+            await loadProfile();
+
+        }
+        catch (error) {
+
+            toast.error(
+                error.response?.data?.message ||
+                "Unable to set password."
+            );
+
+        }
+
+    };
+
     // ===========================
     // DELETE ACCOUNT
     // ===========================
@@ -135,13 +169,13 @@ export default function Profile() {
 
                 data: {
 
-                    password
+                    password: password || null
 
                 }
 
             });
 
-           toast.success("Account deleted successfully.");
+            toast.success("Account deleted successfully.");
 
             setShowDeleteModal(false);
 
@@ -217,9 +251,21 @@ export default function Profile() {
                         onSave={handleSaveProfile}
                     />
 
-                    <ChangePasswordCard
-                        onChangePassword={handleChangePassword}
-                    />
+                    {
+                        profile.hasPassword ? (
+
+                            <ChangePasswordCard
+                                onChangePassword={handleChangePassword}
+                            />
+
+                        ) : (
+
+                            <SetPasswordCard
+                                onSetPassword={handleSetPassword}
+                            />
+
+                        )
+                    }
 
                     <DangerZoneCard
                         onDeleteClick={() => setShowDeleteModal(true)}
@@ -229,6 +275,7 @@ export default function Profile() {
                         isOpen={showDeleteModal}
                         onClose={() => setShowDeleteModal(false)}
                         onConfirm={handleDeleteAccount}
+                        hasPassword={profile.hasPassword}
                     />
 
                 </div>
