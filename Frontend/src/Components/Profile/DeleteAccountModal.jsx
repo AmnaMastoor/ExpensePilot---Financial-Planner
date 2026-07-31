@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
-const DeleteAccountModal = ({ isOpen, onClose, onConfirm }) => {
+const DeleteAccountModal = ({ isOpen, onClose, onConfirm, hasPassword }) => {
 
     const [password, setPassword] = useState("");
 
@@ -9,7 +9,7 @@ const DeleteAccountModal = ({ isOpen, onClose, onConfirm }) => {
 
     const handleDelete = () => {
 
-        if (!password.trim()) {
+        if (hasPassword && !password.trim()) {
 
             toast.error("Please enter your password.");
 
@@ -52,22 +52,26 @@ const DeleteAccountModal = ({ isOpen, onClose, onConfirm }) => {
                     will be permanently deleted.
                 </p>
 
-                <label className="block font-medium mb-2">
-                    Confirm your password
-                </label>
+                {
+                    hasPassword && (
 
-                <input
-                    type="password"
-                    className="w-full border rounded-lg px-4 py-2 mb-6"
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                            handleDelete();
-                        }
-                    }}
-                />
+                        <>
+                            <label className="block font-medium mb-2">
+                                Confirm your password
+                            </label>
+
+                            <input
+                                type="password"
+                                className="w-full border rounded-lg px-4 py-2 mb-6"
+                                placeholder="Enter your password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+
+                        </>
+
+                    )
+                }
 
                 <div className="flex justify-end gap-3">
 

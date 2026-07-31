@@ -17,6 +17,8 @@ namespace ExpensePilot.API.Models
 
         public string? Description { get; set; }
 
+        public bool BudgetExceeded { get; set; } = false;
+
         //foriegn key
         public ApplicationUser? User { get; set; }
         public Category? Category { get; set; }
