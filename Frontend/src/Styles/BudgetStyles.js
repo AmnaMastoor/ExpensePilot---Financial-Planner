@@ -14,13 +14,13 @@ const styles = {
     margin: 0,
     fontSize: "34px",
     fontWeight: 700,
-    color: "#0f172a",
+    color: "var(--text-color)",
   },
 
   subtitle: {
     marginTop: "8px",
     fontSize: "15px",
-    color: "#64748b",
+    color: "var(--text-faint)",
   },
 
   addButton: {
@@ -30,7 +30,7 @@ const styles = {
     border: "none",
     cursor: "pointer",
     background: "#4f46e5",
-    color: "#fff",
+    color: "var(--surface)",
     padding: "12px 20px",
     borderRadius: "10px",
     fontWeight: 600,
@@ -43,7 +43,7 @@ const styles = {
   =========================== */
 
   monthlyCard: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "var(--surface)",
     borderRadius: "14px",
     border: "1px solid #e2e8f0",
     boxShadow: "0 4px 12px rgba(15,23,42,0.05)",
@@ -60,7 +60,7 @@ const styles = {
   monthlyLabel: {
     margin: 0,
     fontSize: "14px",
-    color: "#64748b",
+    color:"var(--text-faint)",
     fontWeight: 500,
   },
 
@@ -74,13 +74,13 @@ const styles = {
   monthlySpent: {
     fontSize: "30px",
     fontWeight: 700,
-    color: "#0f172a",
+    color: "var(--text-color)",
   },
 
   monthlyTotal: {
     fontSize: "16px",
     fontWeight: 500,
-    color: "#94a3b8",
+    color: "var(--text-faint)",
   },
 
   editButton: {
@@ -88,8 +88,8 @@ const styles = {
     alignItems: "center",
     gap: "6px",
     border: "1px solid #e2e8f0",
-    background: "#fff",
-    color: "#4f46e5",
+    background: "var(--surface)",
+    color: "var(--accent)",
     padding: "9px 16px",
     borderRadius: "9px",
     fontWeight: 600,
@@ -100,7 +100,7 @@ const styles = {
   progressTrackLg: {
     width: "100%",
     height: "10px",
-    backgroundColor: "#e2e8f0",
+   backgroundColor: "var(--border-color)",
     borderRadius: "999px",
     overflow: "hidden",
     marginTop: "18px",
@@ -109,7 +109,7 @@ const styles = {
   progressFillLg: {
     height: "100%",
     borderRadius: "999px",
-    backgroundColor: "#4f46e5",
+    backgroundColor: "var(--accent)",
   },
 
   progressMetaRow: {
@@ -120,13 +120,13 @@ const styles = {
 
   progressMetaLeft: {
     fontSize: "13px",
-    color: "#64748b",
+    color: "var(--text-faint)",
   },
 
   progressMetaRight: {
     fontSize: "13px",
     fontWeight: 600,
-    color: "#16a34a",
+   color: "var(--success)",
   },
 
   /* ===========================
@@ -137,7 +137,7 @@ const styles = {
     margin: "0 0 16px 0",
     fontSize: "18px",
     fontWeight: 700,
-    color: "#0f172a",
+    color: "var(--text-color)",
   },
 
   grid: {
@@ -147,7 +147,7 @@ const styles = {
   },
 
   card: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "var(--surface)",
     borderRadius: "14px",
     border: "1px solid #e2e8f0",
     boxShadow: "0 4px 12px rgba(15,23,42,0.05)",
@@ -180,7 +180,7 @@ const styles = {
   cardCategoryName: {
     fontSize: "15px",
     fontWeight: 600,
-    color: "#0f172a",
+    color: "var(--text-color)",
   },
 
   cardActions: {
@@ -193,7 +193,7 @@ const styles = {
     height: "30px",
     borderRadius: "8px",
     border: "1px solid #e2e8f0",
-    backgroundColor: "#ffffff",
+    backgroundColor: "var(--surface)",
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
@@ -210,18 +210,18 @@ const styles = {
   cardSpent: {
     fontSize: "22px",
     fontWeight: 700,
-    color: "#0f172a",
+    color: "var(--text-color)",
   },
 
   cardTotal: {
     fontSize: "14px",
-    color: "#94a3b8",
+    color: "var(--text-faint)",
   },
 
   progressTrackSm: {
     width: "100%",
     height: "7px",
-    backgroundColor: "#e2e8f0",
+   backgroundColor: "var(--border-color)",
     borderRadius: "999px",
     overflow: "hidden",
   },
@@ -233,13 +233,13 @@ const styles = {
 
   cardPercent: {
     fontSize: "13px",
-    color: "#64748b",
+    color:"var(--text-faint)",
     marginTop: "10px",
   },
 
   addCard: {
     borderRadius: "14px",
-    border: "2px dashed #cbd5e1",
+    border: "2px dashed var(--border-color)",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -248,7 +248,7 @@ const styles = {
     minHeight: "170px",
     cursor: "pointer",
     background: "transparent",
-    color: "#64748b",
+    color: "var(--text-faint)",
     fontWeight: 600,
     fontSize: "14px",
   },
@@ -256,7 +256,7 @@ const styles = {
   emptyState: {
     padding: "60px 20px",
     textAlign: "center",
-    color: "#64748b",
+    color: "var(--text-faint)",
   },
 
   /* ===========================
@@ -280,7 +280,7 @@ const styles = {
   modal: {
     width: "440px",
     maxWidth: "100%",
-    backgroundColor: "#ffffff",
+    backgroundColor: "var(--surface)",
     borderRadius: "20px",
     padding: "28px",
     boxSizing: "border-box",
@@ -297,7 +297,7 @@ const styles = {
     margin: 0,
     fontSize: "20px",
     fontWeight: 700,
-    color: "#0f172a",
+    color: "var(--text-color)",
   },
 
   closeButton: {
@@ -305,7 +305,7 @@ const styles = {
     height: "36px",
     border: "none",
     borderRadius: "10px",
-    background: "#f1f5f9",
+background: "var(--bg-color)",
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
@@ -321,25 +321,27 @@ const styles = {
     display: "block",
     marginBottom: "8px",
     fontWeight: 600,
-    color: "#334155",
+    color:"var(--text-muted)",
     fontSize: "14px",
   },
 
   input: {
-    width: "100%",
-    padding: "12px 14px",
-    borderRadius: "10px",
-    border: "1px solid #cbd5e1",
-    outline: "none",
-    fontSize: "14px",
-    boxSizing: "border-box",
-  },
+  width: "100%",
+  padding: "12px 14px",
+  borderRadius: "10px",
+  border: "1px solid var(--border-color)",
+  outline: "none",
+  fontSize: "14px",
+  boxSizing: "border-box",
+  backgroundColor: "var(--surface)",
+  color: "var(--text-color)",
+},
 
   selectWrapFull: {
     display: "flex",
     alignItems: "center",
     gap: "8px",
-    background: "#fff",
+    background: "var(--surface)",
     border: "1px solid #cbd5e1",
     borderRadius: "10px",
     padding: "0 12px",
@@ -352,6 +354,7 @@ const styles = {
     outline: "none",
     background: "transparent",
     fontSize: "14px",
+    color: "var(--text-color)",
   },
 
   modalActions: {
@@ -362,9 +365,9 @@ const styles = {
   },
 
   cancelButton: {
-    border: "1px solid #e2e8f0",
-    background: "#fff",
-    color: "#334155",
+   border: "1px solid var(--border-color)",
+    background: "var(--surface)",
+    color: "var(--text-muted)",
     padding: "12px 22px",
     borderRadius: "10px",
     fontWeight: 600,
@@ -374,8 +377,8 @@ const styles = {
 
   submitButton: {
     border: "none",
-    background: "#4f46e5",
-    color: "#fff",
+   background: "var(--accent)",
+    color: "var(--surface)",
     padding: "12px 22px",
     borderRadius: "10px",
     fontWeight: 600,

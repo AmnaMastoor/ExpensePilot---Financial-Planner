@@ -334,19 +334,19 @@ const styles = {
     title: {
         fontSize: 30,
         fontWeight: 700,
-        color: "#0f172a",
+        color: "var(--text-color)",
         margin: "0 0 8px 0",
         textAlign: "center",
     },
     subtitle: {
         fontSize: 15,
-        color: "#64748b",
+        color:"var(--text-faint)",
         margin: "0 0 28px 0",
         textAlign: "center",
     },
     card: {
         width: "100%",
-        backgroundColor: "#fff",
+backgroundColor: "var(--surface)",
         borderRadius: 16,
         boxShadow:
             "0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.05)",
@@ -370,7 +370,7 @@ const styles = {
         backgroundColor: "#f1f5f9",
         border: "1px solid transparent",
         fontSize: 15,
-        color: "#0f172a",
+        color: "var(--text-color)",
         outline: "none",
         boxSizing: "border-box",
     },
@@ -402,7 +402,7 @@ const styles = {
     footerText: {
         textAlign: "center",
         fontSize: 14,
-        color: "#64748b",
+        color:"var(--text-faint)",
         marginTop: 20,
         marginBottom: 0,
     },
@@ -413,7 +413,7 @@ const styles = {
     },
     terms: {
         fontSize: 13,
-        color: "#64748b",
+        color: "var(--text-faint)",
         textAlign: "center",
         marginTop: 24,
         maxWidth: 360,

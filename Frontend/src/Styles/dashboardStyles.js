@@ -3,15 +3,15 @@ const styles = {
     display: "flex",
     minHeight: "100vh",
     width: "100%",
-    backgroundColor: "#f8fafc",
+    backgroundColor: "var(--bg-color)",
     fontFamily:
       '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
   },
 
   sidebar: {
     width: 240,
-    backgroundColor: "#fff",
-    borderRight: "1px solid #e2e8f0",
+    backgroundColor: "var(--surface)",
+    borderRight: "1px solid var(--border-color)",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
@@ -28,7 +28,7 @@ const styles = {
   logoText: {
     fontSize: 18,
     fontWeight: 700,
-    color: "#0f172a",
+    color: "var(--text-color)",
   },
 
   nav: {
@@ -52,7 +52,7 @@ const styles = {
   },
 
   navItemActive: {
-    backgroundColor: "#eef2ff",
+   backgroundColor: "var(--accent-bg)",
   },
 
   logoutButton: {
@@ -65,34 +65,38 @@ const styles = {
     backgroundColor: "transparent",
     cursor: "pointer",
     fontSize: 14,
-    color: "#475569",
-    borderTop: "1px solid #e2e8f0",
     paddingTop: 16,
     marginTop: 16,
+    color: "var(--text-secondary)",
+    borderTop: "1px solid var(--border-color)",
+
   },
 
-  main: {
+ main: {
   flex: 1,
   width: 0,
   minWidth: 0,
   display: "flex",
   flexDirection: "column",
+  backgroundColor: "var(--bg-color)",
 },
 
- topBar: {
-  width: "100%",
-  height: "80px",
-  display: "flex",
-  justifyContent: "flex-end",
-  alignItems: "center",
-  padding: "0 32px",
-  backgroundColor: "#fff",
-  boxSizing: "border-box",
-},topBarRight: {
-  display: "flex",
-  alignItems: "center",
-  gap: 20,
-},
+  topBar: {
+    width: "100%",
+    height: "80px",
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    padding: "0 32px",
+    backgroundColor: "var(--surface)",
+    boxSizing: "border-box",
+  },
+
+  topBarRight: {
+    display: "flex",
+    alignItems: "center",
+    gap: 20,
+  },
 
   bellWrap: {
     position: "relative",
@@ -107,7 +111,7 @@ const styles = {
     height: 8,
     borderRadius: "50%",
     backgroundColor: "#ef4444",
-    border: "2px solid #fff",
+    border: "2px solid var(--surface)",
   },
 
   userWrap: {
@@ -129,30 +133,31 @@ const styles = {
   userName: {
     fontSize: 13,
     fontWeight: 600,
-    color: "#0f172a",
+    color: "var(--text-color)",
   },
 
   userEmail: {
     fontSize: 12,
-    color: "#64748b",
+    color: "var(--text-faint)",
   },
 
   content: {
-    padding: "28px 32px",
-    flex: 1,
-    boxSizing: "border-box",
-  },
+  padding: "28px 32px",
+  flex: 1,
+  boxSizing: "border-box",
+  backgroundColor: "var(--bg-color)",
+},
 
   pageTitle: {
     fontSize: 26,
     fontWeight: 700,
-    color: "#0f172a",
+    color:"var(--text-color)",
     margin: 0,
   },
 
   pageSubtitle: {
     fontSize: 14,
-    color: "#64748b",
+    color: "var(--text-faint)",
     margin: "6px 0 24px 0",
   },
 
@@ -164,7 +169,7 @@ const styles = {
   },
 
   statCard: {
-    backgroundColor: "#fff",
+    backgroundColor: "var(--surface)",
     border: "1px solid #e2e8f0",
     borderRadius: 12,
     padding: 20,
@@ -178,14 +183,14 @@ const styles = {
 
   statLabel: {
     fontSize: 13,
-    color: "#64748b",
+    color: "var(--text-faint)",
     marginBottom: 8,
   },
 
   statValue: {
     fontSize: 22,
     fontWeight: 700,
-    color: "#0f172a",
+    color: "var(--text-color)",
   },
 
   statIconBox: {
@@ -211,7 +216,7 @@ const styles = {
   },
 
   panel: {
-    backgroundColor: "#fff",
+    backgroundColor: "var(--surface)",
     border: "1px solid #e2e8f0",
     borderRadius: 12,
     padding: 22,
@@ -221,7 +226,7 @@ const styles = {
   panelTitle: {
     fontSize: 15,
     fontWeight: 600,
-    color: "#0f172a",
+    color:"var(--text-color)",
     margin: "0 0 18px 0",
   },
 
@@ -245,19 +250,18 @@ const styles = {
     marginBottom: 8,
   },
 
-  alertLabel: {
-    fontSize: 13,
-    fontWeight: 600,
-    color: "#0f172a",
-    display: "flex",
-    gap: 6,
-    alignItems: "baseline",
-  },
-
+alertLabel: {
+  fontSize: 13,
+  fontWeight: 600,
+  color: "#000000",
+  display: "flex",
+  gap: 6,
+  alignItems: "baseline",
+},
   alertAmount: {
     fontSize: 12,
     fontWeight: 400,
-    color: "#64748b",
+    color: "var(--text-faint)",
   },
 
   progressTrack: {
@@ -281,7 +285,7 @@ const styles = {
 
   budgetNote: {
     fontSize: 13,
-    color: "#64748b",
+    color:"var(--text-faint)",
     marginTop: 4,
   },
 
@@ -294,7 +298,7 @@ const styles = {
     textAlign: "left",
     fontSize: 12,
     fontWeight: 600,
-    color: "#64748b",
+    color: "var(--text-faint)",
     padding: "10px 8px",
     borderBottom: "1px solid #e2e8f0",
   },
@@ -306,14 +310,14 @@ const styles = {
   td: {
     padding: "14px 8px",
     fontSize: 14,
-    color: "#334155",
+    color: "var(--text-muted)",
   },
 
   tdDesc: {
     padding: "14px 8px",
     fontSize: 14,
     fontWeight: 500,
-    color: "#0f172a",
+    color: "var(--text-color)",
   },
 
   badge: {

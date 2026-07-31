@@ -177,13 +177,13 @@ const styles = {
     title: {
         fontSize: 30,
         fontWeight: 700,
-        color: "#0f172a",
+        color: "var(--text-color)",
         marginBottom: 10,
     },
 
     subtitle: {
         textAlign: "center",
-        color: "#64748b",
+        color: "var(--text-faint)",
         marginBottom: 30,
         lineHeight: 1.6,
     },
@@ -235,7 +235,7 @@ const styles = {
     footerText: {
         marginTop: 22,
         textAlign: "center",
-        color: "#64748b",
+        color:"var(--text-faint)",
         fontSize: 14,
     },
 

@@ -26,11 +26,11 @@ export default function MonthlyBudgetCard({
 
           <div style={styles.monthlyAmountRow}>
             <span style={styles.monthlySpent}>
-              ${spent.toLocaleString()}
+              Rs{spent.toLocaleString()}
             </span>
 
             <span style={styles.monthlyTotal}>
-              / ${total.toLocaleString()}
+              / Rs{total.toLocaleString()}
             </span>
           </div>
         </div>
@@ -66,7 +66,7 @@ export default function MonthlyBudgetCard({
         </span>
 
         <span style={styles.progressMetaRight}>
-          ${remaining.toLocaleString()} remaining
+          Rs{remaining.toLocaleString()} remaining
         </span>
       </div>
     </div>

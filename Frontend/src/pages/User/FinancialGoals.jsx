@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import api from "../../services/api";
-import styles from "../../styles/dashboardStyles";
-import goalStyles from "../../styles/goalStyles";
+import styles from "../../Styles/dashboardStyles";
+import goalStyles from "../../Styles/goalStyles";
 
 import Sidebar from "../../Components/Layout/Sidebar";
 import Navbar from "../../Components/Layout/Navbar";

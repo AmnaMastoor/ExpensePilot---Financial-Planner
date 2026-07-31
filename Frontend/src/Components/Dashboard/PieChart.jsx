@@ -215,7 +215,11 @@ export default function PieChart({ data }) {
         formattedData.length === 0 ?
 
         (
-          <p>
+          <p style={{
+    color: "var(--text-muted)",
+    fontSize: "16px",
+    marginBottom: "12px",
+  }}>
             No expense data available
           </p>
         )
@@ -300,12 +304,13 @@ export default function PieChart({ data }) {
                       fontSize="10"
 
                       textAnchor="middle"
+                      fill="var(--text-color)"
 
                     >
 
                       {slice.label}
 
-                      <tspan>
+                      <tspan fill="var(--text-color)">
                         {" "}
                         ({slice.value})
                       </tspan>
