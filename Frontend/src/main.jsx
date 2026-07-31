@@ -19,8 +19,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           duration: 3000,
           style: {
             borderRadius: "12px",
-            background: "#fff",
-            color: "#0f172a",
+            backgroundColor: "var(--bg-color)",
+            color: "var(--text-color)",
           },
           success: {
             iconTheme: {

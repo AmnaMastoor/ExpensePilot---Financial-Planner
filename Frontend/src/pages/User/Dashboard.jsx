@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import api from "../../services/api";
-import styles from "../../styles/dashboardStyles";
+import styles from "../../Styles/dashboardStyles";
 
 import Sidebar from "../../Components/Layout/Sidebar";
 import Navbar from "../../Components/Layout/Navbar";

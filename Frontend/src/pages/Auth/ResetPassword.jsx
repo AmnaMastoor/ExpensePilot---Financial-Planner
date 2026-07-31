@@ -290,18 +290,18 @@ const styles = {
         textAlign: "center",
         fontSize: 30,
         fontWeight: 700,
-        color: "#0f172a",
+        color: "var(--text-color)",
         marginBottom: 8
     },
 
     subtitle: {
         textAlign: "center",
-        color: "#64748b",
+        color: "var(--text-faint)",
         marginBottom: 30
     },
 
     card: {
-        background: "#fff",
+backgroundColor: "var(--bg-color)",
         borderRadius: 16,
         padding: 35,
         boxShadow: "0 20px 25px -5px rgba(0,0,0,.08)"
@@ -324,7 +324,7 @@ const styles = {
         padding: "13px 15px",
         borderRadius: 10,
         border: "1px solid #e2e8f0",
-        background: "#f8fafc",
+       backgroundColor: "var(--bg-color)",
         fontSize: 15,
         outline: "none"
     },
@@ -355,7 +355,7 @@ const styles = {
     footerText: {
         marginTop: 20,
         textAlign: "center",
-        color: "#64748b"
+        color: "var(--text-faint)"
     },
 
     link: {

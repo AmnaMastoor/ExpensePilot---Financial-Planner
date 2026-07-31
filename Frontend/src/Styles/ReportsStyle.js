@@ -40,7 +40,7 @@ const styles = {
 
     downloadButton: {
         background: "var(--accent)",
-        color: "#fff",
+        color: "var(--text-color)",
         border: "none",
         borderRadius: "8px",
         padding: "12px 22px",

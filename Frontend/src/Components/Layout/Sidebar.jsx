@@ -11,36 +11,38 @@ import {
 } from "../dashboard/icons";
 
 export default function Sidebar({ logout }) {
-const navigate = useNavigate();
-const location = useLocation();
- const navItems = [
-  {
-    label: "Dashboard",
-    path: "/dashboard",
-    icon: GridIcon,
-  },
-  {
-    label: "Transactions",
-    path: "/transactions",
-    icon: FileIcon,
-  },
- 
-  {
-    label: "Analytics",
-    path: "/reports",
-    icon: BarChartIcon,
-  },
-  {
-    label: "Budget",
-    path: "/budget",
-    icon: WalletIcon,
-  },
-  {
-    label: "Financial Goals",
-    path: "/goals",
-    icon: FiTarget,
-  },
-];
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const navItems = [
+    {
+      label: "Dashboard",
+      path: "/dashboard",
+      icon: GridIcon,
+    },
+    {
+      label: "Transactions",
+      path: "/transactions",
+      icon: FileIcon,
+    },
+
+    {
+      label: "Analytics",
+      path: "/reports",
+      icon: BarChartIcon,
+    },
+    {
+      label: "Budget",
+      path: "/budget",
+      icon: WalletIcon,
+    },
+    {
+      label: "Financial Goals",
+      path: "/goals",
+      icon: FiTarget,
+    },
+  ];
+
   return (
     <div style={styles.sidebar}>
       <div>
@@ -49,42 +51,39 @@ const location = useLocation();
         </div>
 
         <nav style={styles.nav}>
-  {navItems.map(({ label, icon: Icon, path }) => {
-    const active = location.pathname === path;
+          {navItems.map(({ label, icon: Icon, path }) => {
+            const active = location.pathname === path;
 
-    return (
-      <button
-        key={label}
-        onClick={() => navigate(path)}
-        style={{
-          ...styles.navItem,
-          ...(active ? styles.navItemActive : {}),
-        }}
-      >
-<Icon
-  color={active ? "#4f46e5" : "#64748b"}
+            return (
+              <button
+                key={label}
+                onClick={() => navigate(path)}
+                style={{
+                  ...styles.navItem,
+                  ...(active ? styles.navItemActive : {}),
+                }}
+              >
+                <Icon
+  color={active ? "var(--accent)" : "var(--text-muted)"}
   size={20}
 />
-        <span
-          style={{
-            color: active ? "#4f46e5" : "#475569",
-            fontWeight: active ? 600 : 500,
-          }}
-        >
-          {label}
-        </span>
-      </button>
-    );
-  })}
-</nav>
+
+                <span
+  style={{
+    color: active ? "var(--accent)" : "var(--text-secondary)",
+    fontWeight: active ? 600 : 500,
+  }}
+>
+                  {label}
+                </span>
+              </button>
+            );
+          })}
+        </nav>
       </div>
 
-      <button
-        onClick={logout}
-        style={styles.logoutButton}
-      >
+      <button onClick={logout} style={styles.logoutButton}>
         <LogoutIcon />
-
         <span>Logout</span>
       </button>
     </div>
