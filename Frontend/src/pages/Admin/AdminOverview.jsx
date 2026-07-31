@@ -291,7 +291,7 @@ export default function AdminOverview() {
                             {user.isLocked ? (
                               <UnlockIcon color="#16a34a" />
                             ) : (
-                              <LockIcon color="#64748b" />
+                              <LockIcon color="var(--text-faint)" />
                             )}
                           </button>
                           <button
@@ -366,7 +366,7 @@ export default function AdminOverview() {
                             title="Edit category"
                             onClick={() => openEditModal(category)}
                           >
-                            <EditIcon color="#64748b" />
+                            <EditIcon color="var(--text-faint)" />
                           </button>
                           <button
                             style={styles.iconBtn("#f1f5f9")}
@@ -374,7 +374,7 @@ export default function AdminOverview() {
                             onClick={() => toggleCategoryActive(category)}
                           >
                             {category.isActive ? (
-                              <LockIcon color="#64748b" />
+                              <LockIcon color="var(--text-faint)" />
                             ) : (
                               <UnlockIcon color="#16a34a" />
                             )}
@@ -401,7 +401,7 @@ export default function AdminOverview() {
                 onClick={closeModal}
                 style={{ background: "none", border: "none", cursor: "pointer" }}
               >
-                <XIcon color="#64748b" />
+                <XIcon color="var(--text-faint)" />
               </button>
             </div>
 

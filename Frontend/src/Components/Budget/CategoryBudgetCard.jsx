@@ -74,11 +74,11 @@ export default function CategoryBudgetCard({
 
       <div style={styles.cardAmountRow}>
         <span style={styles.cardSpent}>
-          ${spent.toLocaleString()}
+          Rs{spent.toLocaleString()}
         </span>
 
         <span style={styles.cardTotal}>
-          / ${budgetAmount.toLocaleString()}
+          / Rs{budgetAmount.toLocaleString()}
         </span>
       </div>
 

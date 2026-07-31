@@ -38,7 +38,7 @@ export default function AdminSidebar({ logout }) {
                   ...(active ? styles.navItemActive : {}),
                 }}
               >
-                <Icon color={active ? "#4f46e5" : "#64748b"} />
+                <Icon color={active ? "#4f46e5" : "var(--text-faint)"} />
 
                 <span
                   style={{

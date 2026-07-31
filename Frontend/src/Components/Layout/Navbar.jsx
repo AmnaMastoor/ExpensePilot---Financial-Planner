@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import styles from "../../styles/dashboardStyles";
-
+import ThemeToggle from "./ThemeToggle";
 import {
   BellIcon,
   UserIcon,
@@ -34,7 +34,9 @@ export default function Navbar() {
         justifyContent: "flex-end",
         alignItems: "center",
         padding: "0 32px",
-        backgroundColor: "#ffffff",
+        backgroundColor: "var(--surface)",
+        borderBottom: "1px solid var(--border-color)",
+        transition: "0.3s",
         boxSizing: "border-box",
       }}
     >
@@ -49,6 +51,7 @@ export default function Navbar() {
           <BellIcon />
           <span style={styles.bellDot}></span>
         </div>
+        <ThemeToggle />
 
         <div
     style={{

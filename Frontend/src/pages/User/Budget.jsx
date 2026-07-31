@@ -124,8 +124,10 @@ export default function Budget() {
   };
 
   const getMonthlyLimit = async () => {
+     console.log("getMonthlyLimit called");
     try {
       const response = await api.get("/Budget/monthly-limit");
+    console.log("Monthly Limit:", response.data);
 
       setMonthlyLimit(response.data);
     } catch (error) {
