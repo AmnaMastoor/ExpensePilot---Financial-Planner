@@ -33,12 +33,12 @@ const styles = {
     margin: 0,
     fontSize: 28,
     fontWeight: 700,
-    color: "#111827",
+    color: "var(--text-color)",
   },
 
   pageSubtitle: {
     marginTop: 5,
-    color: "#6b7280",
+    color: "var(--text-faint)",
     fontSize: 14,
   },
 
@@ -47,7 +47,7 @@ const styles = {
     alignItems: "center",
     gap: 8,
     backgroundColor: "#4f46e5",
-    color: "#fff",
+    color: "var(--surface)",
     border: "none",
     borderRadius: 10,
     padding: "12px 20px",
@@ -68,7 +68,7 @@ const styles = {
   },
 
   statCard: {
-    backgroundColor: "#fff",
+    backgroundColor: "var(--surface)",
     borderRadius: 14,
     padding: 20,
     display: "flex",
@@ -95,14 +95,14 @@ const styles = {
 
   statTitle: {
     margin: 0,
-    color: "#6b7280",
+    color: "var(--text-faint)",
     fontSize: 13,
   },
 
   statValue: {
     margin: "5px 0 0",
     fontSize: 24,
-    color: "#111827",
+    color: "var(--text-color)",
     fontWeight: 700,
   },
 
@@ -111,7 +111,7 @@ const styles = {
   ============================ */
 
   emptyContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: "var(--surface)",
     borderRadius: 16,
     padding: 60,
     display: "flex",
@@ -137,27 +137,28 @@ const styles = {
   emptyTitle: {
     margin: 0,
     fontSize: 24,
-    color: "#111827",
+    color: "var(--text-color)",
     fontWeight: 700,
   },
 
   emptyText: {
     marginTop: 12,
-    color: "#6b7280",
+    color: "var(--text-faint)",
     maxWidth: 450,
     lineHeight: 1.6,
     marginBottom: 25,
   },
-    /* ===========================
+
+  /* ===========================
       Goal Card
   ============================ */
 
   goalCard: {
-    backgroundColor: "#fff",
+    backgroundColor: "var(--surface)",
     borderRadius: 16,
     overflow: "hidden",
     boxShadow: "0 2px 10px rgba(0,0,0,.05)",
-    border: "1px solid #e5e7eb",
+    border: "1px solid var(--border-color)",
   },
 
   goalTopBar: {
@@ -181,13 +182,13 @@ const styles = {
     margin: 0,
     fontSize: 18,
     fontWeight: 700,
-    color: "#111827",
+    color: "var(--text-color)",
   },
 
   goalDescription: {
     marginTop: 6,
     fontSize: 13,
-    color: "#6b7280",
+    color: "var(--text-faint)",
     lineHeight: 1.5,
   },
 
@@ -216,13 +217,13 @@ const styles = {
   savedAmount: {
     fontSize: 18,
     fontWeight: 700,
-    color: "#16a34a",
+    color: "var(--success)",
   },
 
   targetAmount: {
     fontSize: 18,
     fontWeight: 700,
-    color: "#111827",
+    color: "var(--text-color)",
   },
 
   progressRow: {
@@ -233,7 +234,7 @@ const styles = {
   },
 
   remainingText: {
-    color: "#6b7280",
+    color: "var(--text-faint)",
   },
 
   progressPercent: {
@@ -244,7 +245,7 @@ const styles = {
   progressTrack: {
     width: "100%",
     height: 8,
-    backgroundColor: "#e5e7eb",
+    backgroundColor: "var(--border-color)",
     borderRadius: 20,
     overflow: "hidden",
     marginBottom: 20,
@@ -269,7 +270,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: 6,
-    color: "#6b7280",
+    color: "var(--text-faint)",
     fontSize: 13,
   },
 
@@ -303,7 +304,8 @@ const styles = {
     borderRadius: 8,
     cursor: "pointer",
   },
-    /* ===========================
+
+  /* ===========================
       Modal
   ============================ */
 
@@ -321,7 +323,7 @@ const styles = {
   modal: {
     width: "100%",
     maxWidth: 520,
-    backgroundColor: "#fff",
+    backgroundColor: "var(--surface)",
     borderRadius: 16,
     padding: 28,
     boxSizing: "border-box",
@@ -332,7 +334,7 @@ const styles = {
     marginBottom: 24,
     fontSize: 24,
     fontWeight: 700,
-    color: "#111827",
+    color: "var(--text-color)",
   },
 
   formGroup: {
@@ -380,7 +382,7 @@ const styles = {
     padding: "10px 20px",
     borderRadius: 10,
     border: "1px solid #d1d5db",
-    backgroundColor: "#fff",
+    backgroundColor: "var(--surface)",
     cursor: "pointer",
     fontWeight: 600,
   },
@@ -390,7 +392,7 @@ const styles = {
     borderRadius: 10,
     border: "none",
     backgroundColor: "#4f46e5",
-    color: "#fff",
+    color: "var(--surface)",
     cursor: "pointer",
     fontWeight: 600,
   },

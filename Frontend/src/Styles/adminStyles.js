@@ -3,14 +3,14 @@ const styles = {
     display: "flex",
     minHeight: "100vh",
     width: "100%",
-    backgroundColor: "#f8fafc",
+backgroundColor: "var(--bg-color)",
     fontFamily:
       '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
   },
 
   sidebar: {
     width: 240,
-    backgroundColor: "#fff",
+    backgroundColor: "var(--surface)",
     borderRight: "1px solid #e2e8f0",
     display: "flex",
     flexDirection: "column",
@@ -31,7 +31,7 @@ const styles = {
   logoText: {
     fontSize: 18,
     fontWeight: 700,
-    color: "#0f172a",
+    color:"var(--text-color)",
   },
 
   adminBadge: {
@@ -98,16 +98,16 @@ const styles = {
     boxSizing: "border-box",
   },
 
-  pageTitle: {
-    fontSize: 26,
-    fontWeight: 700,
-    color: "#0f172a",
-    margin: 0,
-  },
+ pageTitle: {
+  fontSize: 26,
+  fontWeight: 700,
+  color: "var(--text-color)",
+  margin: 0,
+},
 
   pageSubtitle: {
     fontSize: 14,
-    color: "#64748b",
+    color: "var(--text-faint)",
     margin: "4px 0 24px 0",
   },
 
@@ -119,7 +119,7 @@ const styles = {
   },
 
   statCard: {
-    backgroundColor: "#fff",
+    backgroundColor: "var(--surface)",
     border: "1px solid #e2e8f0",
     borderRadius: 12,
     padding: "20px",
@@ -130,14 +130,14 @@ const styles = {
 
   statLabel: {
     fontSize: 13,
-    color: "#64748b",
+    color: "var(--text-faint)",
     marginBottom: 8,
   },
 
   statValue: {
     fontSize: 26,
     fontWeight: 700,
-    color: "#0f172a",
+    color:"var(--text-color)",
   },
 
   statIconWrap: (bg) => ({
@@ -160,12 +160,12 @@ const styles = {
   sectionTitle: {
     fontSize: 18,
     fontWeight: 700,
-    color: "#0f172a",
+    color: "var(--text-color)",
     margin: "24px 0 12px 0",
   },
 
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: "var(--surface)",
     border: "1px solid #e2e8f0",
     borderRadius: 12,
     overflow: "hidden",
@@ -180,7 +180,7 @@ const styles = {
   th: {
     textAlign: "left",
     fontSize: 12,
-    color: "#94a3b8",
+    color: "var(--text-faint)",
     fontWeight: 600,
     padding: "12px 20px",
     borderBottom: "1px solid #e2e8f0",
@@ -190,7 +190,7 @@ const styles = {
     padding: "14px 20px",
     borderBottom: "1px solid #f1f5f9",
     fontSize: 14,
-    color: "#0f172a",
+    color:"var(--text-color)",
     verticalAlign: "middle",
   },
 
@@ -205,7 +205,7 @@ const styles = {
     height: 36,
     borderRadius: "50%",
     backgroundColor: "#4f46e5",
-    color: "#fff",
+    color: "var(--surface)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -217,12 +217,12 @@ const styles = {
   userName: {
     fontWeight: 600,
     fontSize: 14,
-    color: "#0f172a",
+    color:"var(--text-color)",
   },
 
   userEmail: {
     fontSize: 13,
-    color: "#94a3b8",
+   color: "var(--text-faint)",
   },
 
   badge: (bg, color) => ({
@@ -257,7 +257,7 @@ const styles = {
     alignItems: "center",
     gap: 6,
     backgroundColor: "#4f46e5",
-    color: "#fff",
+    color: "var(--surface)",
     border: "none",
     padding: "10px 16px",
     borderRadius: 8,
@@ -278,7 +278,7 @@ const styles = {
 
   emptyText: {
     padding: "24px 20px",
-    color: "#94a3b8",
+    color: "var(--text-faint)",
     fontSize: 14,
     textAlign: "center",
   },
@@ -297,7 +297,7 @@ const styles = {
   },
 
   modalBox: {
-    backgroundColor: "#fff",
+    backgroundColor: "var(--surface)",
     borderRadius: 12,
     padding: 24,
     width: 420,
@@ -315,7 +315,7 @@ const styles = {
   modalTitle: {
     fontSize: 18,
     fontWeight: 700,
-    color: "#0f172a",
+    color: "var(--text-color)",
     margin: 0,
   },
 
@@ -327,7 +327,7 @@ const styles = {
     display: "block",
     fontSize: 13,
     fontWeight: 600,
-    color: "#334155",
+    color:"var(--text-muted)",
     marginBottom: 6,
   },
 
@@ -352,8 +352,8 @@ const styles = {
     padding: "10px 16px",
     borderRadius: 8,
     border: "1px solid #e2e8f0",
-    backgroundColor: "#fff",
-    color: "#334155",
+    backgroundColor: "var(--surface)",
+    color: "var(--text-muted)",
     fontSize: 14,
     fontWeight: 600,
     cursor: "pointer",

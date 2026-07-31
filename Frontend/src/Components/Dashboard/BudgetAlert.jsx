@@ -1,4 +1,4 @@
-import styles from "../../styles/dashboardStyles";
+import styles from "../../Styles/dashboardStyles";
 import { InfoIcon } from "./icons";
 
 export default function BudgetAlert({
@@ -16,7 +16,7 @@ export default function BudgetAlert({
           {label}
 
           <span style={styles.alertAmount}>
-            ${spent} / ${total}
+            Rs{spent} / Rs{total}
           </span>
         </span>
       </div>

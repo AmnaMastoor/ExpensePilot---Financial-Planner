@@ -8,10 +8,10 @@ import {
 import styles from "../../Styles/goalStyles";
 
 function formatMoney(amount) {
-  return `£${Number(amount).toLocaleString("en-GB", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
+ return `Rs ${Number(amount).toLocaleString("en-PK", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+})}`;
 }
 
 function formatDate(date) {

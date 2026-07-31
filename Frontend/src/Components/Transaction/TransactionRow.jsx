@@ -67,7 +67,7 @@ export default function TransactionRow({
       <td
         style={{
           ...styles.td,
-          color: "#64748b",
+          color: "var(--text-faint)",
         }}
       >
        {formatDate(transaction.transactionDate)}

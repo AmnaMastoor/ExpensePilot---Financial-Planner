@@ -42,8 +42,12 @@ export default function RecentTransactions({ data }) {
     {
       bg:"#fef3c7",
       text:"#b45309",
-    }
-
+    },
+    
+    Salary: {
+    bg: "#dcfce7",
+    text: "#15803d",
+  }
   };
 
 
@@ -113,10 +117,10 @@ export default function RecentTransactions({ data }) {
               const colors =
                 catColors[transaction.category]
                 ||
-                {
-                  bg:"#f1f5f9",
-                  text:"#475569"
-                };
+               {
+              bg:"var(--badge-bg)",
+              text:"var(--text-secondary)"
+                }
 
 
 
@@ -159,10 +163,10 @@ export default function RecentTransactions({ data }) {
 
 
                   <td
-                    style={{
-                      ...styles.td,
-                      color:"#64748b"
-                    }}
+                 style={{
+                 ...styles.td,
+                  color:"var(--text-muted)"
+                  }}
                   >
 
                     {

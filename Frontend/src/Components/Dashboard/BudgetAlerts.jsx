@@ -24,9 +24,14 @@ export default function BudgetAlerts({ data }) {
         alerts.length === 0 ?
 
         (
-          <p>
-            No budget alerts available
-          </p>
+         <p
+           style={{
+              color: "var(--text-muted)",
+             fontSize: "16px",
+             marginBottom: "12px",
+              }}
+              > No budget alerts available
+            </p>
         )
 
         :

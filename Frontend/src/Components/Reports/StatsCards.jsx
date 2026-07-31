@@ -44,7 +44,7 @@ export default function StatsCards({ monthly }) {
                 <div
                     style={{
                         ...styles.cardValue,
-                        color: "#111827"
+                        color: "var(--text-color)"
                     }}
                 >
                     Rs. {monthly.totalIncome}
@@ -93,7 +93,7 @@ export default function StatsCards({ monthly }) {
                 <div
                     style={{
                         ...styles.cardValue,
-                        color: "#111827"
+                       color: "var(--text-color)"
                     }}
                 >
                     Rs. {monthly.totalExpenses}

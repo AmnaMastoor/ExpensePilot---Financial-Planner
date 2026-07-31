@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import dashboardStyles from "../../styles/dashboardStyles";
+import dashboardStyles from "../../Styles/dashboardStyles";
 
 import Sidebar from "../../Components/Layout/Sidebar";
 import Navbar from "../../Components/Layout/Navbar";
 
 import api from "../../services/api";
 
-import styles from "../../styles/transactionStyles";
+import styles from "../../Styles/transactionStyles";
 
 import TransactionToolbar from "../../Components/Transaction/TransactionToolbar";
 import TransactionTable from "../../Components/Transaction/TransactionTable";

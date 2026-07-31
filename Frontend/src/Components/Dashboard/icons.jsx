@@ -1,5 +1,5 @@
 function icon(children, size = 18) {
-  return ({ color = "#64748b" }) => (
+  return ({ color = "var(--text-faint)" }) => (
     <svg
       width={size}
       height={size}

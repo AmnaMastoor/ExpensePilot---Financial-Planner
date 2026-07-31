@@ -4,7 +4,7 @@ const styles = {
   =========================== */
 
   page: {
-    backgroundColor: "#f8fafc",
+backgroundColor: "var(--bg-color)",
     minHeight: "100vh",
     padding: "32px",
   },
@@ -18,14 +18,14 @@ const styles = {
     margin: 0,
     fontSize: "34px",
     fontWeight: 700,
-    color: "#0f172a",
+    color: "var(--text-color)",
   },
 
   subtitle: {
     marginTop: "8px",
     marginBottom: "30px",
     fontSize: "15px",
-    color: "#64748b",
+    color: "var(--text-faint)",
   },
 
   /* ===========================
@@ -46,7 +46,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: "10px",
-    background: "#fff",
+    background: "var(--surface)",
     border: "1px solid #e2e8f0",
     borderRadius: "10px",
     padding: "0 14px",
@@ -59,14 +59,14 @@ const styles = {
     outline: "none",
     fontSize: "14px",
     background: "transparent",
-    color: "#0f172a",
+    color: "var(--text-color)",
   },
 
   selectWrap: {
     display: "flex",
     alignItems: "center",
     gap: "8px",
-    background: "#fff",
+    background: "var(--surface)",
     border: "1px solid #e2e8f0",
     borderRadius: "10px",
     padding: "0 12px",
@@ -77,7 +77,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: "8px",
-    background: "#fff",
+   background: "var(--surface)",
     border: "1px solid #e2e8f0",
     borderRadius: "10px",
     padding: "0 12px",
@@ -108,7 +108,7 @@ const styles = {
     border: "none",
     cursor: "pointer",
     background: "#4f46e5",
-    color: "#fff",
+    color: "var(--surface)",
     padding: "12px 20px",
     borderRadius: "10px",
     fontWeight: 600,
@@ -119,7 +119,7 @@ const styles = {
   =========================== */
 
   tableCard: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "var(--surface)",
     borderRadius: "14px",
     overflow: "hidden",
     border: "1px solid #e2e8f0",
@@ -134,8 +134,8 @@ const styles = {
   th: {
     textAlign: "left",
     padding: "18px 22px",
-    backgroundColor: "#f8fafc",
-    color: "#64748b",
+backgroundColor: "var(--bg-color)",
+    color:"var(--text-faint)",
     fontWeight: 600,
     fontSize: "14px",
     borderBottom: "1px solid #e2e8f0",
@@ -148,14 +148,14 @@ const styles = {
   td: {
     padding: "18px 22px",
     fontSize: "14px",
-    color: "#334155",
+    color:"var(--text-muted)",
     verticalAlign: "middle",
   },
 
   tdTitle: {
     padding: "18px 22px",
     fontWeight: 600,
-    color: "#0f172a",
+    color: "var(--text-color)",
   },
 
   badge: {
@@ -179,7 +179,7 @@ const styles = {
     height: "34px",
     borderRadius: "8px",
     border: "1px solid #e2e8f0",
-    backgroundColor: "#ffffff",
+    backgroundColor: "var(--surface)",
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
@@ -208,7 +208,7 @@ modal: {
   width: "700px",
   maxWidth: "100%",
   height: "90vh",
-  backgroundColor: "#ffffff",
+  backgroundColor: "var(--surface)",
   borderRadius: "20px",
   padding: "32px",
   boxSizing: "border-box",
@@ -234,12 +234,12 @@ modalTitle: {
   margin: 0,
   fontSize: "24px",
   fontWeight: 700,
-  color: "#0f172a",
+  color: "var(--text-color)",
 },
 
 modalSubtitle: {
   marginTop: "6px",
-  color: "#64748b",
+  color:"var(--text-faint)",
   fontSize: "14px",
 },
 
@@ -263,7 +263,7 @@ label: {
   display: "block",
   marginBottom: "8px",
   fontWeight: 600,
-  color: "#334155",
+  color:"var(--text-muted)",
   fontSize: "14px",
 },
 
@@ -299,8 +299,8 @@ modalActions: {
 
 cancelButton: {
   border: "1px solid #e2e8f0",
-  background: "#fff",
-  color: "#334155",
+  background: "var(--surface)",
+  color:"var(--text-muted)",
   padding: "12px 20px",
   borderRadius: "10px",
   fontWeight: 600,
@@ -311,7 +311,7 @@ cancelButton: {
 submitButton: {
   border: "none",
   background: "#4f46e5",
-  color: "#fff",
+  color: "var(--surface)",
   padding: "12px 20px",
   borderRadius: "10px",
   fontWeight: 600,
@@ -364,7 +364,7 @@ submitButton: {
   miniModal: {
     width: "440px",
     maxWidth: "100%",
-    backgroundColor: "#ffffff",
+    backgroundColor: "var(--surface)",
     borderRadius: "20px",
     padding: "28px",
     boxSizing: "border-box",
@@ -398,19 +398,19 @@ submitButton: {
     margin: 0,
     fontSize: "18px",
     fontWeight: 600,
-    color: "#0f172a",
+    color: "var(--text-color)",
   },
 
   emptyText: {
     marginTop: "8px",
-    color: "#64748b",
+    color: "var(--text-faint)",
     fontSize: "14px",
   },
 
   emptyRow: {
     padding: "50px",
     textAlign: "center",
-    color: "#94a3b8",
+    color: "var(--text-faint)",
     fontSize: "14px",
   },
 };
