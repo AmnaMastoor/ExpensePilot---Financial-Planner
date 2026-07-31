@@ -5,6 +5,6 @@ namespace ExpensePilot.API.DTO.Profile
     public class DeleteAccountDto
     {
         [Required]
-        public string Password { get; set; }
+        public string? Password { get; set; }
     }
 }

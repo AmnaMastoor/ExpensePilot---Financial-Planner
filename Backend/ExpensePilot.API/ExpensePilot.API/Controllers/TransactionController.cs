@@ -60,9 +60,11 @@ namespace ExpensePilot.API.Controllers
                 return BadRequest(ModelState);
             }
 
+            var userId = GetUserId();
+
             var transaction = new Transaction
             {
-                UserId = GetUserId(),
+                UserId = userId,
                 CategoryId = dto.CategoryId,
                 Type = dto.Type,
                 Amount = dto.Amount,
@@ -76,11 +78,73 @@ namespace ExpensePilot.API.Controllers
                 Description = dto.Description
             };
 
+
             db.Transactions.Add(transaction);
             db.SaveChanges();
 
-            return Ok(transaction);
+
+            bool budgetExceeded = false;
+            string warning = null;
+
+
+            // Budget check only for expense transactions
+            if (
+                dto.Type == TransactionType.Expense &&
+                dto.CategoryId.HasValue
+            )
+            {
+
+                var budget = db.Budgets
+                    .FirstOrDefault(b =>
+                        b.UserId == userId &&
+                        b.CategoryId == dto.CategoryId
+                    );
+
+
+                if (budget != null)
+                {
+
+                    var currentExpense = db.Transactions
+                        .Where(t =>
+                            t.UserId == userId &&
+                            t.CategoryId == dto.CategoryId &&
+                            t.Type == TransactionType.Expense &&
+                            t.TransactionDate.Month == dto.TransactionDate.Month &&
+                            t.TransactionDate.Year == dto.TransactionDate.Year
+                        )
+                        .Sum(t => t.Amount);
+
+
+
+                    if (currentExpense > budget.BudgetAmount)
+                    {
+
+                        budgetExceeded = true;
+
+
+                        var categoryName = db.Categories
+                            .Where(c => c.CategoryId == dto.CategoryId)
+                            .Select(c => c.Name)
+                            .FirstOrDefault();
+
+
+                        warning =
+                            $"{categoryName} budget exceeded. Please increase your budget.";
+
+                    }
+                }
+            }
+
+
+            return Ok(new
+            {
+                transaction,
+                budgetExceeded,
+                warning
+            });
         }
+
+
         [HttpDelete("{id}")]
         public IActionResult DeleteTransaction(int id)
         {
