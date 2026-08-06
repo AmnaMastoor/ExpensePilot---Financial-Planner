@@ -1,13 +1,13 @@
 from langchain_core.prompts import ChatPromptTemplate
-
-
+from app.context.financial_context import FinancialContextBuilder
 class RAGChain:
 
     def __init__(self, retriever, llm):
         self.retriever = retriever
         self.llm = llm
+        self.context_builder = FinancialContextBuilder()
 
-    def ask(self, question):
+    def ask(self, question, user_id):
 
         documents = self.retriever.retrieve(question)
 
@@ -18,6 +18,26 @@ class RAGChain:
             context += doc.page_content
             context += "\n"
 
+        financial_context = self.context_builder.build(user_id)
+        financial_text = f"""
+Financial Summary:
+{financial_context["financial_summary"]}
+
+Dashboard Summary:
+{financial_context["dashboard_summary"]}
+
+Budget Summary:
+{financial_context["budget_summary"]}
+
+Goal Summary:
+{financial_context["goal_summary"]}
+
+Recent Transactions:
+{financial_context["recent_transactions"]}
+
+Category Analysis:
+{financial_context["category_analysis"]}
+"""
         prompt = ChatPromptTemplate.from_template(
             """
 You are a helpful AI assistant using Retrieval-Augmented Generation (RAG).
@@ -37,7 +57,8 @@ Instructions:
 
 Context:
 {context}
-
+Financial Data:
+{financial_context}
 Question:
 {question}
 
@@ -50,6 +71,7 @@ Detailed Answer:
         response = chain.invoke(
             {
                 "context": context,
+                "financial_context": financial_text,
                 "question": question
             }
         )

@@ -5,12 +5,35 @@ from app.vectorstore.chroma_store import ChromaVectorStore
 from app.retrieval.retriever import Retriever
 from app.llm.llm import GroqLLM
 from app.chains.rag_chain import RAGChain
+from app.database.connection import SessionLocal
+from app.database.models.transaction import Transaction
+from app.database.models.application_user import ApplicationUser
+
+
+db = SessionLocal()
+
+try:
+    transaction = db.query(Transaction).first()
+
+    if transaction is None:
+        print("No transactions found.")
+        exit()
+
+    user_id = transaction.user_id
+
+    print(f"Testing User ID: {user_id}")
+
+finally:
+    db.close()
+
+
+
 loader = PDFLoader()
 chunker = DocumentChunker()
 embedding_model = EmbeddingModel()
 
 documents = loader.load_pdf(
-    "data/uploads/Freight_Rate_ML_Report.pdf"
+    "data/uploads/Deep_Learning_Study_Notes.pdf"
 )
 
 chunks = chunker.split_documents(documents)
@@ -30,11 +53,7 @@ vector = embeddings.embed_documents(
     [chunk.page_content for chunk in chunks]
 )
 
-print("\nEmbedding Length:")
-print(len(vector))
 
-print("\nFirst 10 Values:")
-print(vector[:10])
 
 # Chroma Vector Store
 vector_store = ChromaVectorStore(embeddings)
@@ -58,7 +77,7 @@ while True:
     if question.lower() == "exit":
         break
 
-    answer = rag.ask(question)
+    answer = rag.ask(question, user_id)
 
     print("\nAnswer:\n")
     print(answer)
