@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace ExpensePilot.API.Models
 {
@@ -18,5 +19,6 @@ namespace ExpensePilot.API.Models
 
         public ICollection<Category> Categories { get; set; } = new List<Category>();
 
+        public ICollection<AiDocument> Documents { get; set; } = new List<AiDocument>();
     }
 }

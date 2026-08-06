@@ -3,14 +3,14 @@ from app.ingestion.chunker import DocumentChunker
 from app.embeddings.embedding import EmbeddingModel
 from app.vectorstore.chroma_store import ChromaVectorStore
 from app.retrieval.retriever import Retriever
-from app.llm.llm import OllamaLLM
+from app.llm.llm import GroqLLM
 from app.chains.rag_chain import RAGChain
 loader = PDFLoader()
 chunker = DocumentChunker()
 embedding_model = EmbeddingModel()
 
 documents = loader.load_pdf(
-    "data/uploads/Deep_Learning_Study_Notes.pdf"
+    "data/uploads/Freight_Rate_ML_Report.pdf"
 )
 
 chunks = chunker.split_documents(documents)
@@ -45,7 +45,7 @@ vector_store.add_documents(chunks)
 # Retriever
 retriever = Retriever(vector_store)
 
-llm = OllamaLLM().get_llm()
+llm = GroqLLM().get_llm()
 
 # RAG Chain
 rag = RAGChain(retriever, llm)
