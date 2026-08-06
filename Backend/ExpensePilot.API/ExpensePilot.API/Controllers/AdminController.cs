@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ExpensePilot.API.Services.Interfaces;
 
 namespace ExpensePilot.API.Controllers
 {
@@ -16,13 +17,16 @@ namespace ExpensePilot.API.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IAiDocumentService _aiDocumentService;
 
         public AdminController(
-            ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager)
+    ApplicationDbContext context,
+    UserManager<ApplicationUser> userManager,
+    IAiDocumentService aiDocumentService)
         {
             _context = context;
             _userManager = userManager;
+            _aiDocumentService = aiDocumentService;
         }
 
         // Dashboard
@@ -170,6 +174,46 @@ namespace ExpensePilot.API.Controllers
             return Ok(new
             {
                 message = "User deleted successfully."
+            });
+        }
+
+        [HttpPost("documents")]
+        public async Task<IActionResult> UploadDocument(
+    IFormFile file)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            if (userId == null)
+                return Unauthorized();
+
+            var result = await _aiDocumentService.UploadAsync(
+                file,
+                userId
+            );
+
+            return Ok(result);
+        }
+
+        [HttpGet("documents")]
+        public async Task<IActionResult> GetDocuments()
+        {
+            var documents = await _aiDocumentService.GetAllAsync();
+
+            return Ok(documents);
+        }
+
+        [HttpDelete("documents/{id}")]
+        public async Task<IActionResult> DeleteDocument(
+    Guid id)
+        {
+            var deleted = await _aiDocumentService.DeleteAsync(id);
+
+            if (!deleted)
+                return NotFound();
+
+            return Ok(new
+            {
+                message = "Document deleted successfully."
             });
         }
     }
