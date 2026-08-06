@@ -1,12 +1,13 @@
 using ExpensePilot.API.Data;
 using ExpensePilot.API.Models;
 using ExpensePilot.API.Services;
+using ExpensePilot.API.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,6 +84,11 @@ builder.Services.AddAuthentication(options =>
             )
         )
     };
+});
+
+builder.Services.AddHttpClient<IAiDocumentService, AiDocumentService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["FastApi:BaseUrl"]!);
 });
 
 builder.Services.AddScoped<TokenService>();

@@ -16,6 +16,8 @@ namespace ExpensePilot.API.Data
         public DbSet<FinancialGoal> FinancialGoals { get; set; }
         public DbSet<Budget> Budgets { get; set; }
 
+        public DbSet<AiDocument> Documents { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -46,6 +48,13 @@ namespace ExpensePilot.API.Data
                 .HasOne(c => c.User)
                 .WithMany(u => u.Categories)
                 .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // User -> Documents
+            builder.Entity<AiDocument>()
+                .HasOne(d => d.User)
+                .WithMany(u => u.Documents)
+                .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
