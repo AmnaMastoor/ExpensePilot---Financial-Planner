@@ -16,10 +16,23 @@ class ChromaVectorStore:
 
         self.db.add_documents(documents)
 
-    def similarity_search(self, query, k=3):
+    def similarity_search(
+        self,
+        query,
+        k=3,
+        filter=None
+    ):
+
+        if filter:
+
+            return self.db.similarity_search(
+                query=query,
+                k=k,
+                filter=filter
+            )
 
         return self.db.similarity_search(
-            query,
+            query=query,
             k=k
         )
 
@@ -34,9 +47,7 @@ class ChromaVectorStore:
         ids = results.get("ids", [])
 
         if ids:
-
             self.db.delete(ids=ids)
-
             return True
 
         return False

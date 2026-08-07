@@ -1,18 +1,22 @@
-from app.ingestion.loader import PDFLoader
-from app.ingestion.chunker import DocumentChunker
-from app.embeddings.embedding import EmbeddingModel
-from app.vectorstore.chroma_store import ChromaVectorStore
-from app.retrieval.retriever import Retriever
-from app.llm.llm import GroqLLM
-from app.chains.rag_chain import RAGChain
 from app.database.connection import SessionLocal
 from app.database.models.transaction import Transaction
-from app.database.models.application_user import ApplicationUser
+
+from app.embeddings.embedding import EmbeddingModel
+from app.vectorstore.chroma_store import ChromaVectorStore
+
+from app.retrieval.knowledge_retriever import KnowledgeBaseRetriever
+from app.retrieval.user_document_retriever import UserDocumentRetriever
+
+from app.llm.llm import GroqLLM
+from app.chains.rag_chain import RAGChain
+from app.memory.conversation_memory import ConversationMemory
 
 
+# Get a test user
 db = SessionLocal()
 
 try:
+
     transaction = db.query(Transaction).first()
 
     if transaction is None:
@@ -28,46 +32,38 @@ finally:
 
 
 
-loader = PDFLoader()
-chunker = DocumentChunker()
-embedding_model = EmbeddingModel()
+# Embedding model
+embeddings = EmbeddingModel().get_embedding_model()
 
-documents = loader.load_pdf(
-    "data/uploads/Deep_Learning_Study_Notes.pdf"
-)
 
-chunks = chunker.split_documents(documents)
-
-print(f"Pages : {len(documents)}")
-print(f"Chunks : {len(chunks)}")
-
-print("\nFirst Chunk:\n")
-print(chunks[0].page_content)
-
-print("\nMetadata:\n")
-print(chunks[0].metadata)
-
-embeddings = embedding_model.get_embedding_model()
-
-vector = embeddings.embed_documents(
-    [chunk.page_content for chunk in chunks]
+# Existing Chroma DB
+vector_store = ChromaVectorStore(
+    embeddings
 )
 
 
+# Retrievers
+knowledge_retriever = KnowledgeBaseRetriever(
+    vector_store
+)
 
-# Chroma Vector Store
-vector_store = ChromaVectorStore(embeddings)
+user_document_retriever = UserDocumentRetriever(
+    vector_store
+)
 
-# Store chunks
-vector_store.add_documents(chunks)
 
-# Retriever
-retriever = Retriever(vector_store)
-
+# LLM
 llm = GroqLLM().get_llm()
+memory = ConversationMemory()
 
-# RAG Chain
-rag = RAGChain(retriever, llm)
+# RAG
+rag = RAGChain(
+    knowledge_retriever,
+    user_document_retriever,
+    llm,
+    memory
+)
+
 
 # Chat Loop
 while True:
@@ -77,7 +73,10 @@ while True:
     if question.lower() == "exit":
         break
 
-    answer = rag.ask(question, user_id)
+    answer = rag.ask(
+        question,
+        user_id
+    )
 
     print("\nAnswer:\n")
     print(answer)
