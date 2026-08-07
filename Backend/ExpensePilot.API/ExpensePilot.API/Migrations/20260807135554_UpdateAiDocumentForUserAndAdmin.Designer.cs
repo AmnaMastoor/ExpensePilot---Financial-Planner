@@ -3,6 +3,7 @@ using System;
 using ExpensePilot.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ExpensePilot.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260807135554_UpdateAiDocumentForUserAndAdmin")]
+    partial class UpdateAiDocumentForUserAndAdmin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,20 +51,13 @@ namespace ExpensePilot.API.Migrations
                     b.Property<int>("TotalChunks")
                         .HasColumnType("integer");
 
-<<<<<<< HEAD
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
-=======
->>>>>>> origin/main
                     b.Property<DateTime>("UploadedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
-<<<<<<< HEAD
-=======
-                        .IsRequired()
->>>>>>> origin/main
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -427,12 +423,7 @@ namespace ExpensePilot.API.Migrations
                     b.HasOne("ExpensePilot.API.Models.ApplicationUser", "User")
                         .WithMany("Documents")
                         .HasForeignKey("UserId")
-<<<<<<< HEAD
                         .OnDelete(DeleteBehavior.Cascade);
-=======
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
->>>>>>> origin/main
 
                     b.Navigation("User");
                 });

@@ -8,18 +8,14 @@ from app.embeddings.embedding import EmbeddingModel
 from app.vectorstore.chroma_store import ChromaVectorStore
 
 
-class AdminService:
+class UserDocumentService:
 
     def __init__(self):
 
-<<<<<<< HEAD
-        self.upload_folder =  "data/knowledge_base"
-=======
-        self.upload_folder = "data/uploads"
->>>>>>> origin/main
+        self.base_upload_folder = "data/user_uploads"
 
         os.makedirs(
-            self.upload_folder,
+            self.base_upload_folder,
             exist_ok=True
         )
 
@@ -35,25 +31,36 @@ class AdminService:
             embeddings
         )
 
-    def save_file(self, file):
+    def save_file(self, file, user_id):
+
+        user_folder = os.path.join(
+            self.base_upload_folder,
+            str(user_id)
+        )
+
+        os.makedirs(
+            user_folder,
+            exist_ok=True
+        )
 
         extension = os.path.splitext(file.filename)[1]
 
         filename = f"{uuid.uuid4()}{extension}"
 
         file_path = os.path.join(
-            self.upload_folder,
+            user_folder,
             filename
         )
 
         with open(file_path, "wb") as buffer:
-
             shutil.copyfileobj(
                 file.file,
                 buffer
             )
 
         return {
+
+            "user_id": user_id,
 
             "document_id": filename.split(".")[0],
 
@@ -76,10 +83,10 @@ class AdminService:
         )
 
         for chunk in chunks:
-<<<<<<< HEAD
-            chunk.metadata["source"] = "knowledge_base"
-=======
->>>>>>> origin/main
+
+            chunk.metadata["source"] = "user_document"
+
+            chunk.metadata["user_id"] = document["user_id"]
 
             chunk.metadata["document_id"] = document["document_id"]
 
@@ -91,14 +98,22 @@ class AdminService:
 
         return len(chunks)
 
-    def get_documents(self):
+    def get_documents(self, user_id):
+
+        user_folder = os.path.join(
+            self.base_upload_folder,
+            str(user_id)
+        )
+
+        if not os.path.exists(user_folder):
+            return []
 
         files = []
 
-        for file in os.listdir(self.upload_folder):
+        for file in os.listdir(user_folder):
 
             path = os.path.join(
-                self.upload_folder,
+                user_folder,
                 file
             )
 
@@ -112,18 +127,15 @@ class AdminService:
 
         return files
 
-    def delete_document(
-        self,
-        document_id,
-        filename
-    ):
+    def delete_document(self, user_id, document_id, filename):
 
         self.vector_store.delete_document(
             document_id
         )
 
         path = os.path.join(
-            self.upload_folder,
+            self.base_upload_folder,
+            str(user_id),
             filename
         )
 
