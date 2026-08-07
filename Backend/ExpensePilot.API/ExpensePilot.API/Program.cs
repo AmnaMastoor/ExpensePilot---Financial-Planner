@@ -86,6 +86,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+<<<<<<< HEAD
 // Admin RAG documents
 builder.Services.AddHttpClient<IAiDocumentService, AiDocumentService>(client =>
 {
@@ -102,6 +103,13 @@ builder.Services.AddHttpClient<IUserDocumentService, UserDocumentService>(client
         builder.Configuration["FastApi:BaseUrl"]!
     );
 });
+=======
+builder.Services.AddHttpClient<IAiDocumentService, AiDocumentService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["FastApi:BaseUrl"]!);
+});
+
+>>>>>>> origin/main
 builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddCors(options =>

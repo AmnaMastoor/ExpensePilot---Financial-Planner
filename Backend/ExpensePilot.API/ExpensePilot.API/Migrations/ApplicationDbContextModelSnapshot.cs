@@ -48,13 +48,20 @@ namespace ExpensePilot.API.Migrations
                     b.Property<int>("TotalChunks")
                         .HasColumnType("integer");
 
+<<<<<<< HEAD
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
+=======
+>>>>>>> origin/main
                     b.Property<DateTime>("UploadedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
+<<<<<<< HEAD
+=======
+                        .IsRequired()
+>>>>>>> origin/main
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -420,7 +427,12 @@ namespace ExpensePilot.API.Migrations
                     b.HasOne("ExpensePilot.API.Models.ApplicationUser", "User")
                         .WithMany("Documents")
                         .HasForeignKey("UserId")
+<<<<<<< HEAD
                         .OnDelete(DeleteBehavior.Cascade);
+=======
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+>>>>>>> origin/main
 
                     b.Navigation("User");
                 });

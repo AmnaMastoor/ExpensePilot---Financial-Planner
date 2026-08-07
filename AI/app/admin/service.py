@@ -12,7 +12,11 @@ class AdminService:
 
     def __init__(self):
 
+<<<<<<< HEAD
         self.upload_folder =  "data/knowledge_base"
+=======
+        self.upload_folder = "data/uploads"
+>>>>>>> origin/main
 
         os.makedirs(
             self.upload_folder,
@@ -72,7 +76,10 @@ class AdminService:
         )
 
         for chunk in chunks:
+<<<<<<< HEAD
             chunk.metadata["source"] = "knowledge_base"
+=======
+>>>>>>> origin/main
 
             chunk.metadata["document_id"] = document["document_id"]
 
