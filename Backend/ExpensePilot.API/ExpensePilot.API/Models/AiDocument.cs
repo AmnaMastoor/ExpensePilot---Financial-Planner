@@ -1,8 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-<<<<<<< HEAD
-using System.Xml.Linq;
-=======
->>>>>>> origin/main
 
 namespace ExpensePilot.API.Models
 {
@@ -27,24 +23,16 @@ namespace ExpensePilot.API.Models
 
         public DateTime UploadedAt { get; set; } = DateTime.UtcNow;
 
-<<<<<<< HEAD
-
-        // User document ke liye
         public string? UserId { get; set; }
 
         public ApplicationUser? User { get; set; }
 
-
         public DocumentType Type { get; set; }
     }
+
     public enum DocumentType
     {
         AdminKnowledge = 1,
         UserDocument = 2
-=======
-        public string UserId { get; set; } = string.Empty;
-
-        public ApplicationUser User { get; set; } = null!;
->>>>>>> origin/main
     }
 }

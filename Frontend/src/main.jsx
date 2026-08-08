@@ -8,7 +8,7 @@ import { Toaster } from "react-hot-toast";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <GoogleOAuthProvider clientId="249183357469-kh62hpcoqmnont93k82hm9af9mi9213a.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId="249183357469-l0n79q3nueqc28ijs1o47k0bpll5t2bu.apps.googleusercontent.com">
       <BrowserRouter>
         <App />
       </BrowserRouter>

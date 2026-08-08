@@ -1,21 +1,11 @@
-<<<<<<< HEAD
 from fastapi import APIRouter, UploadFile, File, Form
-
 from app.admin.service import AdminService
 from app.user_documents.service import UserDocumentService
-=======
-from fastapi import APIRouter, UploadFile, File
-from app.admin.service import AdminService
->>>>>>> origin/main
 
 router = APIRouter()
 
 admin_service = AdminService()
-<<<<<<< HEAD
 user_document_service = UserDocumentService()
-=======
->>>>>>> origin/main
-
 
 @router.get("/health")
 def health():
@@ -40,7 +30,6 @@ async def upload_document(file: UploadFile = File(...)):
 
 @router.get("/documents")
 def get_documents():
-
     return admin_service.get_documents()
 
 
@@ -57,8 +46,8 @@ def delete_document(
 
     return {
         "deleted": deleted
-<<<<<<< HEAD
     }
+
 
 @router.post("/user/documents/upload")
 async def upload_user_document(
@@ -81,6 +70,4 @@ async def upload_user_document(
         "document_id": document["document_id"],
         "filename": document["original_name"],
         "chunks": total_chunks
-=======
->>>>>>> origin/main
     }

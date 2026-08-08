@@ -11,44 +11,42 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddTransient<EmailService>();
+
 builder.Services.AddSwaggerGen(options =>
 {
-    options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
         BearerFormat = "JWT",
-        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        In = ParameterLocation.Header,
         Description = "Enter JWT token like: Bearer {your token}"
     });
 
-    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
-            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            new OpenApiSecurityScheme
             {
-                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                Reference = new OpenApiReference
                 {
-                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Type = ReferenceType.SecurityScheme,
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            Array.Empty<string>()
         }
     });
 });
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-   options.UseNpgsql(
-    builder.Configuration.GetConnectionString("DefaultConnection")
-));
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    )
+);
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
@@ -80,48 +78,28 @@ builder.Services.AddAuthentication(options =>
 
         IssuerSigningKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(
-                builder.Configuration["Jwt:Key"]
+                builder.Configuration["Jwt:Key"]!
             )
         )
     };
 });
 
-<<<<<<< HEAD
-// Admin RAG documents
 builder.Services.AddHttpClient<IAiDocumentService, AiDocumentService>(client =>
 {
     client.BaseAddress = new Uri(
         builder.Configuration["FastApi:BaseUrl"]!
     );
 });
-
-
-// User uploaded documents
-builder.Services.AddHttpClient<IUserDocumentService, UserDocumentService>(client =>
-{
-    client.BaseAddress = new Uri(
-        builder.Configuration["FastApi:BaseUrl"]!
-    );
-});
-=======
-builder.Services.AddHttpClient<IAiDocumentService, AiDocumentService>(client =>
-{
-    client.BaseAddress = new Uri(builder.Configuration["FastApi:BaseUrl"]!);
-});
-
->>>>>>> origin/main
-builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend",
-        policy =>
-        {
-            policy
-                .WithOrigins("http://localhost:5173")
-                .AllowAnyHeader()
-                .AllowAnyMethod();
-        });
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
 });
 
 var app = builder.Build();
@@ -131,7 +109,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     await RoleSeeder.SeedRolesAndAdminAsync(services);
 }
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
