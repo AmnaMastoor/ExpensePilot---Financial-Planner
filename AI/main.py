@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from app.database.connection import SessionLocal
 from app.database.models.transaction import Transaction
 
@@ -13,37 +12,56 @@ from app.chains.rag_chain import RAGChain
 from app.memory.conversation_memory import ConversationMemory
 
 
-# Get a test user
+# ---------------------------------------------------------
+# Get a real user ID for testing
+# ---------------------------------------------------------
+
 db = SessionLocal()
 
 try:
 
-    transaction = db.query(Transaction).first()
+    transaction = (
+        db.query(Transaction)
+        .first()
+    )
 
     if transaction is None:
         print("No transactions found.")
-        exit()
+        raise SystemExit
 
     user_id = transaction.user_id
 
-    print(f"Testing User ID: {user_id}")
+    print(
+        f"Testing User ID: {user_id}"
+    )
 
 finally:
     db.close()
 
 
+# ---------------------------------------------------------
+# Initialize embeddings
+# ---------------------------------------------------------
 
-# Embedding model
-embeddings = EmbeddingModel().get_embedding_model()
+embeddings = (
+    EmbeddingModel()
+    .get_embedding_model()
+)
 
 
-# Existing Chroma DB
+# ---------------------------------------------------------
+# Initialize vector store
+# ---------------------------------------------------------
+
 vector_store = ChromaVectorStore(
     embeddings
 )
 
 
-# Retrievers
+# ---------------------------------------------------------
+# Initialize retrievers
+# ---------------------------------------------------------
+
 knowledge_retriever = KnowledgeBaseRetriever(
     vector_store
 )
@@ -53,11 +71,27 @@ user_document_retriever = UserDocumentRetriever(
 )
 
 
-# LLM
-llm = GroqLLM().get_llm()
+# ---------------------------------------------------------
+# Initialize LLM
+# ---------------------------------------------------------
+
+llm = (
+    GroqLLM()
+    .get_llm()
+)
+
+
+# ---------------------------------------------------------
+# Initialize conversation memory
+# ---------------------------------------------------------
+
 memory = ConversationMemory()
 
-# RAG
+
+# ---------------------------------------------------------
+# Initialize RAG chain
+# ---------------------------------------------------------
+
 rag = RAGChain(
     knowledge_retriever,
     user_document_retriever,
@@ -65,76 +99,49 @@ rag = RAGChain(
     memory
 )
 
-=======
-from app.ingestion.loader import PDFLoader
-from app.ingestion.chunker import DocumentChunker
-from app.embeddings.embedding import EmbeddingModel
-from app.vectorstore.chroma_store import ChromaVectorStore
-from app.retrieval.retriever import Retriever
-from app.llm.llm import GroqLLM
-from app.chains.rag_chain import RAGChain
-loader = PDFLoader()
-chunker = DocumentChunker()
-embedding_model = EmbeddingModel()
 
-documents = loader.load_pdf(
-    "data/uploads/Freight_Rate_ML_Report.pdf"
-)
+# ---------------------------------------------------------
+# Interactive testing
+# ---------------------------------------------------------
 
-chunks = chunker.split_documents(documents)
+print("\nExpensePilot RAG Test")
+print("---------------------")
+print("Type 'exit' to quit.")
 
-print(f"Pages : {len(documents)}")
-print(f"Chunks : {len(chunks)}")
 
-print("\nFirst Chunk:\n")
-print(chunks[0].page_content)
-
-print("\nMetadata:\n")
-print(chunks[0].metadata)
-
-embeddings = embedding_model.get_embedding_model()
-
-vector = embeddings.embed_documents(
-    [chunk.page_content for chunk in chunks]
-)
-
-print("\nEmbedding Length:")
-print(len(vector))
-
-print("\nFirst 10 Values:")
-print(vector[:10])
-
-# Chroma Vector Store
-vector_store = ChromaVectorStore(embeddings)
-
-# Store chunks
-vector_store.add_documents(chunks)
-
-# Retriever
-retriever = Retriever(vector_store)
-
-llm = GroqLLM().get_llm()
-
-# RAG Chain
-rag = RAGChain(retriever, llm)
->>>>>>> origin/main
-
-# Chat Loop
 while True:
 
-    question = input("\nAsk a question (type 'exit' to quit): ")
+    question = input(
+        "\nAsk a question: "
+    ).strip()
 
     if question.lower() == "exit":
+        print("Exiting...")
         break
 
-<<<<<<< HEAD
-    answer = rag.ask(
-        question,
-        user_id
-    )
-=======
-    answer = rag.ask(question)
->>>>>>> origin/main
+    if not question:
+        print(
+            "\nPlease enter a question."
+        )
+        continue
 
-    print("\nAnswer:\n")
-    print(answer)
+    try:
+
+        answer = rag.ask(
+            question,
+            user_id
+        )
+
+        print(
+            "\nAnswer:\n"
+        )
+
+        print(answer)
+
+    except Exception as error:
+
+        print(
+            "\nError while processing question:"
+        )
+
+        print(error)

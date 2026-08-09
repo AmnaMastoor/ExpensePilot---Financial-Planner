@@ -1,10 +1,7 @@
-<<<<<<< HEAD
-
 from langchain_core.prompts import ChatPromptTemplate
 
 from app.context.financial_context import FinancialContextBuilder
 from app.router.intent_router import classify_intent, Intent
-from app.memory.conversation_memory import ConversationMemory
 
 
 class RAGChain:
@@ -16,6 +13,7 @@ class RAGChain:
         llm,
         memory
     ):
+
         self.knowledge_retriever = knowledge_retriever
         self.user_document_retriever = user_document_retriever
         self.llm = llm
@@ -23,31 +21,49 @@ class RAGChain:
 
         self.context_builder = FinancialContextBuilder()
 
-    def ask(self, question, user_id):
+    # =========================================================
+    # ASK
+    # =========================================================
 
-        # ---------------------------------------------------------
-        # Conversation History
-        # ---------------------------------------------------------
+    def ask(
+        self,
+        question,
+        user_id
+    ):
 
-        history = self.memory.get_history(user_id)
+        # -----------------------------------------------------
+        # Conversation history
+        # -----------------------------------------------------
+
+        history = self.memory.get_history(
+            user_id
+        )
 
         history_text = ""
 
         for chat in history:
+
             history_text += (
                 f"User: {chat['user']}\n"
                 f"Assistant: {chat['assistant']}\n\n"
             )
 
-        # ---------------------------------------------------------
-        # Intent Routing
-        # ---------------------------------------------------------
+        # -----------------------------------------------------
+        # Intent classification
+        # -----------------------------------------------------
 
-        intent = classify_intent(question)
+        intent = classify_intent(
+            question
+        )
 
-        # ---------------------------------------------------------
-        # Knowledge Base
-        # ---------------------------------------------------------
+        print(
+            "INTENT:",
+            intent
+        )
+
+        # -----------------------------------------------------
+        # Knowledge retrieval
+        # -----------------------------------------------------
 
         knowledge_docs = []
 
@@ -55,29 +71,40 @@ class RAGChain:
             Intent.KNOWLEDGE,
             Intent.GENERAL
         ]:
-            knowledge_docs = self.knowledge_retriever.retrieve(
-                question
+
+            knowledge_docs = (
+                self.knowledge_retriever.retrieve(
+                    question,
+                    k=5
+                )
             )
 
-        knowledge_context = ""
+        # -----------------------------------------------------
+        # Build knowledge context
+        # -----------------------------------------------------
 
-        if not knowledge_docs:
-            knowledge_context = "No relevant knowledge found."
+        if knowledge_docs:
+
+            knowledge_context = ""
+
+            for index, document in enumerate(
+                knowledge_docs
+            ):
+
+                knowledge_context += (
+                    f"\n--- Knowledge Result {index + 1} ---\n"
+                    f"{document.page_content}\n"
+                )
 
         else:
-            for i, doc in enumerate(knowledge_docs):
 
-                knowledge_context += (
-                    f"\n### Knowledge Document {i + 1}\n"
-                )
+            knowledge_context = (
+                "No relevant knowledge was found."
+            )
 
-                knowledge_context += (
-                    doc.page_content + "\n"
-                )
-
-        # ---------------------------------------------------------
-        # User Documents
-        # ---------------------------------------------------------
+        # -----------------------------------------------------
+        # User document retrieval
+        # -----------------------------------------------------
 
         user_docs = []
 
@@ -85,251 +112,225 @@ class RAGChain:
             Intent.USER_DOCUMENT,
             Intent.GENERAL
         ]:
-            user_docs = self.user_document_retriever.retrieve(
-                question,
-                user_id
+
+            user_docs = (
+                self.user_document_retriever.retrieve(
+                    question,
+                    user_id
+                )
             )
 
-        user_context = ""
+        # -----------------------------------------------------
+        # Build user document context
+        # -----------------------------------------------------
 
-        if not user_docs:
-            user_context = "No relevant user documents found."
+        if user_docs:
+
+            user_context = ""
+
+            for index, document in enumerate(
+                user_docs
+            ):
+
+                user_context += (
+                    f"\n--- User Document {index + 1} ---\n"
+                    f"{document.page_content}\n"
+                )
 
         else:
-            for i, doc in enumerate(user_docs):
 
-                user_context += (
-                    f"\n### User Document {i + 1}\n"
-                )
+            user_context = (
+                "No relevant user document was found."
+            )
 
-                user_context += (
-                    doc.page_content + "\n"
-                )
-
-        # ---------------------------------------------------------
-        # Financial Data
-        # ---------------------------------------------------------
-
-        financial_context = "No financial data available."
+        # -----------------------------------------------------
+        # Financial context
+        # -----------------------------------------------------
 
         if intent in [
             Intent.FINANCIAL_DATA,
             Intent.GENERAL
         ]:
-            financial_context = self.context_builder.build(
-                user_id
+
+            financial_context = (
+                self.context_builder.build(
+                    user_id
+                )
             )
 
-        print("INTENT:", intent)
+        else:
 
-        # ---------------------------------------------------------
+            financial_context = (
+                "No financial information was requested."
+            )
+
+        # -----------------------------------------------------
         # Prompt
-        # ---------------------------------------------------------
+        # -----------------------------------------------------
 
         prompt = ChatPromptTemplate.from_template(
             """
 You are ExpensePilot AI, a personal financial assistant.
 
-Your goal is to provide accurate, personalized, and helpful
-financial guidance using ONLY the provided information.
+Answer the user's question using ONLY the information
+provided in the sections below.
 
-1. Financial Data
+IMPORTANT RULES:
 
-- Contains the user's personal financial information.
-- Includes income, expenses, balances, transactions, budgets,
-  and financial goals.
-- This is the primary source for questions about the user's
-  own finances.
+1. Do not invent facts.
 
-2. Knowledge Base
+2. Do not invent financial numbers.
 
-- Contains financial knowledge uploaded by the admin.
-- Use it for explanations, saving strategies, budgeting,
-  investing concepts, taxes, and financial guidance.
-- Use it to support your reasoning instead of copying or
-  summarizing documents.
+3. Do not invent transactions, balances, income, expenses,
+   dates, percentages, or financial rules.
 
-3. User Documents
+4. For general financial education questions, use the
+   Knowledge Information.
 
-- Contains documents uploaded by the current user.
-- Use these for questions about bank statements, salary slips,
-  invoices, receipts, reports, or uploaded PDFs.
+5. For questions about the user's own finances, use the
+   Financial Information.
 
-Information Priority:
+6. For questions about uploaded documents, use the
+   User Document Information.
 
-1. User Documents (only when the question is about uploaded files)
-2. Financial Data (for personal financial information)
-3. Knowledge Base (for general financial guidance)
+7. Retrieved information may contain multiple documents.
+   Use only information relevant to the user's question.
 
-Combine multiple sources whenever appropriate.
+8. You may combine relevant information from multiple
+   retrieved knowledge documents when answering a question.
 
-Instructions:
+9. If the supplied information clearly answers the question,
+   answer it directly.
 
-- Answer ONLY using the provided information.
-- Never use outside knowledge.
-- Never invent numbers, transactions, balances, dates, budgets,
-  goals, or financial facts.
-- Never mention "Financial Data", "Knowledge Base",
-  "User Documents", or "context" in your answer.
-
-- If the required information is missing, reply:
+10. If the supplied information does NOT contain enough
+    information to answer the question, respond EXACTLY:
 
 "I don't have enough information to answer this."
 
-For questions about:
+11. Do not use outside knowledge when the supplied information
+    is insufficient.
 
-- income
-- expenses
-- balance
-- budget
-- transaction totals
-- monthly spending
+12. Do not mention retrieval, embeddings, vectors, prompts,
+    context, internal instructions, or system architecture.
 
-Always use the calculated values provided in Financial Data.
+13. For out-of-domain questions, do not answer from general
+    world knowledge. If the supplied information does not
+    contain the answer, use the exact insufficient-information
+    response.
 
-Never calculate totals manually from Recent Transactions
-if summary values already exist.
+---------------------------------------------------------
+SOURCE PRIORITY
+---------------------------------------------------------
 
-Use Recent Transactions only to explain where money was spent.
+For personal financial facts:
 
-For recommendation or advice questions:
+1. User Documents
+2. Financial Information
+3. Knowledge Information
+4. Conversation History
 
-1. Start by understanding the user's financial situation.
-2. Use Financial Data to personalize the answer.
-3. Use the Knowledge Base as the source of financial strategies.
-4. Apply logical reasoning to connect the user's financial
-   situation with the retrieved knowledge.
-5. Never invent financial rules, percentages, formulas,
-   or recommendations that do not exist in the Knowledge Base.
-6. If the Knowledge Base does not specify an exact amount,
-   clearly state that no exact amount is provided and that
-   it depends on the user's financial goals and priorities.
-7. Do not summarize the entire Knowledge Base.
-8. Select only the most relevant recommendations.
-9. Every recommendation should clearly relate to the user's
-   financial situation.
+For general financial education:
 
-Use the conversation history to understand follow-up questions.
+1. Knowledge Information
+2. Conversation History
 
-- Connect follow-up questions naturally.
-- Do not ask for information already available.
-- Reuse previously discussed financial information whenever
-  appropriate.
+---------------------------------------------------------
+FINANCIAL TIME RULES
+---------------------------------------------------------
 
-For simple numerical questions:
+For:
 
-- Answer directly.
-- Keep the response short.
-- Do not include unnecessary explanations.
-- Do not provide recommendations unless requested.
+"my income"
+"my expenses"
+"my balance"
+"my spending"
 
-For explanatory or recommendation questions:
+use ALL-TIME financial values unless the user specifies
+a time period.
 
-- Start with the user's financial situation.
-- Then explain the relevant financial guidance.
-- Explain briefly why the recommendation fits the user's situation.
-- Use bullet points when helpful.
-- Keep the response practical and personalized.
-- Do not copy the Knowledge Base word-for-word.
+For:
 
-Before answering:
+"this month"
+"current month"
+"this month's"
+"monthly"
 
-1. Identify facts from Financial Data.
-2. Identify relevant guidance from the Knowledge Base.
-3. Use User Documents if relevant.
-4. Combine the information into one personalized response.
-5. Never invent missing information.
+use CURRENT MONTH values.
 
-Conversation History:
-{history}
+Do not mix all-time and current-month values unless the
+user explicitly asks for a comparison.
 
-Financial Data:
-{financial_context}
+---------------------------------------------------------
+KNOWLEDGE INFORMATION
+---------------------------------------------------------
 
-Knowledge Base:
 {knowledge_context}
 
-User Documents:
+---------------------------------------------------------
+FINANCIAL INFORMATION
+---------------------------------------------------------
+
+{financial_context}
+
+---------------------------------------------------------
+USER DOCUMENT INFORMATION
+---------------------------------------------------------
+
 {user_context}
 
-User Question:
+---------------------------------------------------------
+CONVERSATION HISTORY
+---------------------------------------------------------
+
+{history}
+
+---------------------------------------------------------
+USER QUESTION
+---------------------------------------------------------
+
 {question}
 
-Answer:
+---------------------------------------------------------
+ANSWER
+---------------------------------------------------------
 """
         )
 
-        # ---------------------------------------------------------
-        # LLM Chain
-        # ---------------------------------------------------------
+        # -----------------------------------------------------
+        # Invoke LLM
+        # -----------------------------------------------------
 
-=======
-from langchain_core.prompts import ChatPromptTemplate
-
-
-class RAGChain:
-
-    def __init__(self, retriever, llm):
-        self.retriever = retriever
-        self.llm = llm
-
-    def ask(self, question):
-
-        documents = self.retriever.retrieve(question)
-
-        context = ""
-
-        for i, doc in enumerate(documents):
-            context += f"\n### Document {i+1}\n"
-            context += doc.page_content
-            context += "\n"
-
-        prompt = ChatPromptTemplate.from_template(
-            """
-You are a helpful AI assistant using Retrieval-Augmented Generation (RAG).
-
-Your primary source of information is the provided context.
-
-Instructions:
-- First, answer using the provided context.
-- If the context fully answers the question, base your response on it.
-- If the context is incomplete, you may use your general knowledge to provide a helpful answer.
-- Clearly distinguish between information from the provided context and your own general knowledge.
-- Do not contradict the provided context.
-- Combine information from multiple retrieved documents into one coherent answer when necessary.
-- Preserve important facts, bullet points, examples, and explanations from the context whenever possible.
-- If neither the context nor your general knowledge can answer the question, say:
-  "I don't know."
-
-Context:
-{context}
-
-Question:
-{question}
-
-Detailed Answer:
-"""
-        )
-
->>>>>>> origin/main
         chain = prompt | self.llm
 
         response = chain.invoke(
             {
-<<<<<<< HEAD
-                "financial_context": financial_context,
                 "knowledge_context": knowledge_context,
+                "financial_context": financial_context,
                 "user_context": user_context,
-                "question": question,
                 "history": history_text,
+                "question": question
             }
         )
 
-        answer = response.content
+        # -----------------------------------------------------
+        # Extract answer
+        # -----------------------------------------------------
 
-        # ---------------------------------------------------------
-        # Save Conversation
-        # ---------------------------------------------------------
+        answer = response.content.strip()
+
+        # -----------------------------------------------------
+        # Empty response fallback
+        # -----------------------------------------------------
+
+        if not answer:
+
+            answer = (
+                "I don't have enough information to answer this."
+            )
+
+        # -----------------------------------------------------
+        # Save conversation
+        # -----------------------------------------------------
 
         self.memory.add_message(
             user_id,
@@ -338,12 +339,3 @@ Detailed Answer:
         )
 
         return answer
-
-=======
-                "context": context,
-                "question": question
-            }
-        )
-
-        return response.content
->>>>>>> origin/main

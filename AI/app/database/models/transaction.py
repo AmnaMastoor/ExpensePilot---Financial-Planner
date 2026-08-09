@@ -6,7 +6,6 @@ from sqlalchemy import (
     DateTime,
     Boolean,
     ForeignKey,
-    Enum,
 )
 from sqlalchemy.orm import relationship
 import enum
@@ -22,26 +21,58 @@ class TransactionType(enum.Enum):
 class Transaction(Base):
     __tablename__ = "Transactions"
 
-    transaction_id = Column("TransactionId", Integer, primary_key=True, index=True)
-    user_id = Column("UserId", String, ForeignKey("AspNetUsers.Id"))
+    transaction_id = Column(
+        "TransactionId",
+        Integer,
+        primary_key=True,
+        index=True
+    )
+
+    user_id = Column(
+        "UserId",
+        String,
+        ForeignKey("AspNetUsers.Id")
+    )
 
     category_id = Column(
-    "CategoryId",
-    Integer,
-    ForeignKey("Categories.CategoryId"),
-    nullable=True,
-)
+        "CategoryId",
+        Integer,
+        ForeignKey("Categories.CategoryId"),
+        nullable=True
+    )
 
-    type = Column("Type", Integer, nullable=False)
+    type = Column(
+        "Type",
+        Integer,
+        nullable=False
+    )
 
-    amount = Column("Amount", Numeric(18, 2), nullable=False)
-    transaction_date = Column("TransactionDate", DateTime, nullable=False)
+    amount = Column(
+        "Amount",
+        Numeric(18, 2),
+        nullable=False
+    )
 
-    title = Column("Title", String, nullable=False)
+    transaction_date = Column(
+        "TransactionDate",
+        DateTime,
+        nullable=False
+    )
 
-    description = Column("Description", String, nullable=True)
+    title = Column(
+        "Title",
+        String,
+        nullable=False
+    )
 
-    budget_exceeded = Column("BudgetExceeded", Boolean, default=False)
+    description = Column(
+        "Description",
+        String,
+        nullable=True
+    )
 
-
-
+    budget_exceeded = Column(
+        "BudgetExceeded",
+        Boolean,
+        default=False
+    )

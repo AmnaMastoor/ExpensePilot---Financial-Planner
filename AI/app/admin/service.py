@@ -11,12 +11,7 @@ from app.vectorstore.chroma_store import ChromaVectorStore
 class AdminService:
 
     def __init__(self):
-
-<<<<<<< HEAD
-        self.upload_folder =  "data/knowledge_base"
-=======
-        self.upload_folder = "data/uploads"
->>>>>>> origin/main
+        self.upload_folder = "data/knowledge_base"
 
         os.makedirs(
             self.upload_folder,
@@ -24,9 +19,7 @@ class AdminService:
         )
 
         self.loader = PDFLoader()
-
         self.chunker = DocumentChunker()
-
         self.embedding_model = EmbeddingModel()
 
         embeddings = self.embedding_model.get_embedding_model()
@@ -47,22 +40,16 @@ class AdminService:
         )
 
         with open(file_path, "wb") as buffer:
-
             shutil.copyfileobj(
                 file.file,
                 buffer
             )
 
         return {
-
             "document_id": filename.split(".")[0],
-
             "original_name": file.filename,
-
             "stored_name": filename,
-
             "path": file_path
-
         }
 
     def ingest_document(self, document):
@@ -71,19 +58,24 @@ class AdminService:
             document["path"]
         )
 
+        if not documents:
+            return 0
+
         chunks = self.chunker.split_documents(
             documents
         )
 
-        for chunk in chunks:
-<<<<<<< HEAD
+        if not chunks:
+            return 0
+
+        for index, chunk in enumerate(chunks):
+
             chunk.metadata["source"] = "knowledge_base"
-=======
->>>>>>> origin/main
-
             chunk.metadata["document_id"] = document["document_id"]
-
             chunk.metadata["filename"] = document["original_name"]
+            chunk.metadata["chunk_id"] = (
+                f"{document['document_id']}_{index}"
+            )
 
         self.vector_store.add_documents(
             chunks
@@ -102,13 +94,11 @@ class AdminService:
                 file
             )
 
-            files.append({
-
-                "filename": file,
-
-                "size": os.path.getsize(path)
-
-            })
+            if os.path.isfile(path):
+                files.append({
+                    "filename": file,
+                    "size": os.path.getsize(path)
+                })
 
         return files
 
@@ -128,7 +118,6 @@ class AdminService:
         )
 
         if os.path.exists(path):
-
             os.remove(path)
 
         return True

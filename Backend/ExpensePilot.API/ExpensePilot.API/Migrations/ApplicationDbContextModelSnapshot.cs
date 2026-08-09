@@ -23,545 +23,546 @@ namespace ExpensePilot.API.Migrations
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("ExpensePilot.API.Models.AiDocument", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid");
 
-                    b.Property<string>("ContentType")
-                        .HasColumnType("text");
+                b.Property<string>("ContentType")
+                    .HasColumnType("text");
 
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<string>("FileName")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<long>("FileSize")
-                        .HasColumnType("bigint");
+                b.Property<long>("FileSize")
+                    .HasColumnType("bigint");
 
-                    b.Property<bool>("IsProcessed")
-                        .HasColumnType("boolean");
+                b.Property<bool>("IsProcessed")
+                    .HasColumnType("boolean");
 
-                    b.Property<string>("StoredFileName")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<string>("StoredFileName")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<int>("TotalChunks")
-                        .HasColumnType("integer");
+                b.Property<int>("TotalChunks")
+                    .HasColumnType("integer");
 
-<<<<<<< HEAD
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
+                b.Property<int>("Type")
+                    .HasColumnType("integer");
 
-=======
->>>>>>> origin/main
-                    b.Property<DateTime>("UploadedAt")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTime>("UploadedAt")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("UserId")
-<<<<<<< HEAD
-=======
-                        .IsRequired()
->>>>>>> origin/main
-                        .HasColumnType("text");
+                b.Property<string>("UserId")
+                    .HasColumnType("text");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("Documents");
-                });
+                b.ToTable("Documents");
+            });
 
             modelBuilder.Entity("ExpensePilot.API.Models.ApplicationUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+            {
+                b.Property<string>("Id")
+                    .HasColumnType("text");
 
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer");
+                b.Property<int>("AccessFailedCount")
+                    .HasColumnType("integer");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
+                b.Property<string>("ConcurrencyStamp")
+                    .IsConcurrencyToken()
+                    .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTime>("CreatedAt")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                b.Property<string>("Email")
+                    .HasMaxLength(256)
+                    .HasColumnType("character varying(256)");
 
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("boolean");
+                b.Property<bool>("EmailConfirmed")
+                    .HasColumnType("boolean");
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<string>("FullName")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("boolean");
+                b.Property<bool>("LockoutEnabled")
+                    .HasColumnType("boolean");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTimeOffset?>("LockoutEnd")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<decimal>("MonthlyBudgetLimit")
-                        .HasColumnType("numeric");
+                b.Property<decimal>("MonthlyBudgetLimit")
+                    .HasColumnType("numeric");
 
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                b.Property<string>("NormalizedEmail")
+                    .HasMaxLength(256)
+                    .HasColumnType("character varying(256)");
 
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                b.Property<string>("NormalizedUserName")
+                    .HasMaxLength(256)
+                    .HasColumnType("character varying(256)");
 
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
+                b.Property<string>("PasswordHash")
+                    .HasColumnType("text");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
+                b.Property<string>("PhoneNumber")
+                    .HasColumnType("text");
 
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("boolean");
+                b.Property<bool>("PhoneNumberConfirmed")
+                    .HasColumnType("boolean");
 
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
+                b.Property<string>("SecurityStamp")
+                    .HasColumnType("text");
 
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("boolean");
+                b.Property<bool>("TwoFactorEnabled")
+                    .HasColumnType("boolean");
 
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                b.Property<string>("UserName")
+                    .HasMaxLength(256)
+                    .HasColumnType("character varying(256)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
+                b.HasIndex("NormalizedEmail")
+                    .HasDatabaseName("EmailIndex");
 
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
+                b.HasIndex("NormalizedUserName")
+                    .IsUnique()
+                    .HasDatabaseName("UserNameIndex");
 
-                    b.ToTable("AspNetUsers", (string)null);
-                });
+                b.ToTable("AspNetUsers", (string)null);
+            });
 
             modelBuilder.Entity("ExpensePilot.API.Models.Budget", b =>
-                {
+            {
+                b.Property<int>("BudgetId")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
+
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(
                     b.Property<int>("BudgetId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                );
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BudgetId"));
+                b.Property<decimal>("BudgetAmount")
+                    .HasColumnType("numeric");
 
-                    b.Property<decimal>("BudgetAmount")
-                        .HasColumnType("numeric");
+                b.Property<int>("CategoryId")
+                    .HasColumnType("integer");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("integer");
+                b.Property<DateTime>("EndDate")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTime>("StartDate")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<string>("UserId")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.HasKey("BudgetId");
 
-                    b.HasKey("BudgetId");
+                b.HasIndex("CategoryId");
 
-                    b.HasIndex("CategoryId");
+                b.HasIndex("UserId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Budgets");
-                });
+                b.ToTable("Budgets");
+            });
 
             modelBuilder.Entity("ExpensePilot.API.Models.Category", b =>
-                {
+            {
+                b.Property<int>("CategoryId")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
+
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(
                     b.Property<int>("CategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                );
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CategoryId"));
+                b.Property<string>("Description")
+                    .HasColumnType("text");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
+                b.Property<string>("Icon")
+                    .HasColumnType("text");
 
-                    b.Property<string>("Icon")
-                        .HasColumnType("text");
+                b.Property<bool>("IsActive")
+                    .HasColumnType("boolean");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                b.Property<bool>("IsDefault")
+                    .HasColumnType("boolean");
 
-                    b.Property<bool>("IsDefault")
-                        .HasColumnType("boolean");
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<string>("UserId")
+                    .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                b.HasKey("CategoryId");
 
-                    b.HasKey("CategoryId");
+                b.HasIndex("UserId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Categories");
-                });
+                b.ToTable("Categories");
+            });
 
             modelBuilder.Entity("ExpensePilot.API.Models.FinancialGoal", b =>
-                {
+            {
+                b.Property<int>("FinancialGoalId")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
+
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(
                     b.Property<int>("FinancialGoalId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                );
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FinancialGoalId"));
+                b.Property<decimal>("CurrentAmount")
+                    .HasColumnType("numeric");
 
-                    b.Property<decimal>("CurrentAmount")
-                        .HasColumnType("numeric");
+                b.Property<string>("Description")
+                    .HasColumnType("text");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
+                b.Property<decimal>("TargetAmount")
+                    .HasColumnType("numeric");
 
-                    b.Property<decimal>("TargetAmount")
-                        .HasColumnType("numeric");
+                b.Property<DateTime>("TargetDate")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("TargetDate")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<string>("Title")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<string>("UserId")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.HasKey("FinancialGoalId");
 
-                    b.HasKey("FinancialGoalId");
+                b.HasIndex("UserId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("FinancialGoals");
-                });
+                b.ToTable("FinancialGoals");
+            });
 
             modelBuilder.Entity("ExpensePilot.API.Models.Transaction", b =>
-                {
+            {
+                b.Property<int>("TransactionId")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
+
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(
                     b.Property<int>("TransactionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                );
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TransactionId"));
+                b.Property<decimal>("Amount")
+                    .HasColumnType("numeric");
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("numeric");
+                b.Property<bool>("BudgetExceeded")
+                    .HasColumnType("boolean");
 
-                    b.Property<bool>("BudgetExceeded")
-                        .HasColumnType("boolean");
+                b.Property<int?>("CategoryId")
+                    .HasColumnType("integer");
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("integer");
+                b.Property<string>("Description")
+                    .HasColumnType("text");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
+                b.Property<string>("Title")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<DateTime>("TransactionDate")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("TransactionDate")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<int>("Type")
+                    .HasColumnType("integer");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
+                b.Property<string>("UserId")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.HasKey("TransactionId");
 
-                    b.HasKey("TransactionId");
+                b.HasIndex("CategoryId");
 
-                    b.HasIndex("CategoryId");
+                b.HasIndex("UserId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Transactions");
-                });
+                b.ToTable("Transactions");
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+            {
+                b.Property<string>("Id")
+                    .HasColumnType("text");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
+                b.Property<string>("ConcurrencyStamp")
+                    .IsConcurrencyToken()
+                    .HasColumnType("text");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                b.Property<string>("Name")
+                    .HasMaxLength(256)
+                    .HasColumnType("character varying(256)");
 
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                b.Property<string>("NormalizedName")
+                    .HasMaxLength(256)
+                    .HasColumnType("character varying(256)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
+                b.HasIndex("NormalizedName")
+                    .IsUnique()
+                    .HasDatabaseName("RoleNameIndex");
 
-                    b.ToTable("AspNetRoles", (string)null);
-                });
+                b.ToTable("AspNetRoles", (string)null);
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
+
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                );
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                b.Property<string>("ClaimType")
+                    .HasColumnType("text");
 
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+                b.Property<string>("ClaimValue")
+                    .HasColumnType("text");
 
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+                b.Property<string>("RoleId")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.HasKey("Id");
 
-                    b.HasKey("Id");
+                b.HasIndex("RoleId");
 
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetRoleClaims", (string)null);
-                });
+                b.ToTable("AspNetRoleClaims", (string)null);
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
+
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                );
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                b.Property<string>("ClaimType")
+                    .HasColumnType("text");
 
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+                b.Property<string>("ClaimValue")
+                    .HasColumnType("text");
 
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+                b.Property<string>("UserId")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.HasKey("Id");
 
-                    b.HasKey("Id");
+                b.HasIndex("UserId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserClaims", (string)null);
-                });
+                b.ToTable("AspNetUserClaims", (string)null);
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
+            {
+                b.Property<string>("LoginProvider")
+                    .HasColumnType("text");
 
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("text");
+                b.Property<string>("ProviderKey")
+                    .HasColumnType("text");
 
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("text");
+                b.Property<string>("ProviderDisplayName")
+                    .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<string>("UserId")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.HasKey("LoginProvider", "ProviderKey");
+                b.HasKey("LoginProvider", "ProviderKey");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins", (string)null);
-                });
+                b.ToTable("AspNetUserLogins", (string)null);
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+            {
+                b.Property<string>("UserId")
+                    .HasColumnType("text");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("text");
+                b.Property<string>("RoleId")
+                    .HasColumnType("text");
 
-                    b.HasKey("UserId", "RoleId");
+                b.HasKey("UserId", "RoleId");
 
-                    b.HasIndex("RoleId");
+                b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
+                b.ToTable("AspNetUserRoles", (string)null);
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+            {
+                b.Property<string>("UserId")
+                    .HasColumnType("text");
 
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
+                b.Property<string>("LoginProvider")
+                    .HasColumnType("text");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
+                b.Property<string>("Name")
+                    .HasColumnType("text");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("text");
+                b.Property<string>("Value")
+                    .HasColumnType("text");
 
-                    b.HasKey("UserId", "LoginProvider", "Name");
+                b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens", (string)null);
-                });
+                b.ToTable("AspNetUserTokens", (string)null);
+            });
 
             modelBuilder.Entity("ExpensePilot.API.Models.AiDocument", b =>
-                {
-                    b.HasOne("ExpensePilot.API.Models.ApplicationUser", "User")
-                        .WithMany("Documents")
-                        .HasForeignKey("UserId")
-<<<<<<< HEAD
-                        .OnDelete(DeleteBehavior.Cascade);
-=======
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
->>>>>>> origin/main
+            {
+                b.HasOne("ExpensePilot.API.Models.ApplicationUser", "User")
+                    .WithMany("Documents")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade);
 
-                    b.Navigation("User");
-                });
+                b.Navigation("User");
+            });
 
             modelBuilder.Entity("ExpensePilot.API.Models.Budget", b =>
-                {
-                    b.HasOne("ExpensePilot.API.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("ExpensePilot.API.Models.Category", "Category")
+                    .WithMany()
+                    .HasForeignKey("CategoryId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.HasOne("ExpensePilot.API.Models.ApplicationUser", "User")
-                        .WithMany("Budgets")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.HasOne("ExpensePilot.API.Models.ApplicationUser", "User")
+                    .WithMany("Budgets")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("Category");
+                b.Navigation("Category");
 
-                    b.Navigation("User");
-                });
+                b.Navigation("User");
+            });
 
             modelBuilder.Entity("ExpensePilot.API.Models.Category", b =>
-                {
-                    b.HasOne("ExpensePilot.API.Models.ApplicationUser", "User")
-                        .WithMany("Categories")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+            {
+                b.HasOne("ExpensePilot.API.Models.ApplicationUser", "User")
+                    .WithMany("Categories")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade);
 
-                    b.Navigation("User");
-                });
+                b.Navigation("User");
+            });
 
             modelBuilder.Entity("ExpensePilot.API.Models.FinancialGoal", b =>
-                {
-                    b.HasOne("ExpensePilot.API.Models.ApplicationUser", "User")
-                        .WithMany("FinancialGoals")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("ExpensePilot.API.Models.ApplicationUser", "User")
+                    .WithMany("FinancialGoals")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("User");
-                });
+                b.Navigation("User");
+            });
 
             modelBuilder.Entity("ExpensePilot.API.Models.Transaction", b =>
-                {
-                    b.HasOne("ExpensePilot.API.Models.Category", "Category")
-                        .WithMany("Transactions")
-                        .HasForeignKey("CategoryId");
+            {
+                b.HasOne("ExpensePilot.API.Models.Category", "Category")
+                    .WithMany("Transactions")
+                    .HasForeignKey("CategoryId");
 
-                    b.HasOne("ExpensePilot.API.Models.ApplicationUser", "User")
-                        .WithMany("Transactions")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.HasOne("ExpensePilot.API.Models.ApplicationUser", "User")
+                    .WithMany("Transactions")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("Category");
+                b.Navigation("Category");
 
-                    b.Navigation("User");
-                });
+                b.Navigation("User");
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+            {
+                b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    .WithMany()
+                    .HasForeignKey("RoleId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.HasOne("ExpensePilot.API.Models.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+            {
+                b.HasOne("ExpensePilot.API.Models.ApplicationUser", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.HasOne("ExpensePilot.API.Models.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+            {
+                b.HasOne("ExpensePilot.API.Models.ApplicationUser", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    .WithMany()
+                    .HasForeignKey("RoleId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.HasOne("ExpensePilot.API.Models.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                b.HasOne("ExpensePilot.API.Models.ApplicationUser", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.HasOne("ExpensePilot.API.Models.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+            {
+                b.HasOne("ExpensePilot.API.Models.ApplicationUser", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
             modelBuilder.Entity("ExpensePilot.API.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("Budgets");
+            {
+                b.Navigation("Budgets");
 
-                    b.Navigation("Categories");
+                b.Navigation("Categories");
 
-                    b.Navigation("Documents");
+                b.Navigation("Documents");
 
-                    b.Navigation("FinancialGoals");
+                b.Navigation("FinancialGoals");
 
-                    b.Navigation("Transactions");
-                });
+                b.Navigation("Transactions");
+            });
 
             modelBuilder.Entity("ExpensePilot.API.Models.Category", b =>
-                {
-                    b.Navigation("Transactions");
-                });
+            {
+                b.Navigation("Transactions");
+            });
+
 #pragma warning restore 612, 618
         }
     }

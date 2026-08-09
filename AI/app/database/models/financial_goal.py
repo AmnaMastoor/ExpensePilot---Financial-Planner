@@ -1,4 +1,11 @@
-from sqlalchemy import Column, Integer, String, Numeric, DateTime, ForeignKey
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    Numeric,
+    DateTime,
+    ForeignKey,
+)
 
 from app.database.base import Base
 
@@ -13,14 +20,38 @@ class FinancialGoal(Base):
         index=True
     )
 
-    title = Column("Title", String, nullable=False)
+    title = Column(
+        "Title",
+        String,
+        nullable=False
+    )
 
-    description = Column("Description", String, nullable=True)
+    description = Column(
+        "Description",
+        String,
+        nullable=True
+    )
 
-    target_amount = Column("TargetAmount", Numeric(18, 2), nullable=False)
+    target_amount = Column(
+        "TargetAmount",
+        Numeric(18, 2),
+        nullable=False
+    )
 
-    current_amount = Column("CurrentAmount", Numeric(18, 2), nullable=False)
+    current_amount = Column(
+        "CurrentAmount",
+        Numeric(18, 2),
+        nullable=False
+    )
 
-    target_date = Column("TargetDate", DateTime, nullable=False)
+    target_date = Column(
+        "TargetDate",
+        DateTime,
+        nullable=False
+    )
 
-    user_id = Column("UserId", String, ForeignKey("AspNetUsers.Id"))
+    user_id = Column(
+        "UserId",
+        String,
+        ForeignKey("AspNetUsers.Id")
+    )
