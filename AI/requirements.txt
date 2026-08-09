@@ -2,16 +2,20 @@ fastapi
 uvicorn
 python-multipart
 
+sqlalchemy
+psycopg2-binary
+
 langchain
+langchain-core
 langchain-community
-langchain-google-genai
+langchain-chroma
+langchain-groq
+langchain-huggingface
 
 chromadb
 
 pypdf
-
 sentence-transformers
 
 python-dotenv
-
 tiktoken

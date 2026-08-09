@@ -58,14 +58,24 @@ class AdminService:
             document["path"]
         )
 
+        if not documents:
+            return 0
+
         chunks = self.chunker.split_documents(
             documents
         )
 
-        for chunk in chunks:
+        if not chunks:
+            return 0
+
+        for index, chunk in enumerate(chunks):
+
             chunk.metadata["source"] = "knowledge_base"
             chunk.metadata["document_id"] = document["document_id"]
             chunk.metadata["filename"] = document["original_name"]
+            chunk.metadata["chunk_id"] = (
+                f"{document['document_id']}_{index}"
+            )
 
         self.vector_store.add_documents(
             chunks

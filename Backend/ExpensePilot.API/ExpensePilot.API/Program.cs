@@ -11,8 +11,17 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// ---------------------------------------------------------
+// Controllers
+// ---------------------------------------------------------
+
 builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
+
+// ---------------------------------------------------------
+// Swagger
+// ---------------------------------------------------------
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -42,11 +51,19 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+// ---------------------------------------------------------
+// Database
+// ---------------------------------------------------------
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")
     )
 );
+
+// ---------------------------------------------------------
+// Identity
+// ---------------------------------------------------------
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
@@ -59,10 +76,24 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
+// ---------------------------------------------------------
+// Token Service
+// ---------------------------------------------------------
+
+builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<EmailService>();
+
+// ---------------------------------------------------------
+// Authentication - JWT
+// ---------------------------------------------------------
+
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+
+    options.DefaultChallengeScheme =
+        JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(options =>
 {
@@ -74,6 +105,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
 
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
+
         ValidAudience = builder.Configuration["Jwt:Audience"],
 
         IssuerSigningKey = new SymmetricSecurityKey(
@@ -84,12 +116,20 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// ---------------------------------------------------------
+// AI Document Service
+// ---------------------------------------------------------
+
 builder.Services.AddHttpClient<IAiDocumentService, AiDocumentService>(client =>
 {
     client.BaseAddress = new Uri(
         builder.Configuration["FastApi:BaseUrl"]!
     );
 });
+
+// ---------------------------------------------------------
+// CORS
+// ---------------------------------------------------------
 
 builder.Services.AddCors(options =>
 {
@@ -102,13 +142,26 @@ builder.Services.AddCors(options =>
     });
 });
 
+// ---------------------------------------------------------
+// Build application
+// ---------------------------------------------------------
+
 var app = builder.Build();
+
+// ---------------------------------------------------------
+// Seed Roles / Admin
+// ---------------------------------------------------------
 
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
+
     await RoleSeeder.SeedRolesAndAdminAsync(services);
 }
+
+// ---------------------------------------------------------
+// Development tools
+// ---------------------------------------------------------
 
 if (app.Environment.IsDevelopment())
 {
@@ -116,12 +169,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// ---------------------------------------------------------
+// Middleware
+// ---------------------------------------------------------
+
 app.UseHttpsRedirection();
 
 app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
+
 app.UseAuthorization();
+
+// ---------------------------------------------------------
+// Controllers
+// ---------------------------------------------------------
 
 app.MapControllers();
 

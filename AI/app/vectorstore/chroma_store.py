@@ -12,30 +12,79 @@ class ChromaVectorStore:
             embedding_function=embedding_model
         )
 
+    # =========================================================
+    # ADD DOCUMENTS
+    # =========================================================
+
     def add_documents(self, documents):
 
+        if not documents:
+            return
+
         self.db.add_documents(documents)
+
+    # =========================================================
+    # SIMILARITY SEARCH
+    # =========================================================
 
     def similarity_search(
         self,
         query,
-        k=3,
-        filter=None
+        k=5,
+        filter=None,
+        score_threshold=1.7
     ):
+        """
+        Retrieve documents using Chroma semantic distance.
+
+        Chroma distance:
+            Lower = better match
+            Higher = weaker match
+
+        We use a relatively relaxed threshold because
+        some valid finance documents can have distances
+        above 1.0 even when they are semantically relevant.
+        """
+
+        if not query or not query.strip():
+            return []
+
+        search_kwargs = {
+            "k": k
+        }
 
         if filter:
-            return self.db.similarity_search(
-                query=query,
-                k=k,
-                filter=filter
-            )
+            search_kwargs["filter"] = filter
 
-        return self.db.similarity_search(
-            query=query,
-            k=k
+        results = self.db.similarity_search_with_score(
+            query=query.strip(),
+            **search_kwargs
         )
 
-    def delete_document(self, document_id):
+        relevant_documents = []
+
+        for document, distance in results:
+
+            print(
+                f"RAG distance: {distance:.4f}"
+            )
+
+            if distance <= score_threshold:
+
+                relevant_documents.append(
+                    document
+                )
+
+        return relevant_documents
+
+    # =========================================================
+    # DELETE DOCUMENT
+    # =========================================================
+
+    def delete_document(
+        self,
+        document_id
+    ):
 
         results = self.db.get(
             where={
@@ -43,13 +92,24 @@ class ChromaVectorStore:
             }
         )
 
-        ids = results.get("ids", [])
+        ids = results.get(
+            "ids",
+            []
+        )
 
         if ids:
-            self.db.delete(ids=ids)
+
+            self.db.delete(
+                ids=ids
+            )
+
             return True
 
         return False
+
+    # =========================================================
+    # COUNT DOCUMENTS
+    # =========================================================
 
     def count(self):
 

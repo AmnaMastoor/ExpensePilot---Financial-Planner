@@ -59,17 +59,11 @@ class UserDocumentService:
             )
 
         return {
-
             "user_id": user_id,
-
             "document_id": filename.split(".")[0],
-
             "original_name": file.filename,
-
             "stored_name": filename,
-
             "path": file_path
-
         }
 
     def ingest_document(self, document):
@@ -78,19 +72,35 @@ class UserDocumentService:
             document["path"]
         )
 
+        if not documents:
+            return 0
+
         chunks = self.chunker.split_documents(
             documents
         )
 
-        for chunk in chunks:
+        if not chunks:
+            return 0
+
+        for index, chunk in enumerate(chunks):
 
             chunk.metadata["source"] = "user_document"
 
-            chunk.metadata["user_id"] = document["user_id"]
+            chunk.metadata["user_id"] = str(
+                document["user_id"]
+            )
 
-            chunk.metadata["document_id"] = document["document_id"]
+            chunk.metadata["document_id"] = (
+                document["document_id"]
+            )
 
-            chunk.metadata["filename"] = document["original_name"]
+            chunk.metadata["filename"] = (
+                document["original_name"]
+            )
+
+            chunk.metadata["chunk_id"] = (
+                f"{document['document_id']}_{index}"
+            )
 
         self.vector_store.add_documents(
             chunks
@@ -117,17 +127,21 @@ class UserDocumentService:
                 file
             )
 
-            files.append({
+            if os.path.isfile(path):
 
-                "filename": file,
-
-                "size": os.path.getsize(path)
-
-            })
+                files.append({
+                    "filename": file,
+                    "size": os.path.getsize(path)
+                })
 
         return files
 
-    def delete_document(self, user_id, document_id, filename):
+    def delete_document(
+        self,
+        user_id,
+        document_id,
+        filename
+    ):
 
         self.vector_store.delete_document(
             document_id
@@ -140,7 +154,6 @@ class UserDocumentService:
         )
 
         if os.path.exists(path):
-
             os.remove(path)
 
         return True
