@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../../styles/dashboardStyles";
-import { FiTarget } from "react-icons/fi";
+import { FiTarget, FiMessageCircle} from "react-icons/fi";
 import {
   GridIcon,
   FileIcon,
@@ -40,6 +40,11 @@ export default function Sidebar({ logout }) {
       label: "Financial Goals",
       path: "/goals",
       icon: FiTarget,
+    },
+    {
+        label: "Assistant",
+        path: "/assistant",
+        icon: FiMessageCircle,
     },
   ];
 

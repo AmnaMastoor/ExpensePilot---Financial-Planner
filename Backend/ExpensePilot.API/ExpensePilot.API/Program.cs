@@ -119,8 +119,14 @@ builder.Services.AddAuthentication(options =>
 // ---------------------------------------------------------
 // AI Document Service
 // ---------------------------------------------------------
-
 builder.Services.AddHttpClient<IAiDocumentService, AiDocumentService>(client =>
+{
+    client.BaseAddress = new Uri(
+        builder.Configuration["FastApi:BaseUrl"]!
+    );
+});
+
+builder.Services.AddHttpClient<IUserDocumentService, UserDocumentService>(client =>
 {
     client.BaseAddress = new Uri(
         builder.Configuration["FastApi:BaseUrl"]!
