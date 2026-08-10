@@ -37,6 +37,9 @@ def classify_intent(question):
         "uploaded documents",
         "uploaded file",
         "uploaded files",
+        "uploaded pdf",
+        "uploaded pdfs",
+        "my uploaded pdf",
         "my document",
         "my documents",
         "my pdf",
@@ -45,6 +48,17 @@ def classify_intent(question):
         "this document",
         "this pdf",
         "this file",
+        "according to my pdf",
+        "according to my document",
+        "according to my file",
+        "according to the uploaded pdf",
+        "according to the uploaded document",
+        "according to the uploaded file",
+        "from my document",
+        "from my pdf",
+        "from my file",
+        "in the context of my uploaded pdf",
+        "in the context of my document",
     ]
 
     if any(

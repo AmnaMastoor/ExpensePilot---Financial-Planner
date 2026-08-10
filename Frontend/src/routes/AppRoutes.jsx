@@ -12,7 +12,7 @@ import ResetPasswordPage from "../pages/Auth/ResetPassword";
 import AdminOverview from "../pages/Admin/AdminOverview";
 import Profile from "../pages/User/Profile";
 import ProtectedRoute from "./ProtectedRoute";
-
+import Assistant from "../pages/User/Assistant";
 export default function AppRoutes() {
   return (
     <Routes>
@@ -103,6 +103,7 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      <Route path="/assistant" element={<Assistant />} />
     </Routes>
   );
 }

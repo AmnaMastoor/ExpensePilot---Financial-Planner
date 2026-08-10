@@ -27,7 +27,7 @@ namespace ExpensePilot.API.Services
     IFormFile file,
     string userId)
         {
-            var content = new MultipartFormDataContent();
+            using var content = new MultipartFormDataContent();
 
             var stream = file.OpenReadStream();
 
@@ -42,34 +42,38 @@ namespace ExpensePilot.API.Services
                 file.FileName
             );
 
+            // IMPORTANT:
+            // FastAPI /user/documents/upload requires user_id
+            content.Add(
+                new StringContent(userId),
+                "user_id"
+            );
+
             var response = await _httpClient.PostAsync(
-                "/documents/upload",
+                "/user/documents/upload",
                 content
             );
 
-            response.EnsureSuccessStatusCode();
+            var responseBody =
+                await response.Content.ReadAsStringAsync();
 
-            var json = await response.Content.ReadAsStringAsync();
-
-            Console.WriteLine("========= FASTAPI RESPONSE =========");
-            Console.WriteLine(json);
+            Console.WriteLine("========== FASTAPI UPLOAD ==========");
+            Console.WriteLine($"Status: {(int)response.StatusCode}");
+            Console.WriteLine(responseBody);
             Console.WriteLine("====================================");
+
+            response.EnsureSuccessStatusCode();
 
             var fastApiResponse =
                 JsonSerializer.Deserialize<FastApiUploadResponseDto>(
-                    json,
+                    responseBody,
                     new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
                     });
 
             if (fastApiResponse == null)
-                throw new Exception("FastAPI response is null.");
-
-            Console.WriteLine($"DocumentId : {fastApiResponse.DocumentId}");
-            Console.WriteLine($"StoredName : {fastApiResponse.StoredName}");
-            Console.WriteLine($"Filename   : {fastApiResponse.Filename}");
-            Console.WriteLine($"Chunks     : {fastApiResponse.Chunks}");
+                throw new Exception("FastAPI response was null.");
 
             var document = new AiDocument
             {
@@ -87,10 +91,6 @@ namespace ExpensePilot.API.Services
 
             await _context.SaveChangesAsync();
 
-            Console.WriteLine("========= SAVED TO DB =========");
-            Console.WriteLine($"DB StoredFileName : {document.StoredFileName}");
-            Console.WriteLine("===============================");
-
             return new UploadAiDocumentResponseDto
             {
                 Id = document.Id,
@@ -100,7 +100,6 @@ namespace ExpensePilot.API.Services
                 Message = fastApiResponse.Message
             };
         }
-
         public async Task<List<AiDocumentDto>> GetAllAsync()
         {
             return await _context.Documents

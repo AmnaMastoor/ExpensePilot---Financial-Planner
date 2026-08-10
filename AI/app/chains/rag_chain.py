@@ -2,6 +2,53 @@ from langchain_core.prompts import ChatPromptTemplate
 
 from app.context.financial_context import FinancialContextBuilder
 from app.router.intent_router import classify_intent, Intent
+from app.chains.query_rewriter import QueryRewriter
+
+
+# ---------------------------------------------------------
+# Follow-up detection
+#
+# The rewriter should ONLY run when the current question
+# actually depends on prior conversation context (pronouns,
+# "more detail", etc). Standalone questions like
+# "what is my income?" must be passed through untouched,
+# otherwise the rewriter can hallucinate context (e.g.
+# injecting "according to my pdf" into an unrelated query)
+# and break both intent classification and retrieval.
+# ---------------------------------------------------------
+
+FOLLOWUP_TRIGGERS = [
+    " it",
+    " its",
+    " it's",
+    " this",
+    " that",
+    " they",
+    " them",
+    "more detail",
+    "more details",
+    "explain more",
+    "tell me more",
+    "why is it",
+    "what about",
+    "what is it useful",
+    "what are its",
+]
+
+
+def _needs_rewrite(question: str, history: list) -> bool:
+    """
+    Returns True only if there IS prior history AND the
+    current question contains a reference that depends on
+    that history.
+    """
+
+    if not history:
+        return False
+
+    q = f" {question.lower().strip()}"
+
+    return any(trigger in q for trigger in FOLLOWUP_TRIGGERS)
 
 
 class RAGChain:
@@ -18,6 +65,7 @@ class RAGChain:
         self.user_document_retriever = user_document_retriever
         self.llm = llm
         self.memory = memory
+        self.query_rewriter = QueryRewriter(llm)
 
         self.context_builder = FinancialContextBuilder()
 
@@ -35,9 +83,7 @@ class RAGChain:
         # Conversation history
         # -----------------------------------------------------
 
-        history = self.memory.get_history(
-            user_id
-        )
+        history = self.memory.get_history(user_id)
 
         history_text = ""
 
@@ -49,11 +95,41 @@ class RAGChain:
             )
 
         # -----------------------------------------------------
+        # History-aware query rewriting
+        #
+        # Only rewrite when the question is actually a
+        # follow-up. Standalone questions are passed through
+        # exactly as typed by the user.
+        # -----------------------------------------------------
+
+        if _needs_rewrite(question, history):
+
+            # Only pass the most recent turns to the rewriter.
+            # Passing full history biases the LLM toward whichever
+            # topic was repeated most often, instead of the most
+            # recent one (e.g. 3 budgeting messages outweighing 1
+            # deep-learning message even though deep learning was
+            # the immediately preceding topic).
+            recent_history = history[-3:]
+
+            rewritten_question = self.query_rewriter.rewrite(
+                question,
+                recent_history
+            )
+
+        else:
+
+            rewritten_question = question
+
+        print("Original Question:", question)
+        print("Rewritten Query:", rewritten_question)
+
+        # -----------------------------------------------------
         # Intent classification
         # -----------------------------------------------------
 
         intent = classify_intent(
-            question
+            rewritten_question
         )
 
         print(
@@ -74,7 +150,7 @@ class RAGChain:
 
             knowledge_docs = (
                 self.knowledge_retriever.retrieve(
-                    question,
+                    rewritten_question,
                     k=5
                 )
             )
@@ -115,7 +191,7 @@ class RAGChain:
 
             user_docs = (
                 self.user_document_retriever.retrieve(
-                    question,
+                    rewritten_question,
                     user_id
                 )
             )
@@ -128,12 +204,16 @@ class RAGChain:
 
             user_context = ""
 
-            for index, document in enumerate(
-                user_docs
-            ):
+            for index, document in enumerate(user_docs):
+
+                filename = document.metadata.get(
+                    "filename",
+                    "uploaded document"
+                )
 
                 user_context += (
-                    f"\n--- User Document {index + 1} ---\n"
+                    f"\n--- Uploaded Document Chunk {index + 1} ---\n"
+                    f"Filename: {filename}\n"
                     f"{document.page_content}\n"
                 )
 
@@ -227,12 +307,19 @@ For personal financial facts:
 1. User Documents
 2. Financial Information
 3. Knowledge Information
-4. Conversation History
 
 For general financial education:
 
 1. Knowledge Information
-2. Conversation History
+
+IMPORTANT: Conversation History is provided ONLY so you can
+understand what "it", "this", "that" etc refer to in the
+CURRENT question. Conversation History is NEVER a valid
+source of facts for your answer. If Knowledge Information,
+Financial Information, and User Document Information do not
+contain the answer, respond with the exact insufficient-
+information response even if the answer was mentioned earlier
+in Conversation History.
 
 ---------------------------------------------------------
 FINANCIAL TIME RULES
@@ -260,6 +347,37 @@ use CURRENT MONTH values.
 Do not mix all-time and current-month values unless the
 user explicitly asks for a comparison.
 
+
+---------------------------------------------------------
+FINANCIAL DATA ANSWER FORMAT
+---------------------------------------------------------
+ 
+When answering questions using Financial Information, ALWAYS
+follow this exact format:
+ 
+"According to your financial information, your [Income/Expenses/
+Balance/Spending] is Rs.[amount]."
+ 
+Do NOT phrase it as "my income is..." or "income is...".
+ALWAYS begin with "According to your financial information,"
+followed by "your" (not "my"), and ALWAYS include "Rs."
+before the number.
+ 
+Example:
+"According to your financial information, your Total Income
+is Rs.0."
+ 
+"According to your financial information, your Total Expenses
+is Rs.15,000."
+ 
+If the user asks about more than one value in the same
+question (e.g. both income and expenses), you may combine
+them into a single sentence, still starting with "According
+to your financial information,".
+ 
+Example:
+"According to your financial information, your Total Income
+is Rs.20,000 and your Total Expenses is Rs.15,000."
 ---------------------------------------------------------
 KNOWLEDGE INFORMATION
 ---------------------------------------------------------
@@ -309,6 +427,7 @@ ANSWER
                 "user_context": user_context,
                 "history": history_text,
                 "question": question
+
             }
         )
 

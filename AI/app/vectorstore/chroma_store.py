@@ -1,3 +1,4 @@
+
 from langchain_chroma import Chroma
 
 from app.config import CHROMA_DB
@@ -5,7 +6,10 @@ from app.config import CHROMA_DB
 
 class ChromaVectorStore:
 
-    def __init__(self, embedding_model):
+    def __init__(
+        self,
+        embedding_model
+    ):
 
         self.db = Chroma(
             persist_directory=CHROMA_DB,
@@ -16,12 +20,17 @@ class ChromaVectorStore:
     # ADD DOCUMENTS
     # =========================================================
 
-    def add_documents(self, documents):
+    def add_documents(
+        self,
+        documents
+    ):
 
         if not documents:
             return
 
-        self.db.add_documents(documents)
+        self.db.add_documents(
+            documents
+        )
 
     # =========================================================
     # SIMILARITY SEARCH
@@ -34,17 +43,6 @@ class ChromaVectorStore:
         filter=None,
         score_threshold=1.7
     ):
-        """
-        Retrieve documents using Chroma semantic distance.
-
-        Chroma distance:
-            Lower = better match
-            Higher = weaker match
-
-        We use a relatively relaxed threshold because
-        some valid finance documents can have distances
-        above 1.0 even when they are semantically relevant.
-        """
 
         if not query or not query.strip():
             return []
@@ -56,9 +54,12 @@ class ChromaVectorStore:
         if filter:
             search_kwargs["filter"] = filter
 
-        results = self.db.similarity_search_with_score(
-            query=query.strip(),
-            **search_kwargs
+        results = (
+            self.db
+                .similarity_search_with_score(
+                    query=query.strip(),
+                    **search_kwargs
+                )
         )
 
         relevant_documents = []
@@ -78,7 +79,7 @@ class ChromaVectorStore:
         return relevant_documents
 
     # =========================================================
-    # DELETE DOCUMENT
+    # DELETE DOCUMENT BY ID
     # =========================================================
 
     def delete_document(
@@ -86,9 +87,30 @@ class ChromaVectorStore:
         document_id
     ):
 
+        document_id = str(
+            document_id
+        )
+
+        print(
+            "================================="
+        )
+
+        print(
+            "CHROMA DELETE"
+        )
+
+        print(
+            f"Document ID: {document_id}"
+        )
+
+        print(
+            "================================="
+        )
+
         results = self.db.get(
             where={
-                "document_id": document_id
+                "document_id":
+                    document_id
             }
         )
 
@@ -97,20 +119,59 @@ class ChromaVectorStore:
             []
         )
 
-        if ids:
+        print(
+            f"Found Chroma chunks: {len(ids)}"
+        )
 
-            self.db.delete(
-                ids=ids
+        if not ids:
+
+            print(
+                "No Chroma chunks found."
             )
 
-            return True
+            return False
 
-        return False
+        self.db.delete(
+            ids=ids
+        )
+
+        print(
+            f"Deleted {len(ids)} Chroma chunks."
+        )
+
+        return True
 
     # =========================================================
-    # COUNT DOCUMENTS
+    # COUNT
     # =========================================================
 
     def count(self):
 
-        return self.db._collection.count()
+        return (
+            self.db
+                ._collection
+                .count()
+        )
+
+def get_user_document_chunks(
+    self,
+    user_id
+):
+
+    user_id = str(user_id)
+
+    results = self.db.get(
+        where={
+            "$and": [
+                {
+                    "source": "user_document"
+                },
+                {
+                    "user_id": user_id
+                }
+            ]
+        },
+        include=["metadatas"]
+    )
+
+    return results
