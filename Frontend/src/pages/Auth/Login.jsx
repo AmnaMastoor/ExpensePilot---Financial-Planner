@@ -220,7 +220,7 @@ export default function LoginPage() {
             <div className="w-full md:w-1/2 flex flex-col items-center justify-center px-6 py-12">
                 <div className="w-full max-w-md bg-white rounded-2xl shadow-xl shadow-slate-200/60 p-8 sm:p-10">
                     <h2 className="text-3xl font-bold text-gray-950 mb-2"
-                        style={{ color: "var(--text-color)" }}
+                        style={{ color: "black" }}
                     >
                         Welcome Back
                     </h2>
