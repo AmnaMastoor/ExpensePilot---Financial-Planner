@@ -1,31 +1,35 @@
 ﻿using MailKit.Net.Smtp;
+using MailKit.Security;
 using MimeKit;
 
 namespace ExpensePilot.API.Services
 {
     public class EmailService
     {
-        private readonly IConfiguration _configuration;
-
-        public EmailService(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         public async Task SendEmailAsync(
             string toEmail,
             string subject,
             string body
         )
         {
-            var emailSettings = _configuration.GetSection("EmailSettings");
+            var emailHost =
+                Environment.GetEnvironmentVariable("EMAIL_HOST");
+
+            var emailPort =
+                Environment.GetEnvironmentVariable("EMAIL_PORT");
+
+            var emailUsername =
+                Environment.GetEnvironmentVariable("EMAIL_USERNAME");
+
+            var emailPassword =
+                Environment.GetEnvironmentVariable("EMAIL_PASSWORD");
 
             var email = new MimeMessage();
 
             email.From.Add(
                 new MailboxAddress(
                     "ExpensePilot",
-                    emailSettings["Email"]
+                    emailUsername
                 )
             );
 
@@ -43,21 +47,18 @@ namespace ExpensePilot.API.Services
                 Text = body
             };
 
-
             using var smtp = new SmtpClient();
 
             await smtp.ConnectAsync(
-                emailSettings["Host"],
-                int.Parse(emailSettings["Port"]),
-                MailKit.Security.SecureSocketOptions.StartTls
+                emailHost,
+                int.Parse(emailPort!),
+                SecureSocketOptions.StartTls
             );
-
 
             await smtp.AuthenticateAsync(
-                emailSettings["Email"],
-                emailSettings["Password"]
+                emailUsername,
+                emailPassword
             );
-
 
             await smtp.SendAsync(email);
 
