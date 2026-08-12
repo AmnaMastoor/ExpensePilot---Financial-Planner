@@ -993,8 +993,8 @@ Potential future enhancements include:
 
 ExpensePilot was collaboratively developed by:
 
-* **Nouman Saeed Butt**
 * **Amna Mastoor**
+* **Nouman Saeed Butt**
 
 Both contributors worked on the development and implementation of the platform, including its full-stack financial management functionality and AI-powered Hybrid RAG component.
 
