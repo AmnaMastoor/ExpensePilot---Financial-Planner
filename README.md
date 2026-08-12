@@ -1,4 +1,3 @@
-
 # ExpensePilot: A Hybrid AI Financial Assistant with Intelligent Data Retrieval and RAG-Powered Knowledge
 
 <p align="center">
@@ -30,7 +29,7 @@
 
 The project combines a modern financial management system with an **AI-powered financial assistant** built around **Hybrid Retrieval-Augmented Generation (RAG)**.
 
-ExpensePilot goes beyond traditional expense tracking by combining financial management features with intelligent information retrieval and AI-powered assistance.
+Unlike a traditional expense tracker, ExpensePilot combines financial management with an intelligent retrieval system capable of working with both **general financial knowledge** and **user-specific financial data**.
 
 ### Core capabilities include:
 
@@ -47,7 +46,9 @@ ExpensePilot goes beyond traditional expense tracking by combining financial man
 * Role-based authorization
 * AI-powered financial assistance
 * Intelligent data retrieval
-* Hybrid RAG pipeline
+* Hybrid RAG
+* User-specific financial data retrieval
+* Knowledge-document retrieval
 * Context-aware AI responses
 
 The AI component is maintained separately inside the `AI` directory and works alongside the core ASP.NET Core backend and React frontend.
@@ -90,8 +91,6 @@ The dashboard provides users with a centralized overview of their financial acti
 * Spending overview
 * Financial summaries
 
-The dashboard allows users to quickly understand their financial position without navigating through multiple sections.
-
 ---
 
 ## 💳 Transaction Management
@@ -125,7 +124,7 @@ Users can create and manage budgets to better control their spending.
 * Spending comparison
 * User-specific budgets
 
-Each user's budget information is isolated from other users.
+Each user's financial budget information is isolated from other users.
 
 ---
 
@@ -139,8 +138,6 @@ The system supports:
 * Expense categories
 * Default categories
 * User-created categories
-
-Categories provide better organization and support meaningful financial analysis.
 
 ---
 
@@ -157,8 +154,6 @@ Users can create and monitor long-term financial goals.
 * Goal status
 * Progress tracking
 
-This allows users to monitor their progress toward specific financial objectives.
-
 ---
 
 ## 📈 Financial Reports
@@ -173,89 +168,151 @@ Reports can be generated using transaction and budgeting information to provide 
 
 One of the major components of ExpensePilot is its **AI-powered financial assistant**.
 
-The assistant is designed to provide context-aware responses by retrieving relevant information before generating an answer.
+The assistant uses a **Hybrid RAG architecture** to retrieve relevant information before generating an answer.
 
-Instead of relying only on the language model's internal knowledge, the system follows a **retrieval-first approach**.
+What makes the system different from a basic document-based RAG implementation is that it can work with **multiple sources of information**.
 
-```text
-User Query
-    │
-    ▼
-Query Processing
-    │
-    ▼
-Information Retrieval
-    │
-    ▼
-Relevant Context
-    │
-    ▼
-Language Model
-    │
-    ▼
-AI Response
-```
+The AI assistant can retrieve:
 
-This architecture helps the AI assistant generate responses grounded in relevant retrieved information.
+1. **General knowledge from indexed documents**
+2. **User-specific financial information from the application's data**
+3. **Both sources together when the query requires them**
+
+This allows the assistant to answer both general financial questions and questions related specifically to the user's own financial situation.
 
 ---
 
 # 🧠 Hybrid RAG
 
-ExpensePilot implements a **Hybrid Retrieval-Augmented Generation architecture**.
+ExpensePilot implements a **Hybrid Retrieval-Augmented Generation architecture** that combines intelligent retrieval from multiple sources.
 
-The system combines multiple retrieval strategies to improve the quality and relevance of information provided to the language model.
+The retrieval system can work with:
 
-## 🔹 Semantic Retrieval
+### 📚 Knowledge Documents
 
-Semantic retrieval uses vector embeddings to identify information that is conceptually similar to the user's query.
+The system can retrieve relevant information from the available financial knowledge/document collection.
 
-This means the system can retrieve relevant information even when the user's wording differs from the wording stored in the available knowledge.
+This allows the assistant to answer general questions about topics such as:
 
-For example, a user might ask:
+* Personal finance
+* Budgeting
+* Saving
+* Financial planning
+* Expense management
+* Other indexed financial knowledge
+
+### 👤 User Financial Data
+
+The AI assistant can also retrieve relevant information from the authenticated user's financial data.
+
+Depending on the question, this can include information such as:
+
+* Transactions
+* Income
+* Expenses
+* Categories
+* Budgets
+* Financial goals
+* Other relevant user-specific financial information
+
+The system is designed around the principle that **user financial data should remain user-specific**.
+
+### 🔀 Combined Retrieval
+
+Some questions may require both general knowledge and the user's personal financial information.
+
+In such cases, the system can combine the relevant information from both sources before sending the context to the language model.
+
+---
+
+# 💡 Intelligent Source Selection
+
+The AI assistant determines what type of information is relevant to the user's query.
+
+For example:
+
+### General Knowledge Query
 
 ```text
-How can I reduce unnecessary spending?
+How can I reduce unnecessary monthly expenses?
 ```
 
-while the relevant information may contain terms such as:
+The system can retrieve relevant information from the financial knowledge documents.
 
 ```text
-expense reduction
-spending control
-financial discipline
-budget optimization
+User Query
+    ↓
+Knowledge Retrieval
+    ↓
+Relevant Financial Knowledge
+    ↓
+LLM
+    ↓
+Response
 ```
 
-Semantic retrieval can identify the conceptual relationship between these expressions.
+---
+
+### User-Specific Query
+
+```text
+How much did I spend on food this month?
+```
+
+This question requires the user's financial information.
+
+```text
+User Query
+    ↓
+User Data Retrieval
+    ↓
+Relevant Transactions
+    ↓
+LLM
+    ↓
+Response
+```
 
 ---
 
-## 🔹 Keyword Retrieval
+### Combined Query
 
-Keyword retrieval focuses on important terms contained within the user's query.
+```text
+I spent more on food this month. How can I reduce it?
+```
 
-This is particularly useful for:
+This type of question can require both:
 
-* Exact financial terms
-* Category names
-* Specific references
-* Important keywords
-* Precise financial information
+* The user's actual spending information
+* General financial knowledge about reducing food expenses
 
-Keyword retrieval complements semantic retrieval by preserving the importance of exact terms.
+The system can therefore combine both sources:
+
+```text
+                    User Query
+                        │
+             ┌──────────┴──────────┐
+             │                     │
+             ▼                     ▼
+      User Data Retrieval    Knowledge Retrieval
+             │                     │
+             │                     │
+             └──────────┬──────────┘
+                        ▼
+                 Combined Context
+                        │
+                        ▼
+                       LLM
+                        │
+                        ▼
+                 Context-Aware Answer
+```
+
+This allows the AI assistant to provide responses that are both **personalized and knowledge-grounded**.
 
 ---
 
-## 🔹 Hybrid Retrieval
-
-The results from semantic and keyword retrieval are combined to produce a more relevant set of information.
-
-The resulting context is then provided to the language model for response generation.
-
----
-
-# 🔄 Hybrid RAG Pipeline
+# 🔄 Hybrid RAG Retrieval Pipeline
 
 ```text
                          ┌──────────────┐
@@ -272,38 +329,28 @@ The resulting context is then provided to the language model for response genera
                        │ Query Processing│
                        └────────┬────────┘
                                 │
-                   ┌────────────┴────────────┐
-                   │                         │
-                   ▼                         ▼
-          ┌─────────────────┐       ┌─────────────────┐
-          │ Semantic Search │       │ Keyword Search  │
-          └────────┬────────┘       └────────┬────────┘
-                   │                         │
-                   └────────────┬────────────┘
-                                ▼
-                     ┌────────────────────┐
-                     │ Hybrid Retrieval   │
-                     └─────────┬──────────┘
-                               │
-                               ▼
-                     ┌────────────────────┐
-                     │ Relevant Context   │
-                     └─────────┬──────────┘
-                               │
-                               ▼
-                     ┌────────────────────┐
-                     │ Prompt Construction│
-                     └─────────┬──────────┘
-                               │
-                               ▼
-                         ┌─────────────┐
-                         │     LLM     │
-                         └──────┬──────┘
-                                │
-                                ▼
-                     ┌────────────────────┐
-                     │ Generated Response │
-                     └────────────────────┘
+              ┌─────────────────┼─────────────────┐
+              │                 │                 │
+              ▼                 ▼                 ▼
+       User Data         Semantic Search     Keyword Search
+       Retrieval         on Knowledge        on Knowledge
+              │                 │                 │
+              │                 └────────┬────────┘
+              │                          │
+              │                   Hybrid Retrieval
+              │                          │
+              └──────────────┬───────────┘
+                             ▼
+                    Relevant Context
+                             │
+                             ▼
+                    Context Assembly
+                             │
+                             ▼
+                           LLM
+                             │
+                             ▼
+                     AI Response
 ```
 
 ---
@@ -312,18 +359,31 @@ The resulting context is then provided to the language model for response genera
 
 A single retrieval strategy does not always provide the best results.
 
-Semantic retrieval is effective at understanding **meaning and context**, while keyword retrieval is effective at identifying **specific and exact terms**.
+ExpensePilot combines:
 
-By combining both strategies, ExpensePilot can consider both semantic similarity and lexical relevance during retrieval.
+* User-specific data retrieval
+* Semantic retrieval
+* Keyword retrieval
+* Knowledge-document retrieval
+* Context-aware generation
+
+Semantic retrieval is effective at understanding **meaning and context**, while keyword retrieval is useful for identifying **specific and exact terms**.
+
+User-data retrieval allows the system to personalize responses based on the authenticated user's financial information.
+
+Combining these approaches enables the assistant to answer different types of questions using the appropriate information sources.
 
 ### Benefits
 
+* Personalized financial responses
 * Improved retrieval relevance
 * Better context selection
 * Greater information coverage
+* Support for general financial questions
+* Support for user-specific financial questions
+* Support for combined questions
 * Better handling of different query formulations
 * More grounded AI responses
-* Better retrieval for both conceptual and exact queries
 * Reduced dependence on the LLM's internal knowledge
 
 ---
@@ -341,40 +401,43 @@ AI Financial Assistant
  ▼
 Query Processing
  │
- ├──────────────────┐
- │                  │
- ▼                  ▼
-Semantic Retrieval  Keyword Retrieval
- │                  │
- └────────┬─────────┘
-          ▼
-   Hybrid Retrieval
-          │
-          ▼
-   Relevant Context
-          │
-          ▼
-    Prompt Assembly
-          │
-          ▼
-         LLM
-          │
-          ▼
-    AI Response
+ ├───────────────────────┐
+ │                       │
+ ▼                       ▼
+User Financial Data   Knowledge Retrieval
+Retrieval                  │
+ │                    ┌────┴─────┐
+ │                    │          │
+ │                    ▼          ▼
+ │                 Semantic   Keyword
+ │                 Search     Search
+ │                    │          │
+ │                    └────┬─────┘
+ │                         │
+ └──────────────┬──────────┘
+                ▼
+        Context Assembly
+                │
+                ▼
+               LLM
+                │
+                ▼
+          AI Response
 ```
 
 The AI implementation is maintained independently inside the project's `AI` directory.
 
 ---
 
-# 🏗️ Architecture
+# 🏗️ System Architecture
 
 ExpensePilot follows a multi-component architecture consisting of:
 
 1. React frontend
 2. ASP.NET Core backend
 3. PostgreSQL database
-4. Dedicated AI / Hybrid RAG component
+4. AI / Hybrid RAG component
+5. Knowledge retrieval system
 
 ```text
                            ┌──────────────────┐
@@ -393,17 +456,28 @@ ExpensePilot follows a multi-component architecture consisting of:
                            │ ASP.NET Core API │
                            └───────┬───┬──────┘
                                    │   │
-                         ┌─────────┘   └───────────┐
-                         ▼                         ▼
-                ┌─────────────────┐       ┌─────────────────┐
-                │   PostgreSQL    │       │   AI Service    │
-                │    Database     │       │   Hybrid RAG    │
-                └─────────────────┘       └────────┬────────┘
-                                                   │
-                                                   ▼
-                                            ┌─────────────┐
-                                            │     LLM     │
-                                            └─────────────┘
+                         ┌─────────┘   └──────────────┐
+                         ▼                            ▼
+                ┌─────────────────┐          ┌─────────────────┐
+                │   PostgreSQL    │          │   AI Service    │
+                │    Database     │          │   Hybrid RAG    │
+                └─────────────────┘          └────────┬────────┘
+                                                       │
+                                     ┌─────────────────┼─────────────────┐
+                                     │                 │                 │
+                                     ▼                 ▼                 ▼
+                              User Data         Semantic Search    Keyword Search
+                              Retrieval          Knowledge Base    Knowledge Base
+                                     │                 │                 │
+                                     └─────────────────┼─────────────────┘
+                                                       ▼
+                                              Context Assembly
+                                                       │
+                                                       ▼
+                                                     LLM
+                                                       │
+                                                       ▼
+                                                AI Response
 ```
 
 ---
@@ -495,6 +569,8 @@ ExpensePilot---Financial-Planner/
 * Keyword Retrieval
 * Vector Embeddings
 * Large Language Models
+* User-data retrieval
+* Knowledge-document retrieval
 * Context-aware generation
 
 ---
@@ -665,6 +741,8 @@ User
 
 Entity Framework Core migrations are used to manage database schema changes.
 
+The AI component can retrieve relevant financial information associated with the authenticated user when required by the query.
+
 ---
 
 # 🔒 Security
@@ -683,7 +761,7 @@ The application uses:
 * Environment-based secret management
 * Database-level user relationships
 
-Each authenticated user's financial information is isolated from other users.
+The AI retrieval layer is designed to work with the authenticated user's relevant financial information rather than exposing unrelated users' data.
 
 ---
 
@@ -711,9 +789,24 @@ Each authenticated user's financial information is isolated from other users.
           └────────┬────────┘    └────────┬────────┘
                    │                      │
                    ▼                      ▼
-          ┌─────────────────┐       ┌─────────────┐
-          │   PostgreSQL    │       │     LLM     │
-          └─────────────────┘       └─────────────┘
+          ┌─────────────────┐     ┌──────────────────┐
+          │   PostgreSQL    │     │ Retrieval Layer  │
+          └─────────────────┘     └────────┬─────────┘
+                                           │
+                              ┌────────────┴────────────┐
+                              │                         │
+                              ▼                         ▼
+                       User Financial Data      Knowledge Documents
+                              │                         │
+                              └────────────┬────────────┘
+                                           ▼
+                                    Context Assembly
+                                           │
+                                           ▼
+                                          LLM
+                                           │
+                                           ▼
+                                      AI Response
 ```
 
 ---
@@ -759,13 +852,15 @@ ExpensePilot
 │
 └── 🤖 AI Financial Assistant
     │
-    └── Hybrid RAG
-        ├── Query Processing
-        ├── Semantic Retrieval
-        ├── Keyword Retrieval
-        ├── Hybrid Retrieval
-        ├── Context Assembly
-        └── LLM Generation
+    ├── User Data Retrieval
+    │
+    ├── Knowledge Retrieval
+    │   ├── Semantic Retrieval
+    │   └── Keyword Retrieval
+    │
+    ├── Hybrid Context
+    │
+    └── LLM Generation
 ```
 
 ---
@@ -931,25 +1026,37 @@ Dashboard
 
 ExpensePilot follows a **retrieval-first AI architecture**.
 
-Instead of asking the language model to answer a financial question using only its internal knowledge, the system first retrieves relevant information.
+Instead of asking the language model to answer a financial question using only its internal knowledge, the system first determines what information is relevant and retrieves it.
+
+The retrieved information may come from:
+
+* User-specific financial data
+* Financial knowledge documents
+* Both sources when required
+
+The resulting context is then provided to the language model.
 
 ```text
 User Question
       │
       ▼
-Retrieve Relevant Information
+Determine Relevant Sources
       │
-      ▼
-Combine Retrieved Context
-      │
-      ▼
-Provide Context to LLM
-      │
-      ▼
-Generate Response
+      ├───────────────┐
+      ▼               ▼
+User Data        Knowledge Base
+Retrieval        Retrieval
+      │               │
+      └───────┬───────┘
+              ▼
+       Combined Context
+              │
+              ▼
+             LLM
+              │
+              ▼
+       Generated Response
 ```
-
-This approach helps produce responses that are better grounded in relevant retrieved information.
 
 ---
 
@@ -963,7 +1070,10 @@ ExpensePilot was developed to:
 * Improve budgeting
 * Track financial goals
 * Generate useful financial reports
-* Provide AI-powered financial assistance
+* Provide personalized AI-powered financial assistance
+* Retrieve relevant user-specific financial information
+* Retrieve relevant financial knowledge
+* Combine multiple information sources when required
 * Demonstrate Hybrid RAG in a real-world application
 * Combine full-stack development with modern AI techniques
 
@@ -984,6 +1094,7 @@ Potential future enhancements include:
 * AI-generated financial reports
 * Advanced RAG evaluation
 * Retrieval ranking optimization
+* Improved personalized financial insights
 * Mobile application
 * Enhanced admin analytics
 
