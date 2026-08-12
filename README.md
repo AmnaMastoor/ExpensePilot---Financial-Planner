@@ -416,13 +416,13 @@ The complete ExpensePilot architecture diagram is stored inside the `Images` dir
 ExpensePilot---Financial-Planner/
 │
 ├── Images/
-│   └── ExpensePilot-Architecture.png
+│   └── ExpensePilot-Architecture.jpg
 │
 └── README.md
 ```
 
 <p align="center">
-  <img src="Images/ExpensePilot-Architecture.png" alt="ExpensePilot Architecture" width="900">
+  <img src="Images/ExpensePilot-Architecture.jpg" alt="ExpensePilot Architecture" width="900">
 </p>
 
 ---
@@ -535,7 +535,7 @@ ExpensePilot---Financial-Planner/
 │   └── ...
 │
 ├── Images/
-│   └── ExpensePilot-Architecture.png
+│   └── ExpensePilot-Architecture.jpg
 │
 ├── README.md
 └── .gitignore
